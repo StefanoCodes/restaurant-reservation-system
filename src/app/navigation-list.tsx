@@ -11,7 +11,9 @@ const NavLink = ({
   path,
   icon,
   className,
+  onClick,
 }: {
+  onClick: () => void;
   name: string;
   path: string;
   icon: React.ElementType;
@@ -22,11 +24,12 @@ const NavLink = ({
   return (
     <Link
       className={cn(
-        `text-white hidden sm:flex items-center gap-1 hover:text-gray-300`,
-        pathname === path && "text-gray-300"
+        `text-black sm:text-white flex flex-row items-center gap-1 hover:text-gray-500 sm:hover:text-gray-300`,
+        pathname === path && "text-gray-500 sm:text-gray-300"
       )}
       key={name}
       href={path}
+      onClick={onClick}
     >
       <Icon className="w-4 h-4" />
       <span className={className}>{name}</span>
@@ -34,9 +37,13 @@ const NavLink = ({
   );
 };
 
-export function NavigationListDesktop() {
+export function NavLinks({
+  setIsOpenMenu,
+}: {
+  setIsOpenMenu?: (isOpen: boolean) => void;
+}) {
   return (
-    <div className="hidden sm:flex items-center gap-4">
+    <div className="flex flex-col sm:flex-row mt-4 sm:mt-0 items-start sm:items-center gap-4">
       {ROUTES.map((route) => {
         // Only render the link if:
         // 1. The route is not protected, or
@@ -47,6 +54,7 @@ export function NavigationListDesktop() {
             name={route.name}
             path={route.path}
             icon={route.icon}
+            onClick={() => setIsOpenMenu && setIsOpenMenu(false)}
           />
         );
       })}
@@ -58,7 +66,7 @@ export default function NavigationList() {
   return (
     <>
       <div className="hidden sm:flex">
-        <NavigationListDesktop />
+        <NavLinks />
       </div>
       <div className="sm:hidden">
         <MobileNavigation />

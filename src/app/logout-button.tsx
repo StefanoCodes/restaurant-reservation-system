@@ -15,6 +15,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import React, { useState } from "react";
+import { LogOutIcon } from "lucide-react";
 export const LogoutSubmitButton = React.forwardRef<
   HTMLButtonElement,
   {
@@ -26,13 +27,20 @@ export const LogoutSubmitButton = React.forwardRef<
   const { pending } = useFormStatus();
   return (
     <Button
+      ref={ref}
       type="submit"
       disabled={pending}
       variant="destructive"
-      className={cn(`cursor-pointer`, className)}
+      className={cn(
+        `cursor-pointer w-full sm:w-auto flex items-center gap-2`,
+        className
+      )}
       onClick={onClick}
     >
-      {pending ? "Logging out..." : "Log Out"}
+      <span className="flex items-center gap-2">
+        <LogOutIcon className="w-4 h-4 sm:hidden" />
+        {pending ? "Logging out..." : "Log Out"}
+      </span>
     </Button>
   );
 });

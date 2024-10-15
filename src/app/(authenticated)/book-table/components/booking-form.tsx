@@ -46,6 +46,11 @@ export default function BookingForm({
         </div>
         {/* FORM */}
         <div className="flex-[0.5]">
+          {!selectedTable && (
+            <div className="text-center text-sm md:text-base text-gray-500">
+              Please select a table
+            </div>
+          )}
           <form
             className={cn(
               "flex flex-col gap-4 opacity-0 invisible transition-all duration-300 self-end",
