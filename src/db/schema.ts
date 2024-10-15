@@ -47,8 +47,12 @@ export const reservationsTable = pgTable("reservations", {
     () => usersTable.userId
   ),
   tableId: uuid("table_id").references(() => tablesTable.id),
-  startTime: timestamp("start_time").notNull(),
-  endTime: timestamp("end_time").notNull(),
+  startTime: varchar("start_time", {
+    length: 255,
+  }).notNull(),
+  endTime: varchar("end_time", {
+    length: 255,
+  }).notNull(),
   status: reservationStatusEnum("status").default("pending"),
   numberOfPeople: integer("number_of_people").notNull(),
   createdAt: timestamp("created_at").defaultNow(),

@@ -166,7 +166,24 @@ export const getUserReservationDetails = async (userId: string) => {
   }
   return userDetails[0];
 };
-
+export const getBookings = async (userId: string) => {
+  // we will join the table and user tables to the reservations table to get the table name and the user name
+  const bookings = await db
+    .select({
+      reservation: reservationsTable,
+      table: tablesTable,
+      user: usersTable,
+    })
+    .from(reservationsTable)
+    .where(eq(reservationsTable.userId, userId))
+    .innerJoin(tablesTable, eq(reservationsTable.tableId, tablesTable.id))
+    .innerJoin(usersTable, eq(reservationsTable.userId, usersTable.userId));
+    console.table(bookings)
+  if (!bookings[0]) {
+    return [];
+  }
+  return bookings;
+};
 export const getTables = async (): Promise<Table[]> => {
   const tables = await db.select().from(tablesTable);
   if (!tables[0]) {
@@ -206,19 +223,16 @@ export const createReservation = async (
   // prevent overlapping reseravtions
 
   // insert reservation into database
-  const reservationEndTime = getEndTime(
-    reservationDetails.date,
-    BOOKING_DURATION
-  );
-  console.log(reservationEndTime);
-  // await db.insert(reservationsTable).values({
-  //   userId: user.id,
-  //   tableId: reservationDetails.tableId,
-  //   startTime: reservationDetails.date,
-  //   numberOfPeople: isReservationDataValid.data.numberOfPeople,
-  //   notes: isReservationDataValid.data.specialRequests,
-  // });
 
+  await db.insert(reservationsTable).values({
+    userId: reservationDetails.userId,
+    tableId: reservationDetails.tableId,
+    startTime: reservationDetails.time,
+    endTime: getEndTime(reservationDetails.time, BOOKING_DURATION),
+    numberOfPeople: isReservationDataValid.data.numberOfPeople,
+    notes: isReservationDataValid.data.specialRequests,
+  });
+  revalidatePath("/book-table");
   return {
     success: true,
     message: "Reservation created successfully",

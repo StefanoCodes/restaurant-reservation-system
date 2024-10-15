@@ -24,12 +24,25 @@ export function formatDate(date: Date) {
   });
 }
 
-export function getEndTime(startTime: Date, duration: number) {
-  const date = new Date(startTime);
-  date.setHours(date.getHours() + duration);
-  return date.toISOString();
-}
+
 export function formatDateForReservation(date: Date) {
   const dateFormated = date.toISOString().split("T")[0];
   return dateFormated;
 }
+
+export function getEndTime(timeString: string, duration:number): string {
+  // Create a Date object for today's date at the given time
+  const [hours, minutes] = timeString.split(':').map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+
+  // Add two hours
+  date.setHours(date.getHours() + duration);
+
+  // Format the result back to HH:mm
+  return date.toTimeString().slice(0, 5);
+}
+
+// Example usage:
+// const newTime = addTwoHours('16:00');
+// console.log(newTime); // Outputs: '18:00'

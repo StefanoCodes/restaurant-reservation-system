@@ -4,7 +4,7 @@ import BookingForm from "./components/booking-form";
 import { getTables, getUserReservationDetails } from "@/app/actions/actions";
 import { Suspense } from "react";
 import Loading from "../loading";
-
+// dont forget to add the functionality to check if a user has already booked a table for that day if so he cant book another table for that day
 async function BookingFormWrapper() {
   const { auth } = createClient();
   const session = (await auth.getUser()).data.user;

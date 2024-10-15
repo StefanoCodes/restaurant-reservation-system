@@ -1,3 +1,5 @@
+import { Table } from "@/db/schema";
+
 export type User = {
   name: string;
   id: string;
@@ -19,3 +21,23 @@ export type ReservationDetails = {
   tableId: string;
   userId: string;
 };
+export type ReservationCardProps = {
+  reservation?: {
+    id?: string
+    startTime?: string
+    endTime?: string
+    status?: string | null; 
+    numberOfPeople?: number;
+    createdAt?: string | null; 
+    notes?: string | null;
+  }
+  table?: {
+    name?: string
+    capacity?: number
+  }
+  user?: {
+    name?: string
+    email?: string
+    phoneNumber?: string
+  }
+}
