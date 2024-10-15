@@ -26,8 +26,7 @@ async function BookingFormWrapper() {
 export default async function BookTablePage() {
   return (
     <main>
-      <section className="max-w-7xl flex flex-col gap-4 mx-auto py-10 ">
-        <h1 className="text-2xl font-semibold capitalize">Select a Table</h1>
+      <section className="max-w-7xl flex flex-col gap-4 mx-auto py-8 px-10 md:px-4 text-center md:text-left">
         <Suspense fallback={<Loading />}>
           <BookingFormWrapper />
         </Suspense>
