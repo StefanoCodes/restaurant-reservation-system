@@ -10,4 +10,12 @@ export type UserReservationDetails = {
   name: string;
   email: string;
   phoneNumber: string;
+  userId: string;
+};
+
+export type ReservationDetails = {
+  date: Date;
+  time: string;
+  tableId: string;
+  userId: string;
 };

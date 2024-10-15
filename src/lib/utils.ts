@@ -23,3 +23,13 @@ export function formatDate(date: Date) {
     year: "numeric",
   });
 }
+
+export function getEndTime(startTime: Date, duration: number) {
+  const date = new Date(startTime);
+  date.setHours(date.getHours() + duration);
+  return date.toISOString();
+}
+export function formatDateForReservation(date: Date) {
+  const dateFormated = date.toISOString().split("T")[0];
+  return dateFormated;
+}

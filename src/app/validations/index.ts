@@ -23,3 +23,27 @@ export const loginSchema = z.object({
     message: "Password must be at least 8 characters",
   }),
 });
+
+export const reservationSchema = z.object({
+  name: z.string().min(3, {
+    message: "Name must be at least 3 characters",
+  }),
+  email: z.string().email({
+    message: "Invalid email address",
+  }),
+  phoneNumber: z.string().min(10, {
+    message: "Phone number must be at least 10 characters",
+  }),
+  time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+    message: "Time must be in HH:mm format (e.g., 09:00)",
+  }),
+  date: z.date({
+    message: "Invalid date",
+  }),
+  numberOfPeople: z.coerce.number().int().positive().min(1, {
+    message: "Number of people must be at least 1",
+  }),
+  specialRequests: z.string().optional(),
+  tableId: z.string(),
+  userId: z.string(),
+});

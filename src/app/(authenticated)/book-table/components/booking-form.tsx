@@ -20,6 +20,8 @@ import { PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
+import { createReservation } from "@/app/actions/actions";
+import { useToast } from "@/hooks/use-toast";
 export default function BookingForm({
   user,
   tables,
@@ -30,6 +32,30 @@ export default function BookingForm({
   const timeSlots = calculateTimeSlots(OPEN_HOURS, CLOSE_HOURS);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const [date, setDate] = useState<Date | undefined>(undefined);
+  const [time, setTime] = useState<string | undefined>(undefined);
+  const { toast } = useToast();
+  const handleReservationAction = async (formData: FormData) => {
+    const response = await createReservation(formData, {
+      date: date as Date,
+      time: time as string,
+      tableId: selectedTable?.id as string,
+      userId: user.userId as string,
+    });
+
+    if (response.success) {
+      toast({
+        title: "Reservation created successfully",
+        description: "Your reservation has been created successfully",
+      });
+    } else {
+      console.log(response.error);
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    }
+  };
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold text-center md:text-left">
@@ -62,6 +88,7 @@ export default function BookingForm({
               <Label>Name</Label>
               <Input
                 type="text"
+                name="name"
                 defaultValue={user.name}
                 className="bg-white"
               />
@@ -71,6 +98,7 @@ export default function BookingForm({
               <Label>Email</Label>
               <Input
                 type="email"
+                name="email"
                 defaultValue={user.email}
                 className="bg-white"
               />
@@ -80,6 +108,7 @@ export default function BookingForm({
               <Label>Phone</Label>
               <Input
                 type="text"
+                name="phoneNumber"
                 defaultValue={user.phoneNumber}
                 className="bg-white"
               />
@@ -113,8 +142,8 @@ export default function BookingForm({
             {/* TIME */}
             <div className="flex flex-col gap-2">
               <Label htmlFor="time">Time</Label>
-              <Select>
-                <SelectTrigger className="bg-white" id="time">
+              <Select onValueChange={setTime}>
+                <SelectTrigger className="bg-white" id="time" name="time">
                   <SelectValue placeholder="Select a time" />
                 </SelectTrigger>
                 <SelectContent>
@@ -133,6 +162,7 @@ export default function BookingForm({
                 placeholder="Number of people"
                 type="number"
                 className="bg-white"
+                name="numberOfPeople"
               />
             </div>
             {/* SPECIAL REQUESTS */}
@@ -141,9 +171,15 @@ export default function BookingForm({
               <Textarea
                 placeholder="my special request is..."
                 className="bg-white"
+                name="specialRequests"
               />
             </div>
-            <Button className="mt-4" type="submit" disabled={!selectedTable}>
+            <Button
+              className="mt-4"
+              type="submit"
+              formAction={handleReservationAction}
+              disabled={!selectedTable}
+            >
               Book Table
             </Button>
             <Button

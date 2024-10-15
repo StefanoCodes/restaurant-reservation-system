@@ -1,11 +1,18 @@
 "use server";
-import { loginSchema, registerSchema } from "@/app/validations/index";
+import {
+  loginSchema,
+  registerSchema,
+  reservationSchema,
+} from "@/app/validations/index";
 import { db } from "@/db/db";
-import { Table, tablesTable, usersTable } from "@/db/schema";
-import { User } from "@/lib/types";
+import { reservationsTable, Table, tablesTable, usersTable } from "@/db/schema";
+import { ReservationDetails, User } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { BOOKING_DURATION } from "@/lib/data";
+import { formatDateForReservation, getEndTime } from "@/lib/utils";
 
 // Authentication Actions
 export async function registerUser(formData: FormData) {
@@ -150,6 +157,7 @@ export const getUserReservationDetails = async (userId: string) => {
       name: usersTable.name,
       email: usersTable.email,
       phoneNumber: usersTable.phoneNumber,
+      userId: usersTable.userId,
     })
     .from(usersTable)
     .where(eq(usersTable.userId, userId));
@@ -165,4 +173,54 @@ export const getTables = async (): Promise<Table[]> => {
     return [];
   }
   return tables;
+};
+export const createReservation = async (
+  formData: FormData,
+  reservationDetails: ReservationDetails
+) => {
+  // data received from client
+  const unvalidatedReservationData = {
+    name: formData.get("name"),
+    email: formData.get("email"),
+    phoneNumber: formData.get("phoneNumber"),
+    numberOfPeople: formData.get("numberOfPeople"),
+    date: reservationDetails.date,
+    time: reservationDetails.time,
+    tableId: reservationDetails.tableId,
+    userId: reservationDetails.userId,
+  };
+  console.log(unvalidatedReservationData);
+  //  passing data received from client to zod to ensure its the shape we want it in
+  const isReservationDataValid = reservationSchema.safeParse(
+    unvalidatedReservationData
+  );
+  // handling the errors / messages taht we would get back from zod if not successfull
+  if (!isReservationDataValid.success) {
+    return {
+      success: false,
+      error: isReservationDataValid.error.flatten().fieldErrors,
+    };
+  }
+  // prevent duplicate reservations
+
+  // prevent overlapping reseravtions
+
+  // insert reservation into database
+  const reservationEndTime = getEndTime(
+    reservationDetails.date,
+    BOOKING_DURATION
+  );
+  console.log(reservationEndTime);
+  // await db.insert(reservationsTable).values({
+  //   userId: user.id,
+  //   tableId: reservationDetails.tableId,
+  //   startTime: reservationDetails.date,
+  //   numberOfPeople: isReservationDataValid.data.numberOfPeople,
+  //   notes: isReservationDataValid.data.specialRequests,
+  // });
+
+  return {
+    success: true,
+    message: "Reservation created successfully",
+  };
 };
