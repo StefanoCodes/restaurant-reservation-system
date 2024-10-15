@@ -4,21 +4,42 @@ import { logout } from "./actions/actions";
 import { useToast } from "@/hooks/use-toast";
 import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
-export const LogoutSubmitButton = ({ className }: { className?: string }) => {
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import React, { useState } from "react";
+export const LogoutSubmitButton = React.forwardRef<
+  HTMLButtonElement,
+  {
+    className?: string;
+    onClick?: () => void;
+  }
+>((props, ref) => {
+  const { className, onClick } = props;
   const { pending } = useFormStatus();
   return (
     <Button
       type="submit"
       disabled={pending}
       variant="destructive"
-      className={cn(`cursor-pointer ${className}`)}
+      className={cn(`cursor-pointer`, className)}
+      onClick={onClick}
     >
       {pending ? "Logging out..." : "Log Out"}
     </Button>
   );
-};
-export default function LogoutButton({ className }: { className?: string }) {
+});
+LogoutSubmitButton.displayName = "LogoutSubmitButton";
+export default function LogoutButton() {
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
   const logoutAction = async () => {
     const response = await logout();
     if (response.success) {
@@ -36,8 +57,28 @@ export default function LogoutButton({ className }: { className?: string }) {
     }
   };
   return (
-    <form action={logoutAction}>
-      <LogoutSubmitButton className={className} />
-    </form>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>
+        <LogoutSubmitButton
+          className="bg-black hover:bg-black/80"
+          onClick={() => setOpen(true)}
+        />
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <form action={logoutAction}>
+            <LogoutSubmitButton />
+          </form>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

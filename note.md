@@ -1,0 +1,11 @@
+<!-- overlapping reservations -->
+
+# prevent overllaping reservations for the same table and also any time that could be in between the duration
+
+# the start time will be for example 7:00 by default the end time will be the start time + 2 hours so whenver we display the tables we want do a look up for that specific table and then check if the start time is between the open and close hours and then we want to check if the end time is between the open and close hours and if it is we want to return an error to the user
+
+<!-- notes -->
+
+# we want to add a notes section to the reservations table so the user can add any additional notes about the reservation / special requests
+
+# we also need to ensure that when a user books at 9pm they should be warned that they can only stay for 1 hour so that needs to be a condition to check before accepting the reservation

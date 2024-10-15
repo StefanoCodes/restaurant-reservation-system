@@ -44,12 +44,12 @@ export default async function MarketingPage() {
           <IsUserLoggedInButton />
           {!user?.id && <LoginButton />}
           {user?.id && (
-            <Link href="/reservations">
+            <Link href="/bookings">
               <Button
                 variant="outline"
                 className="bg-orange-500 text-white hover:text-white hover:bg-orange-600"
               >
-                View Reservations
+                View Bookings
               </Button>
             </Link>
           )}

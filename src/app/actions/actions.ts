@@ -1,8 +1,10 @@
 "use server";
 import { loginSchema, registerSchema } from "@/app/validations/index";
 import { db } from "@/db/db";
-import { usersTable } from "@/db/schema";
+import { Table, tablesTable, usersTable } from "@/db/schema";
+import { User } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 // Authentication Actions
@@ -132,3 +134,35 @@ export async function logout() {
     message: "User logged out successfully",
   };
 }
+export const getUserDetails = async (userId: string): Promise<User | null> => {
+  const userDetails = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.userId, userId));
+  if (!userDetails[0]) {
+    return null;
+  }
+  return userDetails[0];
+};
+export const getUserReservationDetails = async (userId: string) => {
+  const userDetails = await db
+    .select({
+      name: usersTable.name,
+      email: usersTable.email,
+      phoneNumber: usersTable.phoneNumber,
+    })
+    .from(usersTable)
+    .where(eq(usersTable.userId, userId));
+  if (!userDetails[0]) {
+    return null;
+  }
+  return userDetails[0];
+};
+
+export const getTables = async (): Promise<Table[]> => {
+  const tables = await db.select().from(tablesTable);
+  if (!tables[0]) {
+    return [];
+  }
+  return tables;
+};

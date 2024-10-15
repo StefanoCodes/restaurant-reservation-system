@@ -1,5 +1,5 @@
 {
-  "id": "9ffc50aa-1be3-4fae-b587-1ee7dc185cfb",
+  "id": "9ef8fb64-1e90-492a-8944-b8162602b800",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -46,6 +46,26 @@
           "primaryKey": false,
           "notNull": false,
           "default": "'pending'"
+        },
+        "number_of_people": {
+          "name": "number_of_people",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
         }
       },
       "indexes": {},
@@ -102,6 +122,14 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "table_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'available'"
         }
       },
       "indexes": {},
@@ -142,7 +170,7 @@
         },
         "phone_number": {
           "name": "phone_number",
-          "type": "varchar(10)",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -151,6 +179,13 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -190,6 +225,14 @@
       "values": [
         "user",
         "admin"
+      ]
+    },
+    "public.table_status": {
+      "name": "table_status",
+      "schema": "public",
+      "values": [
+        "available",
+        "unavailable"
       ]
     }
   },

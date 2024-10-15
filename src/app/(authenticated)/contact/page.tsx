@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Contact } from "lucide-react";
 import Image from "next/image";
 import { Suspense } from "react";
-import Loading from "../loading";
+import Loading from "../../loading";
 
 export default function Page() {
   return (
