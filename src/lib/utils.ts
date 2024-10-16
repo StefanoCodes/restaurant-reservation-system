@@ -15,14 +15,6 @@ export function calculateTimeSlots(open: number, close: number) {
   });
   return timeSlots;
 }
-export function formatDate(date: Date) {
-  const dateFormated = new Date(date);
-  return dateFormated.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-}
 
 export function formatDateForReservation(date: Date) {
   const dateFormated = date.toISOString().split("T")[0];
@@ -42,10 +34,9 @@ export function getEndTime(timeString: string, duration: number): string {
   return date.toTimeString().slice(0, 5);
 }
 export const formatDateToString = (
-  date: Date,
+  date: Date | string,
   options?: Intl.DateTimeFormatOptions
 ) => {
-  if (!date) return "Date not available";
   const dateFormated = new Date(date);
   return dateFormated.toLocaleDateString("en-US", {
     year: "numeric",

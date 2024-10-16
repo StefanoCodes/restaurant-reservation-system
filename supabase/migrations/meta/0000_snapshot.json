@@ -1,5 +1,5 @@
 {
-  "id": "9b570fe3-9884-412b-b13f-213b5a6c4a88",
+  "id": "0d2f0301-22ff-4eed-a5e6-9ff544a4f961",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -20,6 +20,12 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "reservation_date": {
+          "name": "reservation_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
         },
         "table_id": {
           "name": "table_id",

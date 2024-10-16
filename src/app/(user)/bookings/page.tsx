@@ -3,7 +3,7 @@ import Loading from "@/app/loading";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import BookingCard from "@/app/(authenticated)/book-table/components/booking-card";
+import BookingCard from "@/app/(user)/book-table/components/booking-card";
 import NoBookingsFound from "../book-table/components/no-bookings-found";
 
 export default async function Bookings() {

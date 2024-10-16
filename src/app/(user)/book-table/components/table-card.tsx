@@ -16,7 +16,7 @@ export default function TableCard({
         "bg-orange-500 w-[150px] h-[150px] transition-all duration-300 ease-in-out md:w-[250px] md:h-[250px] rounded-lg relative",
         table.id === selectedTable?.id
           ? "scale-105 bg-orange-600"
-          : "bg-blue-700",
+          : "bg-zinc-600",
         table.status === "unavailable" && "opacity-50 cursor-not-allowed"
       )}
       onClick={() => onClick(table.id === selectedTable?.id ? null : table)}

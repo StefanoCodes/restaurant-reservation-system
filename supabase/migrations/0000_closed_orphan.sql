@@ -19,6 +19,7 @@ END $$;
 CREATE TABLE IF NOT EXISTS "reservations" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" varchar(255),
+	"reservation_date" date NOT NULL,
 	"table_id" uuid,
 	"start_time" varchar(255) NOT NULL,
 	"end_time" varchar(255) NOT NULL,

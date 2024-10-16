@@ -11,10 +11,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OPEN_HOURS, CLOSE_HOURS } from "@/lib/data";
-import { calculateTimeSlots, cn, formatDateToString } from "@/lib/utils";
+import {
+  calculateTimeSlots,
+  cn,
+  formatDateForReservation,
+  formatDateToString,
+} from "@/lib/utils";
 import { UserReservationDetails } from "@/lib/types";
 import TablesContainer from "./tables-container";
-import { Table } from "@/db/schema";
+import { Table, User } from "@/db/schema";
 import { useState } from "react";
 import { PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
@@ -22,7 +27,8 @@ import { Popover, PopoverContent } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { createReservation } from "@/actions/actions";
 import { useToast } from "@/hooks/use-toast";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { sendEmailPendingConfirmation } from "@/actions/email";
 export default function BookingForm({
   user,
   tables,
@@ -39,19 +45,27 @@ export default function BookingForm({
   const router = useRouter();
   // handle the reservation action
   const handleReservationAction = async (formData: FormData) => {
+    console.log(date?.toISOString().split("T")[0]);
     const response = await createReservation(formData, {
-      date: date as Date,
+      reservationDate: formatDateForReservation(date as Date),
       time: time as string,
       tableId: selectedTable?.id as string,
       userId: user.userId as string,
     });
 
     if (response.success) {
+      router.push("/bookings");
       toast({
         title: "Reservation created successfully",
-        description: "Your reservation has been created successfully",
+        description:
+          "Your reservation has been created successfully check your email",
+        duration: 5000,
       });
-      router.push("/bookings");
+      sendEmailPendingConfirmation(
+        "stefanovidmarbusiness@gmail.com",
+        "Reservation Pending Confirmation",
+        response.reservationId as string
+      );
     } else {
       console.log(response.error);
       toast({
@@ -77,11 +91,14 @@ export default function BookingForm({
         </div>
         {/* FORM */}
         <div className="flex-[0.5]">
-          {!selectedTable && (
-            <div className="text-center text-sm md:text-base text-gray-500">
-              Please select a table
-            </div>
-          )}
+          <div
+            className={cn(
+              `text-center text-sm md:text-base text-gray-500 transition-all duration-300 opacity-0 invisible`,
+              !selectedTable && "opacity-100 visible"
+            )}
+          >
+            Please select a table
+          </div>
           <form
             className={cn(
               "flex flex-col gap-4 opacity-0 invisible transition-all duration-300 self-end",

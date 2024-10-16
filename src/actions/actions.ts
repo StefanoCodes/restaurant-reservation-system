@@ -12,8 +12,6 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { BOOKING_DURATION } from "@/lib/data";
 import { getEndTime } from "@/lib/utils";
-
-// Authentication Actions
 export async function registerUser(formData: FormData) {
   // retreiving form data
   const registrationData = {
@@ -140,6 +138,7 @@ export async function logout() {
     message: "User logged out successfully",
   };
 }
+// User Actions
 export const getUserDetails = async (userId: string): Promise<User | null> => {
   const userDetails = await db
     .select()
@@ -150,6 +149,7 @@ export const getUserDetails = async (userId: string): Promise<User | null> => {
   }
   return userDetails[0];
 };
+
 export const getUserReservationDetails = async (userId: string) => {
   const userDetails = await db
     .select({
@@ -165,6 +165,7 @@ export const getUserReservationDetails = async (userId: string) => {
   }
   return userDetails[0];
 };
+// Bookings Actions
 export const getBookings = async (
   userId: string
 ): Promise<ReservationCardProps[]> => {
@@ -174,6 +175,7 @@ export const getBookings = async (
       reservation: reservationsTable,
       table: tablesTable,
       user: usersTable,
+      reservationDate: reservationsTable.reservationDate,
     })
     .from(reservationsTable)
     .where(eq(reservationsTable.userId, userId))
@@ -184,6 +186,18 @@ export const getBookings = async (
   }
   return bookings as ReservationCardProps[];
 };
+export const getReservationById = async (reservationId: string) => {
+  const reservation = await db
+    .select()
+    .from(reservationsTable)
+    .where(eq(reservationsTable.id, reservationId))
+    .innerJoin(tablesTable, eq(reservationsTable.tableId, tablesTable.id))
+    .innerJoin(usersTable, eq(reservationsTable.userId, usersTable.userId));
+  if (!reservation[0]) {
+    return null;
+  }
+  return reservation[0];
+};
 export const getTables = async (): Promise<Table[]> => {
   const tables = await db.select().from(tablesTable);
   if (!tables[0]) {
@@ -191,6 +205,7 @@ export const getTables = async (): Promise<Table[]> => {
   }
   return tables;
 };
+
 export const createReservation = async (
   formData: FormData,
   reservationDetails: ReservationDetails
@@ -202,7 +217,7 @@ export const createReservation = async (
     phoneNumber: formData.get("phoneNumber"),
     numberOfPeople: formData.get("numberOfPeople"),
     specialRequests: formData.get("specialRequests"),
-    date: reservationDetails.date,
+    reservationDate: reservationDetails.reservationDate,
     time: reservationDetails.time,
     tableId: reservationDetails.tableId,
     userId: reservationDetails.userId,
@@ -222,19 +237,30 @@ export const createReservation = async (
 
   // prevent overlapping reseravtions
 
+  // Email Being Sent to the user
+
   // insert reservation into database
 
-  await db.insert(reservationsTable).values({
-    userId: reservationDetails.userId,
-    tableId: reservationDetails.tableId,
-    startTime: reservationDetails.time,
-    endTime: getEndTime(reservationDetails.time, BOOKING_DURATION),
-    numberOfPeople: isReservationDataValid.data.numberOfPeople,
-    notes: isReservationDataValid.data.specialRequests,
-  });
+  const insertReservation = await db
+    .insert(reservationsTable)
+    .values({
+      userId: isReservationDataValid.data.userId,
+      reservationDate: isReservationDataValid.data.reservationDate,
+      tableId: isReservationDataValid.data.tableId,
+      startTime: isReservationDataValid.data.time,
+      endTime: getEndTime(isReservationDataValid.data.time, BOOKING_DURATION),
+      numberOfPeople: isReservationDataValid.data.numberOfPeople,
+      notes: isReservationDataValid.data.specialRequests,
+    })
+    .returning({
+      reservationId: reservationsTable.id,
+    });
+  revalidatePath("/");
   revalidatePath("/book-table");
+  revalidatePath("/bookings");
   return {
     success: true,
     message: "Reservation created successfully",
+    reservationId: insertReservation[0].reservationId,
   };
 };

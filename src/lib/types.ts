@@ -14,7 +14,7 @@ export type UserReservationDetails = {
 };
 
 export type ReservationDetails = {
-  date: Date;
+  reservationDate: string;
   time: string;
   tableId: string;
   userId: string;
@@ -28,6 +28,7 @@ export type ReservationCardProps = {
     numberOfPeople: number;
     createdAt: Date;
     notes: string;
+    reservationDate: Date | string;
   };
   table: {
     name: string;

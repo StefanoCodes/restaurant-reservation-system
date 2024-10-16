@@ -17,3 +17,16 @@
 # once the admin approves the reservation we want to send another email to the user confirming the reservation and the details of the reservation
 
 # update the status of the reservation to "confirmed"
+
+# Pending Reservation Email sent upon creation
+
+includes
+reservation ID:#
+name,
+email,
+
+<!-- create admin table in the db with the admin login information -->
+
+# admins will only be able to see the admin pages not user pages
+
+admins can delete any reservation and see the reservation details

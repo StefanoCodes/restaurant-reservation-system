@@ -6,6 +6,7 @@ import {
   pgEnum,
   timestamp,
   text,
+  date,
 } from "drizzle-orm/pg-core";
 export const rolesEnum = pgEnum("roles", ["user", "admin"]);
 export const reservationStatusEnum = pgEnum("reservation_status", [
@@ -46,6 +47,7 @@ export const reservationsTable = pgTable("reservations", {
   userId: varchar("user_id", { length: 255 }).references(
     () => usersTable.userId
   ),
+  reservationDate: date("reservation_date").notNull(),
   tableId: uuid("table_id").references(() => tablesTable.id),
   startTime: varchar("start_time", {
     length: 255,

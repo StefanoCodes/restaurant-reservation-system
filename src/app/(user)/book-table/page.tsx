@@ -4,6 +4,26 @@ import BookingForm from "./components/booking-form";
 import { getTables, getUserReservationDetails } from "@/actions/actions";
 import { Suspense } from "react";
 import Loading from "../loading";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  keywords: ["restaurant", "reservation", "system", "book", "table"],
+  title: "Book a Table",
+  openGraph: {
+    description:
+      "This is a restaurant reservation system that allows you to book a table.",
+    images: [""],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Book a Table",
+    description:
+      "This is a restaurant reservation system that allows you to book a table.",
+    siteId: "",
+    creator: "@StefanoCodes",
+    creatorId: "",
+    images: [""],
+  },
+};
 // dont forget to add the functionality to check if a user has already booked a table for that day if so he cant book another table for that day
 async function BookingFormWrapper() {
   const { auth } = createClient();
