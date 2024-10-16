@@ -24,15 +24,14 @@ export function formatDate(date: Date) {
   });
 }
 
-
 export function formatDateForReservation(date: Date) {
   const dateFormated = date.toISOString().split("T")[0];
   return dateFormated;
 }
 
-export function getEndTime(timeString: string, duration:number): string {
+export function getEndTime(timeString: string, duration: number): string {
   // Create a Date object for today's date at the given time
-  const [hours, minutes] = timeString.split(':').map(Number);
+  const [hours, minutes] = timeString.split(":").map(Number);
   const date = new Date();
   date.setHours(hours, minutes, 0, 0);
 
@@ -42,7 +41,16 @@ export function getEndTime(timeString: string, duration:number): string {
   // Format the result back to HH:mm
   return date.toTimeString().slice(0, 5);
 }
-
-// Example usage:
-// const newTime = addTwoHours('16:00');
-// console.log(newTime); // Outputs: '18:00'
+export const formatDateToString = (
+  date: Date,
+  options?: Intl.DateTimeFormatOptions
+) => {
+  if (!date) return "Date not available";
+  const dateFormated = new Date(date);
+  return dateFormated.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    ...options,
+  });
+};

@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OPEN_HOURS, CLOSE_HOURS } from "@/lib/data";
-import { calculateTimeSlots, cn, formatDate } from "@/lib/utils";
+import { calculateTimeSlots, cn, formatDateToString } from "@/lib/utils";
 import { UserReservationDetails } from "@/lib/types";
 import TablesContainer from "./tables-container";
 import { Table } from "@/db/schema";
@@ -20,8 +20,9 @@ import { PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { createReservation } from "@/app/actions/actions";
+import { createReservation } from "@/actions/actions";
 import { useToast } from "@/hooks/use-toast";
+import { redirect, useRouter } from "next/navigation";
 export default function BookingForm({
   user,
   tables,
@@ -29,11 +30,14 @@ export default function BookingForm({
   user: UserReservationDetails;
   tables: Table[];
 }) {
+  // States
   const timeSlots = calculateTimeSlots(OPEN_HOURS, CLOSE_HOURS);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState<string | undefined>(undefined);
   const { toast } = useToast();
+  const router = useRouter();
+  // handle the reservation action
   const handleReservationAction = async (formData: FormData) => {
     const response = await createReservation(formData, {
       date: date as Date,
@@ -47,6 +51,7 @@ export default function BookingForm({
         title: "Reservation created successfully",
         description: "Your reservation has been created successfully",
       });
+      router.push("/bookings");
     } else {
       console.log(response.error);
       toast({
@@ -126,7 +131,7 @@ export default function BookingForm({
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? formatDate(date) : <span>Pick a date</span>}
+                    {date ? formatDateToString(date) : <span>Pick a date</span>}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">

@@ -3,16 +3,15 @@ import {
   loginSchema,
   registerSchema,
   reservationSchema,
-} from "@/app/validations/index";
+} from "@/validations/index";
 import { db } from "@/db/db";
 import { reservationsTable, Table, tablesTable, usersTable } from "@/db/schema";
-import { ReservationDetails, User } from "@/lib/types";
+import { ReservationCardProps, ReservationDetails, User } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { BOOKING_DURATION } from "@/lib/data";
-import { formatDateForReservation, getEndTime } from "@/lib/utils";
+import { getEndTime } from "@/lib/utils";
 
 // Authentication Actions
 export async function registerUser(formData: FormData) {
@@ -166,7 +165,9 @@ export const getUserReservationDetails = async (userId: string) => {
   }
   return userDetails[0];
 };
-export const getBookings = async (userId: string) => {
+export const getBookings = async (
+  userId: string
+): Promise<ReservationCardProps[]> => {
   // we will join the table and user tables to the reservations table to get the table name and the user name
   const bookings = await db
     .select({
@@ -178,11 +179,10 @@ export const getBookings = async (userId: string) => {
     .where(eq(reservationsTable.userId, userId))
     .innerJoin(tablesTable, eq(reservationsTable.tableId, tablesTable.id))
     .innerJoin(usersTable, eq(reservationsTable.userId, usersTable.userId));
-    console.table(bookings)
-  if (!bookings[0]) {
+  if (!bookings) {
     return [];
   }
-  return bookings;
+  return bookings as ReservationCardProps[];
 };
 export const getTables = async (): Promise<Table[]> => {
   const tables = await db.select().from(tablesTable);
@@ -201,12 +201,12 @@ export const createReservation = async (
     email: formData.get("email"),
     phoneNumber: formData.get("phoneNumber"),
     numberOfPeople: formData.get("numberOfPeople"),
+    specialRequests: formData.get("specialRequests"),
     date: reservationDetails.date,
     time: reservationDetails.time,
     tableId: reservationDetails.tableId,
     userId: reservationDetails.userId,
   };
-  console.log(unvalidatedReservationData);
   //  passing data received from client to zod to ensure its the shape we want it in
   const isReservationDataValid = reservationSchema.safeParse(
     unvalidatedReservationData

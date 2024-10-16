@@ -9,3 +9,11 @@
 # we want to add a notes section to the reservations table so the user can add any additional notes about the reservation / special requests
 
 # we also need to ensure that when a user books at 9pm they should be warned that they can only stay for 1 hour so that needs to be a condition to check before accepting the reservation
+
+<!-- After Reservation Created -->
+
+# an email confirming the table has been booked and awaiting the approval of the admins
+
+# once the admin approves the reservation we want to send another email to the user confirming the reservation and the details of the reservation
+
+# update the status of the reservation to "confirmed"

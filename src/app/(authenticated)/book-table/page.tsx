@@ -1,7 +1,7 @@
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
 import BookingForm from "./components/booking-form";
-import { getTables, getUserReservationDetails } from "@/app/actions/actions";
+import { getTables, getUserReservationDetails } from "@/actions/actions";
 import { Suspense } from "react";
 import Loading from "../loading";
 // dont forget to add the functionality to check if a user has already booked a table for that day if so he cant book another table for that day

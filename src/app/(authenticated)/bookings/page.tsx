@@ -1,20 +1,23 @@
-import { getBookings } from "@/app/actions/actions";
+import { getBookings } from "@/actions/actions";
 import Loading from "@/app/loading";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import BookingCard from "@/app/(authenticated)/book-table/components/booking-card"
+import BookingCard from "@/app/(authenticated)/book-table/components/booking-card";
 import NoBookingsFound from "../book-table/components/no-bookings-found";
 
 export default async function Bookings() {
-  const {auth} = createClient();
-  const { data: { user }, error } = await auth.getUser();
+  const { auth } = createClient();
+  const {
+    data: { user },
+    error,
+  } = await auth.getUser();
   if (error) {
     return <div>Error fetching user data: {error.message}</div>;
   }
   if (!user) redirect("/login");
 
-  const bookings = await getBookings(user.id).catch(error => {
+  const bookings = await getBookings(user.id).catch((error) => {
     console.error("Error fetching bookings:", error);
     return [];
   });
@@ -33,7 +36,6 @@ export default async function Bookings() {
                   key={reservation.id}
                   reservation={{
                     ...reservation,
-                    createdAt: reservation.createdAt?.toISOString() || null,
                   }}
                   table={table}
                   user={user}
