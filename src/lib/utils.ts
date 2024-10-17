@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { ZodError, ZodIssue } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -17,7 +18,7 @@ export function calculateTimeSlots(open: number, close: number) {
 }
 
 export function formatDateForReservation(date: Date) {
-  const dateFormated = date.toISOString().split("T")[0];
+  const dateFormated = date?.toISOString().split("T")[0];
   return dateFormated;
 }
 
@@ -45,3 +46,25 @@ export const formatDateToString = (
     ...options,
   });
 };
+
+export function formatZodErrors(error: ZodError) {
+  return error.errors.reduce((acc: Record<string, string>, error: ZodIssue) => {
+    acc[error.path[0]] = error.message;
+    return acc;
+  }, {});
+}
+// code
+// : 
+// "invalid_type"
+// expected
+// : 
+// "string"
+// message
+// : 
+// "Required"
+// path
+// : 
+// ['reservationDate']
+// received
+// : 
+// "undefined"

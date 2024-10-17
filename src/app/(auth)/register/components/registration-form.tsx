@@ -26,12 +26,12 @@ export default function RegistrationForm() {
   const createUserAction = async (formData: FormData) => {
     const response = await registerUser(formData);
     if (response.success) {
+      router.push("/book-table");
       toast({
         title: response.message,
         className: "border-none bg-green-600 text-white",
         duration: 2000,
       });
-      router.push("/book-table");
     } else {
       toast({
         title: response.message,

@@ -1,5 +1,5 @@
 import { inter } from "./layout";
-import { getUserDetails } from "@/actions/actions";
+import { getUserDetails } from "@/lib/data";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";

@@ -54,6 +54,7 @@ export default async function MarketingPage() {
             </Link>
           )}
           {user?.id && <LogoutButton />}
+          {/* {user?.id && <UpcomingReservations />} */}
         </div>
       </div>
     </Container>

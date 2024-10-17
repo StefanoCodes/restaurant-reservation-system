@@ -1,4 +1,4 @@
-import { getBookings } from "@/actions/actions";
+import { getBookings } from "@/lib/data";
 import Loading from "@/app/loading";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";

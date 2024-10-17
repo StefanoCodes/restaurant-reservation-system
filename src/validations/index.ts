@@ -40,9 +40,16 @@ export const reservationSchema = z.object({
   reservationDate: z.string().regex(/^(\d{4})-(\d{2})-(\d{2})$/, {
     message: "Date must be in YYYY-MM-DD format (e.g., 2024-01-01)",
   }),
-  numberOfPeople: z.coerce.number().int().positive().min(1, {
-    message: "Number of people must be at least 1",
-  }),
+  numberOfPeople: z.coerce
+    .number()
+    .int()
+    .positive()
+    .min(1, {
+      message: "Number of people must be at least 1",
+    })
+    .max(10, {
+      message: "Number of people must be at most 10",
+    }),
   specialRequests: z.string().optional(),
   tableId: z.string(),
   userId: z.string(),
