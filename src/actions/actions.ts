@@ -13,6 +13,8 @@ import { revalidatePath } from "next/cache";
 import { BOOKING_DURATION } from "@/utils/constants";
 import { formatZodErrors, getEndTime } from "@/lib/utils";
 import { sendEmailPendingConfirmation } from "./email";
+
+// AUTH
 export async function registerUser(formData: FormData) {
 	// retreiving form data
 	const registrationData = {
@@ -214,7 +216,8 @@ export const createReservation = async (
 			emailError: emailError.message,
 		};
 	}
-	revalidatePath("/bookings");
+	revalidatePath("/bookings", "page");
+	revalidatePath("/admin/bookings", "page");
 	return {
 		success: true,
 		message: "Reservation created successfully",

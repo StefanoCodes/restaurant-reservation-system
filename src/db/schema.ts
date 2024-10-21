@@ -35,7 +35,7 @@ export const tablesTable = pgTable("tables", {
 	id: uuid("id").primaryKey().defaultRandom(), // the id of the table
 	name: varchar("name", { length: 255 }).notNull(), // the name of the table exapmple T1, T2 etc
 	capacity: integer("capacity").notNull(), // how many people the table can seat
-	status: tableStatusEnum("status").default("available"),
+	status: tableStatusEnum("status").default("available").notNull(),
 });
 
 // RESERVATIONS TABLE
@@ -69,6 +69,8 @@ export const permissionsTable = pgTable("permissions", {
 	createdAt: timestamp("created_at").defaultNow(),
 });
 
-export type Table = typeof tablesTable.$inferSelect;
+export type Table = typeof tablesTable.$inferInsert;
+export type TableData = typeof tablesTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
+
 export type Permission = typeof permissionsTable.$inferSelect;

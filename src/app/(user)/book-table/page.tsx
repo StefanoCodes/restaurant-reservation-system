@@ -1,9 +1,9 @@
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
 import BookingForm from "./components/booking-form";
-import { getTables, getUserReservationDetails } from "@/lib/data";
+import { getTables, getUserReservationDetails, getUserRole } from "@/lib/data";
 import { Suspense } from "react";
-import Loading from "../loading";
+import Loading from "@/app/loading-spinner";
 import { Metadata } from "next";
 export const metadata: Metadata = {
 	keywords: ["restaurant", "reservation", "system", "book", "table"],
@@ -29,7 +29,8 @@ async function BookingFormWrapper() {
 	const { auth } = createClient();
 	const session = (await auth.getUser()).data.user;
 	if (!session) redirect("/login");
-
+	const userRole = await getUserRole(session.id);
+	if (userRole !== "user") redirect("/");
 	const userId = session.id;
 	const [user, tables] = await Promise.all([
 		getUserReservationDetails(userId),

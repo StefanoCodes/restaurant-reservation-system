@@ -1,5 +1,5 @@
 "use client";
-import { ROUTES } from "@/utils/constants";
+import { USER_ROUTES } from "@/utils/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -38,15 +38,14 @@ const NavLink = ({
 
 export function NavLinks({
 	setIsOpenMenu,
+	role,
 }: {
+	role: string;
 	setIsOpenMenu?: (isOpen: boolean) => void;
 }) {
 	return (
 		<div className="flex flex-col sm:flex-row mt-4 sm:mt-0 items-start sm:items-center gap-4">
-			{ROUTES.map((route) => {
-				// Only render the link if:
-				// 1. The route is not protected, or
-				// 2. The route is protected and the user is authenticated
+			{USER_ROUTES.map((route) => {
 				return (
 					<NavLink
 						key={route.name}
@@ -61,14 +60,14 @@ export function NavLinks({
 		</div>
 	);
 }
-export default function NavigationList() {
+export default function NavigationList({ role }: { role: string }) {
 	return (
 		<>
 			<div className="hidden sm:flex">
-				<NavLinks />
+				<NavLinks role={role} />
 			</div>
 			<div className="sm:hidden">
-				<MobileNavigation />
+				<MobileNavigation role={role} />
 			</div>
 		</>
 	);

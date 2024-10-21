@@ -23,10 +23,10 @@ export type ReservationCardProps = {
 		id: string;
 		startTime: string;
 		endTime: string;
-		status: string;
+		status: "pending" | "confirmed" | "cancelled" | null;
 		numberOfPeople: number;
-		createdAt: Date;
-		notes: string;
+		createdAt: Date | null;
+		notes: string | null;
 		reservationDate: Date | string;
 	};
 	table: {
@@ -49,4 +49,10 @@ export type FormErrors = {
 	numberOfPeople?: string;
 	specialRequests?: string;
 	// in future we add other possible errors we could get back from the server
+};
+
+export type RoutesLink = {
+	name: string;
+	path: string;
+	icon: React.ElementType;
 };

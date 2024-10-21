@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { NavLinks } from "./navigation-list";
 import { useState } from "react";
 
-export default function MobileNavigation() {
+export default function MobileNavigation({ role }: { role: string }) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -15,7 +15,7 @@ export default function MobileNavigation() {
         </Button>
       </SheetTrigger>
       <SheetContent>
-        <NavLinks setIsOpenMenu={setIsOpen} />
+        <NavLinks role={role} setIsOpenMenu={setIsOpen} />
       </SheetContent>
     </Sheet>
   );

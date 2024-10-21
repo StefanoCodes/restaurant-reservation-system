@@ -1,0 +1,31 @@
+import { getUserRole } from "@/lib/data";
+import { createClient } from "@/supabase/utils/server";
+import { redirect } from "next/navigation";
+import ManageBookings from "./_components/manage-bookings";
+import { Suspense } from "react";
+import Loading from "@/app/loading-spinner";
+
+export default async function ManageBookingsPage() {
+	const { auth } = createClient();
+	const {
+		data: { user },
+		error,
+	} = await auth.getUser();
+	if (error || !user) {
+		return redirect("/login");
+	}
+	const userRole = await getUserRole(user.id);
+	if (userRole !== "admin") redirect("/");
+
+	return (
+		<main className="w-full h-full">
+			<div className="flex flex-col justify-start items-start w-full h-full  min-h-screen gap-4">
+				<Suspense fallback={<Loading />}>
+					<div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+						<ManageBookings />
+					</div>
+				</Suspense>
+			</div>
+		</main>
+	);
+}

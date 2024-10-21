@@ -35,9 +35,10 @@ export function getEndTime(timeString: string, duration: number): string {
   return date.toTimeString().slice(0, 5);
 }
 export const formatDateToString = (
-  date: Date | string,
+  date: Date | string | null,
   options?: Intl.DateTimeFormatOptions
 ) => {
+  if (!date) return null;
   const dateFormated = new Date(date);
   return dateFormated.toLocaleDateString("en-US", {
     year: "numeric",

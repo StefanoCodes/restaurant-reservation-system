@@ -12,5 +12,5 @@ export default async function Page() {
 	const user = await getUserRole(session.id);
 	if (user !== "admin") redirect("/");
 
-	return <div>This is an Admin Page</div>;
+	return <div>Admin Area</div>;
 }

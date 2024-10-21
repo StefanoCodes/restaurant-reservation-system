@@ -16,7 +16,6 @@ import {
 	cn,
 	formatDateForReservation,
 	formatDateToString,
-	formatZodErrors,
 } from "@/lib/utils";
 import { FormErrors, UserReservationDetails } from "@/lib/types";
 import TablesContainer from "./tables-container";
@@ -100,44 +99,44 @@ export default function BookingForm({
 	const searchParamsData = useSearchParams();
 	const pathname = usePathname();
 	const router = useRouter();
-	useEffect(() => {
-		// Only reset if a table is deselected or a different table is selected
-		if (
-			!selectedTable ||
-			(prevSelectedTable && prevSelectedTable.id !== selectedTable.id)
-		) {
-			setErrors(null);
-			setDate(undefined);
-			setTime(undefined);
+	// useEffect(() => {
+	// 	// Only reset if a table is deselected or a different table is selected
+	// 	if (
+	// 		!selectedTable ||
+	// 		(prevSelectedTable && prevSelectedTable.id !== selectedTable.id)
+	// 	) {
+	// 		setErrors(null);
+	// 		setDate(undefined);
+	// 		setTime(undefined);
 
-			// Use a timeout to ensure this runs after the current render cycle
-			setTimeout(() => {
-				handleSearch("", "");
-			}, 0);
-		}
+	// 		// Use a timeout to ensure this runs after the current render cycle
+	// 		setTimeout(() => {
+	// 			// handleSearch("", "");
+	// 		}, 0);
+	// 	}
 
-		// Update the previous selected table reference
-		setPrevSelectedTable(selectedTable);
-	}, [selectedTable]);
+	// 	// Update the previous selected table reference
+	// 	setPrevSelectedTable(selectedTable);
+	// }, [selectedTable]);
+	// handle the search params
+	// const handleSearch = (date: string, time: string) => {
+	// 	const params = new URLSearchParams(searchParamsData);
 
-	const handleSearch = (date: string, time: string) => {
-		const params = new URLSearchParams(searchParamsData);
+	// 	if (date) {
+	// 		params.set("date", date);
+	// 	} else {
+	// 		params.delete("date");
+	// 	}
 
-		if (date) {
-			params.set("date", date);
-		} else {
-			params.delete("date");
-		}
+	// 	if (time) {
+	// 		params.set("time", time);
+	// 	} else {
+	// 		params.delete("time");
+	// 	}
 
-		if (time) {
-			params.set("time", time);
-		} else {
-			params.delete("time");
-		}
-
-		router.replace(`${pathname}?${params.toString()}`);
-		console.log(params);
-	};
+	// 	router.replace(`${pathname}?${params.toString()}`);
+	// 	console.log(params);
+	// };
 
 	// handle the reservation action
 	const handleReservationAction = async (formData: FormData) => {
@@ -283,7 +282,6 @@ export default function BookingForm({
 										onClickDay={(dateValue) => {
 											setDate(dateValue);
 											setIsCalendarOpen(false);
-											handleSearch(formatDateToString(dateValue), time || "");
 										}}
 									/>
 								</PopoverContent>
@@ -299,14 +297,14 @@ export default function BookingForm({
 								value={time}
 								onValueChange={(timeValue) => {
 									setTime(timeValue);
-									handleSearch(date ? formatDateToString(date) : "", timeValue);
+									// handleSearch(date ? formatDateToString(date) : "", timeValue);
 								}}
 								required
 							>
 								<SelectTrigger className="bg-white" id="time" name="time">
 									<SelectValue placeholder="Select a time">
 										{time ? time : "Select a time"}
-                  </SelectValue>
+									</SelectValue>
 								</SelectTrigger>
 								<SelectContent>
 									{timeSlots.map((slot) => (
@@ -349,7 +347,7 @@ export default function BookingForm({
 							onClick={(e) => {
 								e.preventDefault();
 								setSelectedTable(null);
-								handleSearch("", "");
+								// handleSearch("", "");
 							}}
 						>
 							Cancel
