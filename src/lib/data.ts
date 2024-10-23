@@ -13,11 +13,11 @@ import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 export async function isAuthenticatedUser() {
-	const { auth } = createClient();
+	const client = await createClient();
 	const {
 		data: { user },
 		error,
-	} = await auth.getUser();
+	} = await client.auth.getUser();
 
 	if (!user) {
 		redirect("/login");
@@ -90,11 +90,11 @@ export const getBookingsForUser = async (
 };
 
 export const getBookings = async (): Promise<ReservationCardProps[]> => {
-	const { auth } = createClient();
+	const client = await createClient();
 	const {
 		data: { user },
 		error,
-	} = await auth.getUser();
+	} = await client.auth.getUser();
 	if (error || !user) {
 		redirect("/login");
 	}

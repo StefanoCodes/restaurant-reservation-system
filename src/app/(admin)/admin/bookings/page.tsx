@@ -6,11 +6,11 @@ import { Suspense } from "react";
 import Loading from "@/app/loading-spinner";
 
 export default async function ManageBookingsPage() {
-	const { auth } = createClient();
+	const client = await createClient();
 	const {
 		data: { user },
 		error,
-	} = await auth.getUser();
+	} = await client.auth.getUser();
 	if (error || !user) {
 		return redirect("/login");
 	}

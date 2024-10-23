@@ -4,11 +4,11 @@ import { createClient } from "@/supabase/utils/server";
 import { getUserRole } from "@/lib/data";
 import { redirect } from "next/navigation";
 export default async function Page() {
-	const { auth } = createClient();
+	const client = await createClient();
 	const {
 		data: { user },
 		error,
-	} = await auth.getUser();
+	} = await client.auth.getUser();
 	if (error || !user) {
 		return <div>Error fetching user data: {error?.message}</div>;
 	}

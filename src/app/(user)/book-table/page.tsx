@@ -26,8 +26,8 @@ export const metadata: Metadata = {
 };
 // dont forget to add the functionality to check if a user has already booked a table for that day if so he cant book another table for that day
 async function BookingFormWrapper() {
-	const { auth } = createClient();
-	const session = (await auth.getUser()).data.user;
+	const client = await createClient();
+	const session = (await client.auth.getUser()).data.user;
 	if (!session) redirect("/login");
 	const userRole = await getUserRole(session.id);
 	if (userRole !== "user") redirect("/");

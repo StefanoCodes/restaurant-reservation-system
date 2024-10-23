@@ -6,11 +6,12 @@ import { Suspense } from "react";
 import ManageUsers from "./_components/manage-users";
 
 export default async function AdminUsersPage() {
-	const { auth } = createClient();
+	const { auth } = await createClient();
 	const {
 		data: { user },
 		error,
 	} = await auth.getUser();
+
 	if (error || !user) {
 		return <div>Error fetching user data: {error?.message}</div>;
 	}

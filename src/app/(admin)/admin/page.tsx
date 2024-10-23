@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 
 export default async function Page() {
 	// so we checking first that the user has a token and then we checking that the user is an admin
-	const { auth } = createClient();
-	const session = (await auth.getUser()).data.user;
+	const client = await createClient();
+	const session = (await client.auth.getUser()).data.user;
 	if (!session) redirect("/login");
 	const userDetails = await getUserDetails(session.id);
 	if (!userDetails) redirect("/");

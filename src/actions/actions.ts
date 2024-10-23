@@ -34,7 +34,7 @@ export async function registerUser(formData: FormData) {
 			error: isRegistrationDataValid.error.flatten().fieldErrors,
 		};
 	}
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	// authenticating the user and creating the user session
 	const { data, error } = await supabase.auth.signUp({
@@ -105,7 +105,7 @@ export async function loginUser(formData: FormData) {
 		};
 	}
 
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	const { data, error } = await supabase.auth.signInWithPassword({
 		email: isLoginDataValid.data.email,
@@ -135,7 +135,7 @@ export async function loginUser(formData: FormData) {
 }
 
 export async function logout() {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const { error } = await supabase.auth.signOut();
 	if (error) {
 		return {

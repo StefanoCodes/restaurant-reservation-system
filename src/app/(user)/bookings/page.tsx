@@ -6,11 +6,11 @@ import { Suspense } from "react";
 import UserBookings from "./_components/user-bookings";
 
 export default async function Bookings() {
-	const { auth } = createClient();
+	const client = await createClient();
 	const {
 		data: { user },
 		error,
-	} = await auth.getUser();
+	} = await client.auth.getUser();
 	if (error) {
 		return <div>Error fetching user data: {error.message}</div>;
 	}

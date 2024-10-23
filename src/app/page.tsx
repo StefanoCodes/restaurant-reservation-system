@@ -29,9 +29,9 @@ export const metadata: Metadata = {
 };
 
 export default async function MarketingPage() {
-	const { auth } = createClient();
+	const client = await createClient();
 	// reading the session
-	const user = (await auth.getUser()).data.user;
+	const user = (await client.auth.getUser()).data.user;
 	if (!user) redirect("/login");
 	// to check if the user is in the db
 	const userDetails = await getUserDetails(user.id);

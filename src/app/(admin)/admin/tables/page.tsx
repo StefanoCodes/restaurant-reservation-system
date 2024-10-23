@@ -7,11 +7,11 @@ import AddNewTable from "./_components/add-new-table";
 import TablesList from "./_components/manage-tables";
 
 export default async function AdminUsersPage() {
-	const { auth } = createClient();
+	const client = await createClient();
 	const {
 		data: { user },
 		error,
-	} = await auth.getUser();
+	} = await client.auth.getUser();
 	if (error || !user) {
 		return <div>Error fetching user data: {error?.message}</div>;
 	}

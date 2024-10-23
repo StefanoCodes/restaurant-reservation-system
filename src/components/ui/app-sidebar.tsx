@@ -18,7 +18,7 @@ export default function AppSidebar() {
 		<Sidebar>
 			<SidebarContent>
 				<SidebarGroup>
-					<SidebarGroupLabel>Restaurant</SidebarGroupLabel>
+					<SidebarGroupLabel>Restaurant | Admin Panel</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							{ADMIN_ROUTES.map((item: RoutesLink) => (
