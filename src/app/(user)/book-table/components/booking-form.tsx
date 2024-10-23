@@ -190,7 +190,7 @@ export default function BookingForm({
 					<TablesContainer
 						tables={tables}
 						onTableClick={setSelectedTable}
-						selectedTable={selectedTable}
+						selectedTable={selectedTable as Table | null}
 					/>
 				</div>
 				{/* FORM */}

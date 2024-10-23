@@ -6,7 +6,8 @@ import Link from "next/link";
 import NavigationList from "./navigation-list";
 
 export default async function Navigation() {
-	const { auth } = createClient();
+	const client = await createClient();
+	const { auth } = client;
 	const session = (await auth.getUser()).data.user;
 	if (!session) redirect("/login");
 	const userId = session.id;

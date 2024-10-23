@@ -61,7 +61,4 @@ export const addNewTableSchema = z.object({
 	capacity: z.coerce.number().int().positive().min(1, {
 		message: "Table capacity must be at least 1",
 	}),
-	status: z.enum(["available", "unavailable"], {
-		required_error: "Table status is required",
-	}),
 });

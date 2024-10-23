@@ -64,6 +64,7 @@ export default function AddNewTable() {
 								id="name"
 								name="tableName"
 								className="col-span-3"
+								placeholder="Enter the name of the table"
 							/>
 							<div className={"col-span-3"}>
 								{errors?.name && <p className="text-red-500">{errors?.name}</p>}
@@ -78,6 +79,7 @@ export default function AddNewTable() {
 								type="number"
 								name="tableCapacity"
 								className="col-span-3"
+								placeholder="Enter the capacity of the table"
 								onFocus={() => {
 									setErrors(undefined);
 								}}

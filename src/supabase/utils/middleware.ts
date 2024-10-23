@@ -1,6 +1,6 @@
+import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { getUserRole } from "@/lib/data"; // Adjust this import as needed
 
 export async function updateSession(request: NextRequest) {
 	let supabaseResponse = NextResponse.next({
@@ -47,20 +47,13 @@ export async function updateSession(request: NextRequest) {
 	}
 
 	// Check for admin routes
-	// if (request.nextUrl.pathname.startsWith("/admin")) {
-	// 	if (!user) {
-	// 		const url = request.nextUrl.clone();
-	// 		url.pathname = "/login";
-	// 		return NextResponse.redirect(url);
-	// 	}
-
-	// 	const userRole = await getUserRole(user.id);
-	// 	if (userRole !== "admin") {
-	// 		const url = request.nextUrl.clone();
-	// 		url.pathname = "/";
-	// 		return NextResponse.redirect(url);
-	// 	}
-	// }
+	if (request.nextUrl.pathname.startsWith("/admin")) {
+		if (!user) {
+			const url = request.nextUrl.clone();
+			url.pathname = "/login";
+			return NextResponse.redirect(url);
+		}
+	}
 
 	return supabaseResponse;
 }

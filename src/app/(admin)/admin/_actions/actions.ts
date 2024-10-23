@@ -53,7 +53,6 @@ export async function addNewTable(formData: FormData) {
 	const isValidTableData = addNewTableSchema.safeParse({
 		name,
 		capacity,
-		status: "available",
 	});
 
 	if (!isValidTableData.success) {
@@ -79,5 +78,79 @@ export async function addNewTable(formData: FormData) {
 	return {
 		success: true,
 		message: "Table added successfully",
+	};
+}
+
+// Deleting a table
+
+export async function deleteTable(tableId: string) {
+	const authorizedUser = await isAuthorizedUser();
+	if (!authorizedUser) return;
+	const { user, userInDb } = authorizedUser;
+	if (!user || !userInDb) return;
+	// if all checks went good we can delete the table
+
+	const deleteTableInDb = await db
+		.delete(tablesTable)
+		.where(eq(tablesTable.id, tableId));
+	if (!deleteTableInDb) {
+		return {
+			success: false,
+			message: "Failed to delete table",
+		};
+	}
+
+	revalidatePath("/admin/tables", "page");
+	revalidatePath("/tables", "page");
+	return {
+		success: true,
+		message: "Table deleted successfully",
+	};
+}
+
+// Editing a table data
+
+export async function editTableDataAction(formData: FormData, tableId: string) {
+	console.log(formData);
+	const authorizedUser = await isAuthorizedUser();
+	if (!authorizedUser) return;
+	const { user, userInDb } = authorizedUser;
+	if (!user || !userInDb) return;
+	// Get Form Data
+	const name = formData.get("tableName");
+
+	const capacity = formData.get("tableCapacity");
+	console.log(name, capacity);
+	const isValidTableData = addNewTableSchema.safeParse({
+		name,
+		capacity,
+	});
+
+	if (!isValidTableData.success) {
+		return {
+			success: false,
+			error: formatZodErrors(isValidTableData.error),
+		};
+	}
+
+	// Update Table Data in Database
+	const updateTableDataInDb = await db
+		.update(tablesTable)
+		.set({
+			name: isValidTableData.data.name,
+			capacity: isValidTableData.data.capacity,
+		})
+		.where(eq(tablesTable.id, tableId));
+	if (!updateTableDataInDb) {
+		return {
+			success: false,
+			message: "Failed to update table data",
+		};
+	}
+	revalidatePath("/admin/tables", "page");
+	revalidatePath("/tables", "page");
+	return {
+		success: true,
+		message: "Updated successfully",
 	};
 }

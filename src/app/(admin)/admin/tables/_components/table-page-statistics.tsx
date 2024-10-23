@@ -1,4 +1,4 @@
-import { TableData } from "@/db/schema";
+import { Table, TableData } from "@/db/schema";
 import StatisticsCard from "./statistic-card";
 import { LayoutGrid, Users } from "lucide-react";
 
@@ -7,6 +7,7 @@ export default function TablePageStatistics({
 }: {
 	tables: TableData[];
 }) {
+	console.log(tables.length);
 	const totalTables = tables.length;
 	const totalCapacity = tables.reduce((acc, table) => acc + table.capacity, 0);
 	return (

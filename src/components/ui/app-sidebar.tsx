@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/sidebar";
 import { RoutesLink } from "@/lib/types";
 import { ADMIN_ROUTES } from "@/utils/constants";
-import { LogOutIcon } from "lucide-react";
 export default function AppSidebar() {
 	return (
 		<Sidebar>

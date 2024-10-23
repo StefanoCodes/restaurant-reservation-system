@@ -9,7 +9,8 @@ import { eq, inArray } from "drizzle-orm";
 
 export async function getAllUsers() {
 	// first we protect this get request  for only admins
-	const { auth } = createClient();
+	const client = await createClient();
+	const { auth } = client;
 	// CHECKING FOR THE SESSION
 	const {
 		data: { user },
