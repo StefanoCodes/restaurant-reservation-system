@@ -22,7 +22,7 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { cn, formatDateToString } from "@/lib/utils";
-import { deleteUserReservation } from "../../_actions/actions";
+import { deleteUserReservationAction } from "../../_actions/actions";
 
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -36,7 +36,7 @@ export default function AdminReservationCard({
 	const { toast } = useToast();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const handleDeleteReservation = async (reservationId: string) => {
-		const reservationDeletedResponse = await deleteUserReservation(
+		const reservationDeletedResponse = await deleteUserReservationAction(
 			reservationId
 		);
 		if (reservationDeletedResponse?.success) {

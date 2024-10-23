@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import SubmitButton from "@/components/ui/submit-button";
 import { useState } from "react";
-import { deleteTable } from "../../_actions/actions";
+import { deleteTableAction } from "../../_actions/actions";
 import { useToast } from "@/hooks/use-toast";
 import { Trash2 } from "lucide-react";
 
@@ -20,7 +20,7 @@ export default function DeleteTableButton({ tableId }: { tableId: string }) {
 	const { toast } = useToast();
 
 	const handleDeleteTable = async () => {
-		const response = await deleteTable(tableId);
+		const response = await deleteTableAction(tableId);
 		if (response?.success) {
 			toast({
 				title: "Table deleted successfully",

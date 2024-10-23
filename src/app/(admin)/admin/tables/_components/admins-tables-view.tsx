@@ -4,6 +4,7 @@ import { Utensils, Users } from "lucide-react";
 import { Table, TableData } from "@/db/schema";
 import DeleteTableButton from "./delete-table-button";
 import EditTableButton from "./edit-table-information-btn";
+import ChangeTableStatus from "./change-table-status";
 
 const getStatusColor = (status: Table["status"]) => {
 	switch (status) {
@@ -33,6 +34,7 @@ export default function AdminTablesView({ tables }: { tables: TableData[] }) {
 								</Badge>
 								<DeleteTableButton tableId={table.id} />
 								<EditTableButton table={table} />
+								<ChangeTableStatus table={table} />
 							</div>
 						</div>
 					</CardHeader>

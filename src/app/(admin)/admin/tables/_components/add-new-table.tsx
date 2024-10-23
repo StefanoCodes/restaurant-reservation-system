@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addNewTable } from "../../_actions/actions";
+import { addNewTableAction } from "../../_actions/actions";
 import { useToast } from "@/hooks/use-toast";
 import SubmitButton from "@/components/ui/submit-button";
 
@@ -23,7 +23,7 @@ export default function AddNewTable() {
 	>();
 	const { toast } = useToast();
 	const handleAddNewTable = async (formData: FormData) => {
-		const addNewTableResponse = await addNewTable(formData);
+		const addNewTableResponse = await addNewTableAction(formData);
 
 		if (addNewTableResponse?.success) {
 			setOpen(false);

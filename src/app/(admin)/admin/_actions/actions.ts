@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 
 // Deleting a user Reservation + Sending an email to the user letting them know their reservation has been deleted
 
-export async function deleteUserReservation(reservationId: string) {
+export async function deleteUserReservationAction(reservationId: string) {
 	// we will make sure this is protected and authorized users only can trigger it
 	const authorizedUser = await isAuthorizedUser();
 	if (!authorizedUser) return;
@@ -41,7 +41,7 @@ export async function deleteUserReservation(reservationId: string) {
 
 // Adding a new table
 
-export async function addNewTable(formData: FormData) {
+export async function addNewTableAction(formData: FormData) {
 	const authorizedUser = await isAuthorizedUser();
 	if (!authorizedUser) return;
 	const { user, userInDb } = authorizedUser;
@@ -83,7 +83,7 @@ export async function addNewTable(formData: FormData) {
 
 // Deleting a table
 
-export async function deleteTable(tableId: string) {
+export async function deleteTableAction(tableId: string) {
 	const authorizedUser = await isAuthorizedUser();
 	if (!authorizedUser) return;
 	const { user, userInDb } = authorizedUser;
@@ -153,4 +153,10 @@ export async function editTableDataAction(formData: FormData, tableId: string) {
 		success: true,
 		message: "Updated successfully",
 	};
+}
+
+// Change Table Status to Available or Not Available
+
+export async function changeTableStatus(tableId: string) {
+
 }
