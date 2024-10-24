@@ -157,6 +157,39 @@ export async function editTableDataAction(formData: FormData, tableId: string) {
 
 // Change Table Status to Available or Not Available
 
-export async function changeTableStatus(tableId: string) {
+export async function changeTableStatusAction(tableId: string) {
+	const authorizedUser = await isAuthorizedUser();
+	if (!authorizedUser) return;
+	const { user, userInDb } = authorizedUser;
+	if (!user || !userInDb) return;
+	const changeTableStatusInDb = await db
+		.select()
+		.from(tablesTable)
+		.where(eq(tablesTable.id, tableId));
 
+	if (!changeTableStatusInDb) {
+		return {
+			success: false,
+			message: "Failed to change table status",
+		};
+	}
+	changeTableStatusInDb[0].status === "available"
+		? "not available"
+		: "available";
+	const updateTableStatusInDb = await db
+		.update(tablesTable)
+		.set({ status: changeTableStatusInDb[0].status })
+		.where(eq(tablesTable.id, tableId));
+	if (!updateTableStatusInDb) {
+		return {
+			success: false,
+			message: "Failed to change table status",
+		};
+	}
+	revalidatePath("/admin/tables", "page");
+	revalidatePath("/tables", "page");
+	return {
+		success: true,
+		message: "Table status changed successfully",
+	};
 }
