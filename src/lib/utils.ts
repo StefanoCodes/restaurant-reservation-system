@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ZodError, ZodIssue } from "zod";
-
+import { set } from "date-fns";
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
@@ -18,8 +18,9 @@ export function calculateTimeSlots(open: number, close: number) {
 }
 
 export function formatDateForReservation(date: Date) {
-	const dateFormated = date?.toISOString().split("T")[0];
-	return dateFormated;
+	const dateFormatedPlusOne = new Date(date);
+	dateFormatedPlusOne.setDate(dateFormatedPlusOne.getDate() + 1);
+	return dateFormatedPlusOne.toISOString().split("T")[0];
 }
 
 export function getEndTime(timeString: string, duration: number): string {
@@ -53,4 +54,23 @@ export function formatZodErrors(error: ZodError) {
 		acc[error.path[0]] = error.message;
 		return acc;
 	}, {});
+}
+
+export function formatTimeToDateString(date: Date, time: string) {
+	const [hours, minutes] = time.split(":").map(Number);
+
+	// Set hours and minutes on the provided date
+	return set(date, { hours, minutes, seconds: 0, milliseconds: 0 });
+}
+
+export function getUserLocale() {
+	return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+export function getLocalizedDateTime(date: Date = new Date()) {
+	const timeZone = getUserLocale();
+	const options: Intl.DateTimeFormatOptions = {
+		timeZone: timeZone,
+	};
+	return Intl.DateTimeFormat(undefined, options).format(date);
 }

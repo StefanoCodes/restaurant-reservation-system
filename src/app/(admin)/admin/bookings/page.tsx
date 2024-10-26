@@ -18,14 +18,12 @@ export default async function ManageBookingsPage() {
 	if (userRole !== "admin") redirect("/");
 
 	return (
-		<main className="w-full h-full">
-			<div className="flex flex-col justify-start items-start w-full h-full  min-h-screen gap-4">
-				<Suspense fallback={<Loading />}>
-					<div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-						<ManageBookings />
-					</div>
-				</Suspense>
-			</div>
-		</main>
+		<div className="flex flex-col justify-start items-start w-full h-full gap-4">
+			<Suspense fallback={<Loading />}>
+				<div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+					<ManageBookings />
+				</div>
+			</Suspense>
+		</div>
 	);
 }

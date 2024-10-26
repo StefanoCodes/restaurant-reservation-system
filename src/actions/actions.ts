@@ -5,15 +5,25 @@ import {
 	reservationSchema,
 } from "@/validations/index";
 import { db } from "@/db/db";
-import { permissionsTable, reservationsTable, usersTable } from "@/db/schema";
+import {
+	permissionsTable,
+	reservationFormCompletionStatusTable,
+	reservationsTable,
+	usersTable,
+} from "@/db/schema";
 import { ReservationDetails } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { BOOKING_DURATION } from "@/utils/constants";
-import { formatZodErrors, getEndTime } from "@/lib/utils";
+import { calculateTimeSlots, formatZodErrors, getEndTime } from "@/lib/utils";
 import { sendEmailPendingConfirmation } from "./email";
-
+import {
+	checkingTableAvailability,
+	getReservationsForDateSelected,
+	getUserRole,
+} from "@/lib/data";
+import { redirect } from "next/navigation";
+import { OPEN_HOURS, CLOSE_HOURS, BOOKING_DURATION } from "@/utils/constants";
 // AUTH
 export async function registerUser(formData: FormData) {
 	// retreiving form data
@@ -73,6 +83,9 @@ export async function registerUser(formData: FormData) {
 			await tx.insert(permissionsTable).values({
 				memberId: insertedUser.userId,
 				// by default the role is set to user so the only thing we need to do is to insert the memberID
+			});
+			await tx.insert(reservationFormCompletionStatusTable).values({
+				userId: insertedUser.userId,
 			});
 		});
 	} catch (error) {
@@ -143,8 +156,6 @@ export async function logout() {
 			message: error.message,
 		};
 	}
-
-	revalidatePath("/", "layout");
 	return {
 		success: true,
 		message: "User logged out successfully",
@@ -155,6 +166,27 @@ export const createReservation = async (
 	formData: FormData,
 	reservationDetails: ReservationDetails
 ) => {
+	// ensure the action is protectd
+	const supabase = await createClient();
+	const {
+		data: { user },
+		error,
+	} = await supabase.auth.getUser();
+	if (error) {
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
+	if (!user) redirect("/login");
+	const userRole = await getUserRole(user.id);
+	if (userRole !== "user") redirect("/");
+
+	const selectedTableReservations = await checkingTableAvailability(
+		reservationDetails.tableId,
+		new Date(reservationDetails.reservationDate)
+	);
+	console.log(selectedTableReservations);
 	// data received from client
 	const unvalidatedReservationData = {
 		name: formData.get("name"),

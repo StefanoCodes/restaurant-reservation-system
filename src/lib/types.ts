@@ -56,3 +56,9 @@ export type RoutesLink = {
 	path: string;
 	icon: React.ElementType;
 };
+
+export type StepOneFormDataErrors = {
+	date?: string;
+	time?: string;
+	numberOfPeople?: string;
+};

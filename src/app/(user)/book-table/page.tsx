@@ -1,10 +1,13 @@
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
-import BookingForm from "./components/booking-form";
-import { getTables, getUserReservationDetails, getUserRole } from "@/lib/data";
-import { Suspense } from "react";
-import Loading from "@/app/loading-spinner";
+import { getUserDetails, getUserRole } from "@/lib/data";
 import { Metadata } from "next";
+import StepOneForm from "./_components/step-one";
+import {
+	getUserFormCompletionStatus,
+	resetUserFormCompletionStatus,
+} from "./actions";
+import ProgressBar from "./_components/progress-bar";
 export const metadata: Metadata = {
 	keywords: ["restaurant", "reservation", "system", "book", "table"],
 	title: "Book a Table",
@@ -24,34 +27,30 @@ export const metadata: Metadata = {
 		images: [""],
 	},
 };
-// dont forget to add the functionality to check if a user has already booked a table for that day if so he cant book another table for that day
-async function BookingFormWrapper() {
-	const client = await createClient();
-	const session = (await client.auth.getUser()).data.user;
-	if (!session) redirect("/login");
-	const userRole = await getUserRole(session.id);
-	if (userRole !== "user") redirect("/");
-	const userId = session.id;
-	const [user, tables] = await Promise.all([
-		getUserReservationDetails(userId),
-		getTables(),
-	]);
 
-	if (!user) {
-		// Handle the case when user details are not found
-		return <div>User details not found. Please try again later.</div>;
-	}
-
-	return <BookingForm user={user} tables={tables} />;
-}
 export default async function BookTablePage() {
+	const { auth } = await createClient();
+	const user = (await auth.getUser()).data.user;
+	console.log(user);
+	if (!user) redirect("/login");
+	const userInDb = await getUserDetails(user.id);
+	if (!userInDb) redirect("/login");
+	const userRole = await getUserRole(user.id);
+	if (userRole !== "user") redirect("/");
+	const userFormCompletionStatus = await getUserFormCompletionStatus(
+		userInDb.userId
+	);
+	if (userFormCompletionStatus?.stepOne) {
+		// we want to reset the form completion status
+		// the values will be shown by default in the user inputs
+		await resetUserFormCompletionStatus(userInDb.userId, "one");
+	}
 	return (
-		<main>
-			<section className="max-w-7xl flex flex-col gap-4 mx-auto py-8 px-10 md:px-4 text-center md:text-left">
-				<Suspense fallback={<Loading />}>
-					<BookingFormWrapper />
-				</Suspense>
-			</section>
-		</main>
+		<div className="flex flex-col items-center justify-center gap-4">
+			<ProgressBar />
+			<div className="bg-gray-300 rounded-lg p-4 w-full h-[31.25rem]">
+				<StepOneForm userId={user.id} />
+			</div>
+		</div>
 	);
 }

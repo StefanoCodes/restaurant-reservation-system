@@ -19,15 +19,17 @@ import {
 } from "@/lib/utils";
 import { FormErrors, UserReservationDetails } from "@/lib/types";
 import TablesContainer from "./tables-container";
-import { Table, User } from "@/db/schema";
-import { useEffect, useState } from "react";
+import { Table } from "@/db/schema";
+import { RefObject, useRef, useState } from "react";
 import { PopoverTrigger } from "@/components/ui/popover";
 import { Popover, PopoverContent } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { createReservation } from "@/actions/actions";
+import {
+
+	createReservation,
+} from "@/actions/actions";
 import { useToast } from "@/hooks/use-toast";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-// import { sendEmailPendingConfirmation } from "@/actions/email";
+import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
 import ButtonPendingLoader from "@/app/button-pending-loader";
 import Calendar from "react-calendar";
@@ -49,105 +51,37 @@ function SubmitFormButton({ selectedTable }: { selectedTable: Table | null }) {
 		</Button>
 	);
 }
+
 export default function BookingForm({
 	user,
 	tables,
-	searchParams,
 }: {
 	user: UserReservationDetails;
 	tables: Table[];
-	searchParams?: { date: string; time: string };
 }) {
-	// useEffect(() => {
-	//   async function checkAvailability() {
-	//     if (searchParams?.date && searchParams?.time) {
-	//       const userHasOverlap = await checkUserOverlap(user.userId, searchParams.date, searchParams.time);
-	//       const availableTables = await checkTableAvailability(tables, searchParams.date, searchParams.time);
-
-	//       setIsAvailable(!userHasOverlap && availableTables.length > 0);
-	//       setAvailableTables(availableTables);
-
-	//       if (userHasOverlap) {
-	//         toast({
-	//           title: "Booking Conflict",
-	//           description: "You already have a reservation at this time.",
-	//           variant: "destructive",
-	//         });
-	//       } else if (availableTables.length === 0) {
-	//         toast({
-	//           title: "No Tables Available",
-	//           description: "All tables are booked for this time slot.",
-	//           variant: "destructive",
-	//         });
-	//       }
-	//     }
-	//   }
-
-	//   checkAvailability();
-	// }, [searchParams, user.userId, tables]);
-	// States
 	const timeSlots = calculateTimeSlots(OPEN_HOURS, CLOSE_HOURS);
 	const [selectedTable, setSelectedTable] = useState<Table | null>(null);
 	const [date, setDate] = useState<Date | undefined>(undefined);
 	const [time, setTime] = useState<string | undefined>(undefined);
 	const [errors, setErrors] = useState<FormErrors | null>(null);
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-	const [prevSelectedTable, setPrevSelectedTable] = useState<Table | null>(
-		null
-	);
 	const { toast } = useToast();
-	const searchParamsData = useSearchParams();
-	const pathname = usePathname();
 	const router = useRouter();
-	// useEffect(() => {
-	// 	// Only reset if a table is deselected or a different table is selected
-	// 	if (
-	// 		!selectedTable ||
-	// 		(prevSelectedTable && prevSelectedTable.id !== selectedTable.id)
-	// 	) {
-	// 		setErrors(null);
-	// 		setDate(undefined);
-	// 		setTime(undefined);
-
-	// 		// Use a timeout to ensure this runs after the current render cycle
-	// 		setTimeout(() => {
-	// 			// handleSearch("", "");
-	// 		}, 0);
-	// 	}
-
-	// 	// Update the previous selected table reference
-	// 	setPrevSelectedTable(selectedTable);
-	// }, [selectedTable]);
-	// handle the search params
-	// const handleSearch = (date: string, time: string) => {
-	// 	const params = new URLSearchParams(searchParamsData);
-
-	// 	if (date) {
-	// 		params.set("date", date);
-	// 	} else {
-	// 		params.delete("date");
-	// 	}
-
-	// 	if (time) {
-	// 		params.set("time", time);
-	// 	} else {
-	// 		params.delete("time");
-	// 	}
-
-	// 	router.replace(`${pathname}?${params.toString()}`);
-	// 	console.log(params);
-	// };
 
 	// handle the reservation action
 	const handleReservationAction = async (formData: FormData) => {
+		// before creation of the resrvation we need to ensure to check for overlapps and availability
 		const response = await createReservation(formData, {
 			reservationDate: formatDateForReservation(date as Date),
 			time: time as string,
 			tableId: selectedTable?.id as string,
 			userId: user.userId as string,
 		});
-
 		if (response.success) {
+			// to avoid the user to book the same table again we need to reset the form and double book by accident
+			setSelectedTable(null);
+			setDate(undefined);
+			setTime(undefined);
 			router.push("/bookings");
 			toast({
 				title: "Reservation created successfully",
@@ -157,8 +91,7 @@ export default function BookingForm({
 			});
 		} else {
 			if (response.error) {
-				console.log(response.error);
-				setErrors(response.error);
+				setErrors(response.error as FormErrors);
 				toast({
 					title: "Error",
 					description: "Data inserted is not valid",
@@ -297,7 +230,6 @@ export default function BookingForm({
 								value={time}
 								onValueChange={(timeValue) => {
 									setTime(timeValue);
-									// handleSearch(date ? formatDateToString(date) : "", timeValue);
 								}}
 								required
 							>
@@ -307,11 +239,18 @@ export default function BookingForm({
 									</SelectValue>
 								</SelectTrigger>
 								<SelectContent>
-									{timeSlots.map((slot) => (
-										<SelectItem key={slot} value={slot}>
-											{slot}
+									{/* at the moment we are rendering all the time slots without checking for availabity  */}
+									{date ? (
+										timeSlots.map((slot) => (
+											<SelectItem key={slot} value={slot}>
+												{slot}
+											</SelectItem>
+										))
+									) : (
+										<SelectItem disabled value="disabled">
+											Select A Date First Please
 										</SelectItem>
-									))}
+									)}
 								</SelectContent>
 							</Select>
 							{errors?.time && <p className="text-red-500">{errors.time}</p>}

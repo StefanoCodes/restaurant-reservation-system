@@ -1,6 +1,6 @@
 import "server-only";
 import { db } from "@/db/db";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import {
 	permissionsTable,
 	reservationsTable,
@@ -11,14 +11,17 @@ import {
 import { ReservationCardProps, User } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { formatDateToString } from "./utils";
+import { BOOKING_DURATION, CLOSE_HOURS, OPEN_HOURS } from "@/utils/constants";
 export async function isAuthenticatedUser() {
 	const client = await createClient();
 	const {
 		data: { user },
 		error,
 	} = await client.auth.getUser();
-
+	if (error) {
+		throw new Error(error.message);
+	}
 	if (!user) {
 		redirect("/login");
 	}
@@ -26,10 +29,6 @@ export async function isAuthenticatedUser() {
 	const userInDb = await getUserDetails(user.id);
 	if (!userInDb) {
 		throw new Error("User not found");
-	}
-
-	if (error) {
-		throw new Error(error.message);
 	}
 
 	return { user, userInDb };
@@ -151,6 +150,124 @@ export const getUserRole = async (userId: string) => {
 	}
 	return user[0].role;
 };
+
+export const getReservationsForDateSelected = async (
+	tableId: string,
+	date: Date
+) => {
+	const reservations = await db
+		.select({
+			reservationDate: reservationsTable.reservationDate,
+			startTime: reservationsTable.startTime,
+			endTime: reservationsTable.endTime,
+		})
+		.from(reservationsTable)
+		.where(
+			and(
+				eq(reservationsTable.tableId, tableId),
+				eq(reservationsTable.reservationDate, date.toDateString())
+			)
+		);
+	if (!reservations[0]) {
+		return [];
+	}
+	return reservations;
+};
+
+export const checkingTableAvailability = async (
+	tableId: string,
+	date: Date
+) => {
+	// first ensure the action is protected
+	const supabase = await createClient();
+	const {
+		data: { user },
+		error,
+	} = await supabase.auth.getUser();
+	if (error) {
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
+	if (!user) redirect("/login");
+	const userRole = await getUserRole(user.id);
+	if (userRole !== "user") redirect("/");
+	// Get reservations for the selected date and table
+	const selectedTableReservations = await getReservationsForDateSelected(
+		tableId,
+		date
+	);
+
+	// Generate all possible time slots
+	const allTimeSlots = generateTimeSlots(
+		OPEN_HOURS.toString(),
+		CLOSE_HOURS.toString(),
+		BOOKING_DURATION
+	);
+
+	// Filter out the occupied time slots
+	const availableTimeSlots = allTimeSlots.filter((timeSlot) => {
+		const slotStart = new Date(`2000-01-01T${timeSlot}`);
+		const slotEnd = new Date(slotStart.getTime() + BOOKING_DURATION * 60000);
+
+		return !selectedTableReservations.some((reservation) => {
+			const reservationStart = new Date(`2000-01-01T${reservation.startTime}`);
+			const reservationEnd = new Date(`2000-01-01T${reservation.endTime}`);
+
+			return (
+				(slotStart >= reservationStart && slotStart < reservationEnd) ||
+				(slotEnd > reservationStart && slotEnd <= reservationEnd) ||
+				(slotStart <= reservationStart && slotEnd >= reservationEnd)
+			);
+		});
+	});
+
+	console.log("Available time slots:", availableTimeSlots);
+	return {
+		success: true,
+		availableTimeSlots,
+	};
+};
+
+// Update the isOverlapping function for more precise checks
+function generateTimeSlots(
+	openTime: string,
+	closeTime: string,
+	duration: number
+): string[] {
+	const slots: string[] = [];
+	let currentTime = new Date(`2000-01-01T${openTime}`);
+	const endTime = new Date(`2000-01-01T${closeTime}`);
+
+	while (currentTime < endTime) {
+		slots.push(currentTime.toTimeString().slice(0, 5));
+		currentTime.setMinutes(currentTime.getMinutes() + duration);
+	}
+
+	return slots;
+}
+function isOverlapping(
+	timeSlot: string,
+	startTime: string,
+	endTime: string
+): boolean {
+	const slot = new Date(`2000-01-01T${timeSlot}`);
+	const start = new Date(`2000-01-01T${startTime}`);
+	const end = new Date(`2000-01-01T${endTime}`);
+
+	return slot >= start && slot < end;
+}
+
+export async function getMaxCapacity() {
+	const maxNumberOfPeople = await db
+		.select({
+			capacity: tablesTable.capacity,
+		})
+		.from(tablesTable)
+		.orderBy(desc(tablesTable.capacity));
+	return maxNumberOfPeople[0].capacity;
+}
 
 // BOOKING CHECKS
 

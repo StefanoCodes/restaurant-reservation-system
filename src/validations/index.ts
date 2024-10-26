@@ -1,3 +1,4 @@
+import { getMaxCapacity } from "@/lib/data";
 import { z } from "zod";
 
 export const registerSchema = z.object({
@@ -62,3 +63,25 @@ export const addNewTableSchema = z.object({
 		message: "Table capacity must be at least 1",
 	}),
 });
+
+export const createBookTableSchema = async () => {
+	const maxCapacity = await getMaxCapacity();
+	return z.object({
+		date: z.string({
+			message: "Date is required",
+		}),
+		time: z.string({
+			message: "Time is required",
+		}),
+		numberOfPeople: z.coerce
+			.number()
+			.int()
+			.positive()
+			.min(1, {
+				message: "Number of people must be at least 1",
+			})
+			.max(maxCapacity, {
+				message: `Number of people must be at most ${maxCapacity}`,
+			}),
+	});
+};

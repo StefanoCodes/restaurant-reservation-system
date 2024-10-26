@@ -7,6 +7,7 @@ import {
 	timestamp,
 	text,
 	date,
+	boolean,
 } from "drizzle-orm/pg-core";
 export const rolesEnum = pgEnum("roles", ["user", "admin"]);
 export const reservationStatusEnum = pgEnum("reservation_status", [
@@ -58,6 +59,23 @@ export const reservationsTable = pgTable("reservations", {
 	createdAt: timestamp("created_at").defaultNow(),
 	notes: text("notes").default(""),
 });
+
+// Reservation Multi Step Form Completion Status for Each Step
+
+export const reservationFormCompletionStatusTable = pgTable(
+	"reservation_form_completion_status",
+	{
+		id: uuid("id").primaryKey().defaultRandom(),
+		userId: varchar("user_id", { length: 255 }).references(
+			() => usersTable.userId
+		),
+		stepOne: boolean("step_one").default(false),
+		stepTwo: boolean("step_two").default(false),
+		stepThree: boolean("step_three").default(false),
+	}
+);
+
+
 // Permissions TABLE
 
 export const permissionsTable = pgTable("permissions", {
@@ -72,5 +90,7 @@ export const permissionsTable = pgTable("permissions", {
 export type Table = typeof tablesTable.$inferInsert;
 export type TableData = typeof tablesTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
-
 export type Permission = typeof permissionsTable.$inferSelect;
+export type ReservationFormCompletionStatus =
+	typeof reservationFormCompletionStatusTable.$inferSelect;
+

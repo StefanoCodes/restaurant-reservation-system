@@ -23,6 +23,14 @@ CREATE TABLE IF NOT EXISTS "permissions" (
 	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "reservation_form_completion_status" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" varchar(255),
+	"step_one" boolean DEFAULT false,
+	"step_two" boolean DEFAULT false,
+	"step_three" boolean DEFAULT false
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "reservations" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" varchar(255),
@@ -40,7 +48,7 @@ CREATE TABLE IF NOT EXISTS "tables" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"capacity" integer NOT NULL,
-	"status" "table_status" DEFAULT 'available'
+	"status" "table_status" DEFAULT 'available' NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
@@ -56,6 +64,12 @@ CREATE TABLE IF NOT EXISTS "users" (
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "permissions" ADD CONSTRAINT "permissions_member_id_users_user_id_fk" FOREIGN KEY ("member_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reservation_form_completion_status" ADD CONSTRAINT "reservation_form_completion_status_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

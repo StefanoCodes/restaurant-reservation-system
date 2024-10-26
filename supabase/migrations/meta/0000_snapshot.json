@@ -1,5 +1,5 @@
 {
-  "id": "06eda9e3-0e27-4c40-89be-a8982307ea4b",
+  "id": "fa7f03b7-8df1-4a50-b433-39a8c4a1ea0c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -45,6 +45,64 @@
           "tableTo": "users",
           "columnsFrom": [
             "member_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.reservation_form_completion_status": {
+      "name": "reservation_form_completion_status",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "step_one": {
+          "name": "step_one",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "step_two": {
+          "name": "step_two",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "step_three": {
+          "name": "step_three",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "reservation_form_completion_status_user_id_users_user_id_fk": {
+          "name": "reservation_form_completion_status_user_id_users_user_id_fk",
+          "tableFrom": "reservation_form_completion_status",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
           ],
           "columnsTo": [
             "user_id"
@@ -186,7 +244,7 @@
           "type": "table_status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "'available'"
         }
       },

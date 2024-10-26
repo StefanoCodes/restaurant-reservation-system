@@ -19,14 +19,12 @@ export default async function AdminUsersPage() {
 	if (userRole !== "admin") redirect("/");
 
 	return (
-		<main className="w-full h-full">
-			<div className="flex flex-col justify-start items-start w-full h-full gap-4">
-				<Suspense fallback={<Loading />}>
-					<div className="w-full">
-						<ManageUsers />
-					</div>
-				</Suspense>
-			</div>
-		</main>
+		<div className="flex flex-col justify-start items-start w-full h-full gap-4">
+			<Suspense fallback={<Loading />}>
+				<div className="w-full">
+					<ManageUsers />
+				</div>
+			</Suspense>
+		</div>
 	);
 }

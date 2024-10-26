@@ -1,4 +1,3 @@
-import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -34,25 +33,17 @@ export async function updateSession(request: NextRequest) {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	// Check for authentication on protected routes
+	if (user) return;
+
 	if (
 		!user &&
-		!request.nextUrl.pathname.startsWith("/register") &&
 		!request.nextUrl.pathname.startsWith("/login") &&
-		request.nextUrl.pathname !== "/"
+		!request.nextUrl.pathname.startsWith("/register")
 	) {
+		// no user, potentially respond by redirecting the user to the login page
 		const url = request.nextUrl.clone();
-		url.pathname = "/login";
+		url.pathname = "/book-table";
 		return NextResponse.redirect(url);
-	}
-
-	// Check for admin routes
-	if (request.nextUrl.pathname.startsWith("/admin")) {
-		if (!user) {
-			const url = request.nextUrl.clone();
-			url.pathname = "/login";
-			return NextResponse.redirect(url);
-		}
 	}
 
 	return supabaseResponse;

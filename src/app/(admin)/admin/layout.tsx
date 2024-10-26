@@ -1,11 +1,6 @@
-import {
-	SidebarInset,
-	SidebarProvider,
-	SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/ui/app-sidebar";
-import { Button } from "@/components/ui/button";
-import { HamIcon, MenuIcon } from "lucide-react";
+import Container from "@/app/Container";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
@@ -16,8 +11,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 					<SidebarTrigger />
 				</div>
 
-				<div className="flex-grow  p-6 md:overflow-y-auto md:p-12 w-full">
-					{children}
+				<div className="flex-grow overflow-y-auto">
+					<Container>{children}</Container>
 				</div>
 			</div>
 		</SidebarProvider>

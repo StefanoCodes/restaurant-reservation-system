@@ -1,5 +1,5 @@
 import { Table } from "@/db/schema";
-import TableCard from "@/app/(user)/book-table/components/table-card";
+import TableCard from "@/app/(user)/book-table/_components/table-card";
 export default function TablesContainer({
 	tables,
 	onTableClick,
