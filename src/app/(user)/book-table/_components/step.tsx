@@ -26,7 +26,7 @@ const Step = ({ idx, step }: { idx: number; step: (typeof steps)[0] }) => {
 		<>
 			<div key={idx} className="flex flex-col items-center p-2">
 				<Link
-					prefetch={false}
+					prefetch
 					className={cn(
 						`w-10 h-10 flex items-center justify-center rounded-full text-white`,
 						index < currentStep ? "bg-orange-500" : "bg-gray-300"

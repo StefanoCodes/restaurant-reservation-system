@@ -74,3 +74,9 @@ export function getLocalizedDateTime(date: Date = new Date()) {
 	};
 	return Intl.DateTimeFormat(undefined, options).format(date);
 }
+
+export function formatTableName(name: string) {
+	const tableSlug = name.slice(0, 1);
+	const tableNumber = name.slice(name.length - 1);
+	return `${tableSlug}${tableNumber}`;
+}

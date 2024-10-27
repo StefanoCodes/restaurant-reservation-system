@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
 import SubmitButton from "@/components/ui/submit-button";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export default function StepOneForm({ userId }: { userId: string }) {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -35,6 +36,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 	);
 	const timeSlots = calculateTimeSlots(OPEN_HOURS, CLOSE_HOURS);
 	const router = useRouter();
+	const { toast } = useToast();
 	const handleStepOne = async (formData: FormData) => {
 		const numberOfPeople = formData.get("numberOfPeople");
 		if (
@@ -56,7 +58,12 @@ export default function StepOneForm({ userId }: { userId: string }) {
 		if (!response.success) {
 			setErrors(response?.errors);
 		} else {
+
 			router.push("/book-table/availability");
+			toast({
+				title: "Date selected successfully",
+				description: response.message,
+			});
 		}
 	};
 	return (

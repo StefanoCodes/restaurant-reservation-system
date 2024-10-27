@@ -75,7 +75,6 @@ export const reservationFormCompletionStatusTable = pgTable(
 	}
 );
 
-
 // Permissions TABLE
 
 export const permissionsTable = pgTable("permissions", {
@@ -87,10 +86,9 @@ export const permissionsTable = pgTable("permissions", {
 	createdAt: timestamp("created_at").defaultNow(),
 });
 
-export type Table = typeof tablesTable.$inferInsert;
+export type Table = typeof tablesTable.$inferSelect;
 export type TableData = typeof tablesTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
 export type Permission = typeof permissionsTable.$inferSelect;
 export type ReservationFormCompletionStatus =
 	typeof reservationFormCompletionStatusTable.$inferSelect;
-

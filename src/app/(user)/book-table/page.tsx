@@ -31,11 +31,10 @@ export const metadata: Metadata = {
 export default async function BookTablePage() {
 	const { auth } = await createClient();
 	const user = (await auth.getUser()).data.user;
-	console.log(user);
 	if (!user) redirect("/login");
 	const userInDb = await getUserDetails(user.id);
 	if (!userInDb) redirect("/login");
-	const userRole = await getUserRole(user.id);
+	const userRole = await getUserRole(userInDb.userId);
 	if (userRole !== "user") redirect("/");
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
@@ -48,7 +47,7 @@ export default async function BookTablePage() {
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
 			<ProgressBar />
-			<div className="bg-gray-300 rounded-lg p-4 w-full h-[31.25rem]">
+			<div className="bg-gray-300 rounded-lg p-4 w-full">
 				<StepOneForm userId={user.id} />
 			</div>
 		</div>

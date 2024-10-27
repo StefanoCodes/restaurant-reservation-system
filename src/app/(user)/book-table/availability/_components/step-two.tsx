@@ -1,15 +1,13 @@
-'use client';
-import { Table } from "@/db/schema";
-import { useEffect, useState } from "react";
-
-export default function StepTwo({ userId }: { userId: string }) {
-	const [availableTables, setAvailableTables] = useState<Table[]>([]);
-	useEffect(() => {
-		async () => {
-			// we want to run a function to get the tables that are available based on the date and time selected in the first step
-			// we will use the date and time to query the database and get the tables that are available
-			// we will then store the tables that are available in the local state here and display them to the user
-		};
-	}, []);
-	return <div>Select A Table</div>;
+import { getTables } from "@/lib/data";
+import DisplayTables from "./display-tables";
+export default async function StepTwo({ userId }: { userId: string }) {
+	const tables = await getTables();
+	return (
+		<div className="flex flex-col justify-center gap-5">
+			<h1 className="text-2xl font-bold text-center md:text-left">
+				Select A Table
+			</h1>
+			<DisplayTables tables={tables} userId={userId} />
+		</div>
+	);
 }

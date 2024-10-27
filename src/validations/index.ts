@@ -85,3 +85,9 @@ export const createBookTableSchema = async () => {
 			}),
 	});
 };
+export const stepTwoSchema = z.object({
+	name: z.string(),
+	status: z.enum(["available", "unavailable"]),
+	capacity: z.number(),
+	id: z.string(),
+});
