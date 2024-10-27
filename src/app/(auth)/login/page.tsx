@@ -4,8 +4,6 @@ import { LockKeyhole } from "lucide-react";
 import LoginForm from "./components/login-form";
 import { redirect } from "next/navigation";
 import { createClient } from "@/supabase/utils/server";
-export const description =
-	"A login page with two columns. The first column has the login form with email and password. There's a Forgot your passwork link and a link to sign up if you do not have an account. The second column has a cover image.";
 export default async function Login() {
 	const client = await createClient();
 	const user = (await client.auth.getUser()).data.user;
