@@ -11,7 +11,6 @@ import {
 import { ReservationCardProps, User } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
-import { formatDateToString } from "./utils";
 import { BOOKING_DURATION, CLOSE_HOURS, OPEN_HOURS } from "@/utils/constants";
 export async function isAuthenticatedUser() {
 	const client = await createClient();
@@ -139,6 +138,16 @@ export const getTables = async (): Promise<Table[]> => {
 	return tables;
 };
 
+export const getAvailableTables = async (
+	date: Date,
+	numberOfPeople: number,
+	time: string
+) => {
+	// based on the date, time and number of people we will get the available tables
+	// we will use the getReservationsForDateSelected function to get the reservations for the date selected
+	// then we will filter the tables based on the capacity and the time slot
+};
+
 export const getUserRole = async (userId: string) => {
 	// we will get the role of the user from the permissions table
 	const user = await db
@@ -153,7 +162,8 @@ export const getUserRole = async (userId: string) => {
 
 export const getReservationsForDateSelected = async (
 	tableId: string,
-	date: Date
+	date: Date,
+	time: string
 ) => {
 	const reservations = await db
 		.select({
@@ -165,7 +175,8 @@ export const getReservationsForDateSelected = async (
 		.where(
 			and(
 				eq(reservationsTable.tableId, tableId),
-				eq(reservationsTable.reservationDate, date.toDateString())
+				eq(reservationsTable.reservationDate, date.toDateString()),
+				eq(reservationsTable.startTime, time)
 			)
 		);
 	if (!reservations[0]) {
@@ -173,91 +184,6 @@ export const getReservationsForDateSelected = async (
 	}
 	return reservations;
 };
-
-export const checkingTableAvailability = async (
-	tableId: string,
-	date: Date
-) => {
-	// first ensure the action is protected
-	const supabase = await createClient();
-	const {
-		data: { user },
-		error,
-	} = await supabase.auth.getUser();
-	if (error) {
-		return {
-			success: false,
-			error: error.message,
-		};
-	}
-	if (!user) redirect("/login");
-	const userRole = await getUserRole(user.id);
-	if (userRole !== "user") redirect("/");
-	// Get reservations for the selected date and table
-	const selectedTableReservations = await getReservationsForDateSelected(
-		tableId,
-		date
-	);
-
-	// Generate all possible time slots
-	const allTimeSlots = generateTimeSlots(
-		OPEN_HOURS.toString(),
-		CLOSE_HOURS.toString(),
-		BOOKING_DURATION
-	);
-
-	// Filter out the occupied time slots
-	const availableTimeSlots = allTimeSlots.filter((timeSlot) => {
-		const slotStart = new Date(`2000-01-01T${timeSlot}`);
-		const slotEnd = new Date(slotStart.getTime() + BOOKING_DURATION * 60000);
-
-		return !selectedTableReservations.some((reservation) => {
-			const reservationStart = new Date(`2000-01-01T${reservation.startTime}`);
-			const reservationEnd = new Date(`2000-01-01T${reservation.endTime}`);
-
-			return (
-				(slotStart >= reservationStart && slotStart < reservationEnd) ||
-				(slotEnd > reservationStart && slotEnd <= reservationEnd) ||
-				(slotStart <= reservationStart && slotEnd >= reservationEnd)
-			);
-		});
-	});
-
-	console.log("Available time slots:", availableTimeSlots);
-	return {
-		success: true,
-		availableTimeSlots,
-	};
-};
-
-// Update the isOverlapping function for more precise checks
-function generateTimeSlots(
-	openTime: string,
-	closeTime: string,
-	duration: number
-): string[] {
-	const slots: string[] = [];
-	let currentTime = new Date(`2000-01-01T${openTime}`);
-	const endTime = new Date(`2000-01-01T${closeTime}`);
-
-	while (currentTime < endTime) {
-		slots.push(currentTime.toTimeString().slice(0, 5));
-		currentTime.setMinutes(currentTime.getMinutes() + duration);
-	}
-
-	return slots;
-}
-function isOverlapping(
-	timeSlot: string,
-	startTime: string,
-	endTime: string
-): boolean {
-	const slot = new Date(`2000-01-01T${timeSlot}`);
-	const start = new Date(`2000-01-01T${startTime}`);
-	const end = new Date(`2000-01-01T${endTime}`);
-
-	return slot >= start && slot < end;
-}
 
 export async function getMaxCapacity() {
 	const maxNumberOfPeople = await db
@@ -268,67 +194,3 @@ export async function getMaxCapacity() {
 		.orderBy(desc(tablesTable.capacity));
 	return maxNumberOfPeople[0].capacity;
 }
-
-// BOOKING CHECKS
-
-// Check if the table is available for the selected time and date
-// export const checkTableAvailability = async (tableId: string, date: Date, time: string) => {
-// 	const reservation = await db
-// 		.select()
-// 		.from(reservationsTable)
-// 		.where(and(eq(reservationsTable.tableId, tableId), eq(reservationsTable.reservationDate, date), eq(reservationsTable.reservationTime, time)));
-// 	if (reservation[0]) {
-// 		return false;
-// 	}
-// Check for overlapping reservations using inbetween times function
-// export const checkForOverlappingReservations = async (
-// 	tableId: string,
-// 	date: Date,
-// 	time: string
-// ) => {
-// 	const reservation = await db
-// 		.select()
-// 		.from(reservationsTable)
-// 		.where(and(eq(reservationsTable.tableId, tableId), eq(reservationsTable.reservationDate, date), eq(reservationsTable.reservationTime, time)));
-
-// 	}
-
-// import { and, eq, or, sql } from "drizzle-orm";
-
-// ... existing imports ...
-
-// export const checkForOverlappingReservations = async (
-// 	tableId: string,
-// 	date: Date,
-// 	time: string
-// ): Promise<boolean> => {
-// 	const reservationTime = new Date(`${date.toDateString()} ${time}`);
-// 	const endTime = new Date(reservationTime.getTime() + 2 * 60 * 60 * 1000); // Assuming 2-hour reservation slots
-
-// 	const overlappingReservations = await db
-// 		.select()
-// 		.from(reservationsTable)
-// 		.where(
-// 			and(
-// 				// Ensure we're checking for the specific table
-// 				eq(reservationsTable.tableId, tableId),
-// 				// Check for the same date
-// 				eq(reservationsTable.reservationDate, date),
-// 				// Check for time overlaps
-// 				or(
-// 					// New reservation starts during an existing reservation
-// 					and(
-// 						sql`TIME(${reservationsTable.reservationTime}) <= TIME(${time})`,
-// 						sql`TIME(${reservationsTable.reservationTime}) + INTERVAL 2 HOUR > TIME(${time})`
-// 					),
-// 					// New reservation ends during an existing reservation
-// 					and(
-// 						sql`TIME(${reservationsTable.reservationTime}) < TIME(${endTime.toTimeString().split(' ')[0]})`,
-// 						sql`TIME(${reservationsTable.reservationTime}) + INTERVAL 2 HOUR >= TIME(${endTime.toTimeString().split(' ')[0]})`
-// 					)
-// 				)
-// 			)
-// 		);
-
-// 	return overlappingReservations.length > 0;
-// };
