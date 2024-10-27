@@ -18,7 +18,7 @@ import { revalidatePath } from "next/cache";
 import { calculateTimeSlots, formatZodErrors, getEndTime } from "@/lib/utils";
 import { sendEmailPendingConfirmation } from "./email";
 import {
-	checkingTableAvailability,
+	getAvailableTables,
 	getReservationsForDateSelected,
 	getUserRole,
 } from "@/lib/data";
@@ -182,11 +182,12 @@ export const createReservation = async (
 	const userRole = await getUserRole(user.id);
 	if (userRole !== "user") redirect("/");
 
-	const selectedTableReservations = await checkingTableAvailability(
-		reservationDetails.tableId,
-		new Date(reservationDetails.reservationDate)
-	);
-	console.log(selectedTableReservations);
+	// const selectedTableReservations = await getAvailableTables(
+	// 	new Date(reservationDetails.reservationDate),
+	// 	reservationDetails.time,
+	// 	reservationDetails.numberOfPeople
+	// );
+	// console.log(selectedTableReservations);
 	// data received from client
 	const unvalidatedReservationData = {
 		name: formData.get("name"),
