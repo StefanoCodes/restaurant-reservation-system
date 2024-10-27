@@ -1,34 +1,12 @@
 import "server-only";
 
-import { createClient } from "@/supabase/utils/server";
-import { getUserDetails, getUserRole } from "../data";
-import { redirect } from "next/navigation";
+import { isAuthorizedAdmin } from "../data";
 import { db } from "@/db/db";
 import { permissionsTable, usersTable } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 
 export async function getAllUsers() {
-	// first we protect this get request  for only admins
-	const client = await createClient();
-	const { auth } = client;
-	// CHECKING FOR THE SESSION
-	const {
-		data: { user },
-		error,
-	} = await auth.getUser();
-	if (error || !user) {
-		redirect("/");
-	}
-	// CHECKING USER EXISTS IN THE DATABASE
-	const userInDb = await getUserDetails(user.id);
-	if (!userInDb) return;
-	// CHECKING FOR THE ROLE OF THE USER
-	const userRole = await getUserRole(user.id);
-	if (userRole !== "admin") {
-		redirect("/");
-	}
-
-	// getting all the users which are not admins and to do that we need to look them up in the permosions table
+	await isAuthorizedAdmin();
 
 	const allUsersInDb = await db
 		.select({ userId: permissionsTable.memberId })

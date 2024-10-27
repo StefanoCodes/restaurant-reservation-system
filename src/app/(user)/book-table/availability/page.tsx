@@ -1,4 +1,4 @@
-import { isAuthenticatedUser } from "@/lib/data";
+import { isAuthenticatedUser, isAuthorizedUser } from "@/lib/data";
 import {
 	getUserFormCompletionStatus,
 	resetUserFormCompletionStatus,
@@ -8,18 +8,13 @@ import StepTwo from "./_components/step-two";
 import ProgressBar from "../_components/progress-bar";
 
 export default async function Page() {
-	// authentication check
-	const { user, userInDb } = await isAuthenticatedUser();
-	if (!userInDb || !user) redirect("/login");
-	// check wether the user has completed the first step in the form
+	const { userInDb } = await isAuthorizedUser();
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);
-
 	if (!userFormCompletionStatus?.stepOne) {
 		redirect("/book-table");
 	}
-
 	if (userFormCompletionStatus?.stepTwo) {
 		await resetUserFormCompletionStatus(userInDb.userId, "two");
 	}

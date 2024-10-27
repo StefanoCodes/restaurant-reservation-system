@@ -1,6 +1,4 @@
-import { createClient } from "@/supabase/utils/server";
-import { redirect } from "next/navigation";
-import { getUserDetails, getUserRole } from "@/lib/data";
+import { isAuthorizedUser } from "@/lib/data";
 import { Metadata } from "next";
 import StepOneForm from "./_components/step-one";
 import {
@@ -8,6 +6,7 @@ import {
 	resetUserFormCompletionStatus,
 } from "./actions";
 import ProgressBar from "./_components/progress-bar";
+
 export const metadata: Metadata = {
 	keywords: ["restaurant", "reservation", "system", "book", "table"],
 	title: "Book a Table",
@@ -29,13 +28,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BookTablePage() {
-	const { auth } = await createClient();
-	const user = (await auth.getUser()).data.user;
-	if (!user) redirect("/login");
-	const userInDb = await getUserDetails(user.id);
-	if (!userInDb) redirect("/login");
-	const userRole = await getUserRole(userInDb.userId);
-	if (userRole !== "user") redirect("/");
+	const {  userInDb } = await isAuthorizedUser();
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);
@@ -48,7 +41,7 @@ export default async function BookTablePage() {
 		<div className="flex flex-col items-center justify-center gap-4">
 			<ProgressBar />
 			<div className="bg-gray-300 rounded-lg p-4 w-full">
-				<StepOneForm userId={user.id} />
+				<StepOneForm userId={userInDb.userId} />
 			</div>
 		</div>
 	);

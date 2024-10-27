@@ -23,7 +23,7 @@ import {
 	getUserRole,
 } from "@/lib/data";
 import { redirect } from "next/navigation";
-import { OPEN_HOURS, CLOSE_HOURS, BOOKING_DURATION } from "@/utils/constants";
+import { BOOKING_DURATION } from "@/utils/constants";
 // AUTH
 export async function registerUser(formData: FormData) {
 	// retreiving form data

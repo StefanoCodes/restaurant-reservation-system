@@ -2,12 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 import RegistrationForm from "./components/registration-form";
-import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
+import { isAuthenticatedUser } from "@/lib/data";
 export default async function Register() {
-	const client = await createClient();
-	const user = (await client.auth.getUser()).data.user;
-	if (user?.id) {
+	const { user } = await isAuthenticatedUser();
+	if (user.id) {
 		redirect("/");
 	}
 	return (

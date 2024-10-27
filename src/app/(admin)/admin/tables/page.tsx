@@ -1,22 +1,11 @@
 import Loading from "@/app/loading-spinner";
-import { getUserRole } from "@/lib/data";
-import { createClient } from "@/supabase/utils/server";
-import { redirect } from "next/navigation";
+import { isAuthorizedAdmin } from "@/lib/data";
 import { Suspense } from "react";
 import AddNewTable from "./_components/add-new-table";
 import TablesList from "./_components/manage-tables";
 
 export default async function AdminUsersPage() {
-	const client = await createClient();
-	const {
-		data: { user },
-		error,
-	} = await client.auth.getUser();
-	if (error || !user) {
-		return <div>Error fetching user data: {error?.message}</div>;
-	}
-	const userRole = await getUserRole(user.id);
-	if (userRole !== "admin") redirect("/");
+	await isAuthorizedAdmin();
 
 	return (
 		<main className="w-full h-full">

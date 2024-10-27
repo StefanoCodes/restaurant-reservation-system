@@ -11,32 +11,35 @@ import {
 import { ReservationCardProps, User } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
-import { BOOKING_DURATION, CLOSE_HOURS, OPEN_HOURS } from "@/utils/constants";
+
+// Ensures that we have a session and that the user in the session exists in the db
 export async function isAuthenticatedUser() {
 	const client = await createClient();
 	const {
 		data: { user },
-		error,
 	} = await client.auth.getUser();
-	if (error) {
-		throw new Error(error.message);
-	}
 	if (!user) {
 		redirect("/login");
 	}
-
 	const userInDb = await getUserDetails(user.id);
 	if (!userInDb) {
-		throw new Error("User not found");
+		redirect("/login");
 	}
 
 	return { user, userInDb };
 }
+// ensuring any route that requires an admin is protected
+export async function isAuthorizedAdmin() {
+	const { user, userInDb } = await isAuthenticatedUser();
+	const userRole = await getUserRole(user.id);
+	if (userRole !== "admin") redirect("/");
+	return { user, userInDb };
+}
+// ensuring any route that requires a user is protected and admins cannot access them
 export async function isAuthorizedUser() {
 	const { user, userInDb } = await isAuthenticatedUser();
-	if (!user || !userInDb) return;
 	const userRole = await getUserRole(user.id);
-	if (userRole !== "admin") return;
+	if (userRole !== "user") redirect("/admin");
 	return { user, userInDb };
 }
 export const getUserDetails = async (userId: string): Promise<User | null> => {

@@ -2,7 +2,7 @@
 
 import { db } from "@/db/db";
 import { reservationsTable, Table, tablesTable } from "@/db/schema";
-import { isAuthorizedUser } from "@/lib/data";
+import { isAuthorizedAdmin } from "@/lib/data";
 import { formatZodErrors } from "@/lib/utils";
 import { addNewTableSchema } from "@/validations";
 import { eq } from "drizzle-orm";
@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 
 export async function deleteUserReservationAction(reservationId: string) {
 	// we will make sure this is protected and authorized users only can trigger it
-	const authorizedUser = await isAuthorizedUser();
+	const authorizedUser = await isAuthorizedAdmin();
 	if (!authorizedUser) return;
 	const { user, userInDb } = authorizedUser;
 	if (!user || !userInDb) return;
@@ -42,7 +42,7 @@ export async function deleteUserReservationAction(reservationId: string) {
 // Adding a new table
 
 export async function addNewTableAction(formData: FormData) {
-	const authorizedUser = await isAuthorizedUser();
+	const authorizedUser = await isAuthorizedAdmin();
 	if (!authorizedUser) return;
 	const { user, userInDb } = authorizedUser;
 	if (!user || !userInDb) return;
@@ -84,7 +84,7 @@ export async function addNewTableAction(formData: FormData) {
 // Deleting a table
 
 export async function deleteTableAction(tableId: string) {
-	const authorizedUser = await isAuthorizedUser();
+	const authorizedUser = await isAuthorizedAdmin();
 	if (!authorizedUser) return;
 	const { user, userInDb } = authorizedUser;
 	if (!user || !userInDb) return;
@@ -111,8 +111,7 @@ export async function deleteTableAction(tableId: string) {
 // Editing a table data
 
 export async function editTableDataAction(formData: FormData, tableId: string) {
-	console.log(formData);
-	const authorizedUser = await isAuthorizedUser();
+	const authorizedUser = await isAuthorizedAdmin();
 	if (!authorizedUser) return;
 	const { user, userInDb } = authorizedUser;
 	if (!user || !userInDb) return;
@@ -158,7 +157,7 @@ export async function editTableDataAction(formData: FormData, tableId: string) {
 // Change Table Status to Available or Not Available
 
 export async function changeTableStatusAction(tableId: string) {
-	const authorizedUser = await isAuthorizedUser();
+	const authorizedUser = await isAuthorizedAdmin();
 	if (!authorizedUser) return;
 	const { user, userInDb } = authorizedUser;
 	if (!user || !userInDb) return;

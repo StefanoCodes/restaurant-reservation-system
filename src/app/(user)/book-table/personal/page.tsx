@@ -1,20 +1,20 @@
 import { getUserFormCompletionStatus } from "../actions";
 import { redirect } from "next/navigation";
-import { isAuthenticatedUser } from "@/lib/data";
+import { isAuthorizedUser } from "@/lib/data";
 import ProgressBar from "../_components/progress-bar";
 
 export default async function Page() {
-	const { userInDb } = await isAuthenticatedUser();
+	const { userInDb } = await isAuthorizedUser();
 
-	// check wether the user has completed the first step in the form
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);
-	if (
-		!userFormCompletionStatus?.stepOne ||
-		!userFormCompletionStatus?.stepTwo
-	) {
+
+	if (!userFormCompletionStatus?.stepOne) {
 		redirect("/book-table");
+	}
+	if (!userFormCompletionStatus?.stepTwo) {
+		redirect("/book-table/availability");
 	}
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">

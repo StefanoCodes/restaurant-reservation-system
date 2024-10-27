@@ -1,21 +1,10 @@
-import { getUserRole } from "@/lib/data";
-import { createClient } from "@/supabase/utils/server";
-import { redirect } from "next/navigation";
+import { getUserRole, isAuthorizedAdmin } from "@/lib/data";
 import ManageBookings from "./_components/manage-bookings";
 import { Suspense } from "react";
 import Loading from "@/app/loading-spinner";
 
 export default async function ManageBookingsPage() {
-	const client = await createClient();
-	const {
-		data: { user },
-		error,
-	} = await client.auth.getUser();
-	if (error || !user) {
-		return redirect("/login");
-	}
-	const userRole = await getUserRole(user.id);
-	if (userRole !== "admin") redirect("/");
+	await isAuthorizedAdmin();
 
 	return (
 		<div className="flex flex-col justify-start items-start w-full h-full gap-4">
