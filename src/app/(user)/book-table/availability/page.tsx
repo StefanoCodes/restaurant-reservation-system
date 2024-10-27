@@ -1,4 +1,4 @@
-import { isAuthenticatedUser, isAuthorizedUser } from "@/lib/data";
+import { getTables, isAuthenticatedUser, isAuthorizedUser } from "@/lib/data";
 import {
 	getUserFormCompletionStatus,
 	resetUserFormCompletionStatus,

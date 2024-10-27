@@ -141,15 +141,20 @@ export const getTables = async (): Promise<Table[]> => {
 	return tables;
 };
 
-export const getAvailableTables = async (
-	date: Date,
-	numberOfPeople: number,
-	time: string
-) => {
-	// based on the date, time and number of people we will get the available tables
-	// we will use the getReservationsForDateSelected function to get the reservations for the date selected
-	// then we will filter the tables based on the capacity and the time slot
-};
+// export const getAvailableTables = async (
+// 	date: string,
+// 	numberOfPeople: number,
+// 	time: string
+// ) => {
+// 	const data = { date, numberOfPeople, time };
+// 	const parsedData = findAvailableTablesSchema.safeParse(data);
+// 	if (!parsedData.success) {
+// 		console.error("Invalid data", parsedData.error);
+// 		redirect("/book-table");
+// 	}
+// 	console.log(data);
+// 	// if its sucessful we will use it to go through all the current reservations in the system and ensure we are taking into condiseration thebooking duration to only display the tables available at the time selected
+// };
 
 export const getUserRole = async (userId: string) => {
 	// we will get the role of the user from the permissions table

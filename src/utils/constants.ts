@@ -1,36 +1,35 @@
 import { Calendar, Mail, Table, User } from "lucide-react";
 
-export const OPEN_HOURS = 8;
-export const CLOSE_HOURS = 22;
 export const BOOKING_DURATION = 2;
+// this will in future be part of the confg / settings in the admin panel
 export const WEEKDAYS = {
 	MONDAY: {
-		OPEN: "08:00",
-		CLOSE: "22:00",
+		OPEN: 8,
+		CLOSE: 22,
 	},
 	TUESDAY: {
-		OPEN: "08:00",
-		CLOSE: "22:00",
+		OPEN: 8,
+		CLOSE: 22,
 	},
 	WEDNESDAY: {
-		OPEN: "08:00",
-		CLOSE: "22:00",
+		OPEN: 8,
+		CLOSE: 22,
 	},
 	THURSDAY: {
-		OPEN: "08:00",
-		CLOSE: "22:00",
+		OPEN: 8,
+		CLOSE: 22,
 	},
 	FRIDAY: {
-		OPEN: "08:00",
-		CLOSE: "22:00",
+		OPEN: 8,
+		CLOSE: 22,
 	},
 	SATURDAY: {
-		OPEN: "08:00",
-		CLOSE: "22:00",
+		OPEN: 8,
+		CLOSE: 22,
 	},
 	SUNDAY: {
-		OPEN: "09:00",
-		CLOSE: "22:00",
+		OPEN: 9,
+		CLOSE: 22,
 	},
 };
 

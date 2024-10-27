@@ -55,6 +55,7 @@ export const reservationSchema = z.object({
 	tableId: z.string(),
 	userId: z.string(),
 });
+
 export const addNewTableSchema = z.object({
 	name: z.string().min(1, {
 		message: "Table name is required",
@@ -85,9 +86,36 @@ export const createBookTableSchema = async () => {
 			}),
 	});
 };
+
 export const stepTwoSchema = z.object({
 	name: z.string(),
 	status: z.enum(["available", "unavailable"]),
 	capacity: z.number(),
 	id: z.string(),
 });
+
+export const newReservationInitialValuesType = z.object({
+	date: z.string(),
+	time: z.string(),
+	numberOfPeople: z.string(),
+	name: z.string(),
+	email: z.string(),
+	phone: z.string(),
+});
+
+export const findAvailableTablesSchema = z.object({
+	date: z.string().regex(/^(\d{4})-(\d{2})-(\d{2})$/, {
+		message: "Date must be in YYYY-MM-DD format (e.g., 2024-01-01)",
+	}),
+	numberOfPeople: z.coerce.number().int().positive().min(1, {
+		message: "Number of people must be at least 1",
+	}),
+	time: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/, {
+		message: "Time must be in HH:mm format (e.g., 09:00)",
+	}),
+});
+
+export type newReservationInitialValuesType = z.infer<
+	typeof newReservationInitialValuesType
+>;
+export type findAvailableTablesSchema = z.infer<typeof findAvailableTablesSchema>;

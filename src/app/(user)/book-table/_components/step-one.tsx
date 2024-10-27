@@ -20,52 +20,61 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { StepOneFormDataErrors } from "@/lib/types";
-import { CLOSE_HOURS, OPEN_HOURS } from "@/utils/constants";
 import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
 import SubmitButton from "@/components/ui/submit-button";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateReservationContext } from "@/contexts/createReservationContext";
 
 export default function StepOneForm({ userId }: { userId: string }) {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-	const [date, setDate] = useState<Date | undefined>(undefined);
-	const [time, setTime] = useState<string | undefined>(undefined);
 	const [errors, setErrors] = useState<StepOneFormDataErrors | undefined>(
 		undefined
 	);
-	const timeSlots = calculateTimeSlots(OPEN_HOURS, CLOSE_HOURS);
+	const timeSlots = calculateTimeSlots();
 	const router = useRouter();
 	const { toast } = useToast();
+	const { reservationData, updateReservationDetails } =
+		useCreateReservationContext();
 	const handleStepOne = async (formData: FormData) => {
-		const numberOfPeople = formData.get("numberOfPeople");
-		if (
-			!time ||
-			!date ||
-			!numberOfPeople ||
-			typeof numberOfPeople !== "string"
-		) {
-			throw new Error("Invalid form data");
-		}
-		// making sure the data is in the correct format and locale
-		const dateString = getLocalizedDateTime(date);
-		const formDataObject = {
-			date: dateString,
-			time,
-			numberOfPeople,
-		};
-		const response = await handleStepOneAction(formDataObject, userId);
-		if (!response.success) {
-			setErrors(response?.errors);
-		} else {
+		try {
+			const numberOfPeople = formData.get("numberOfPeople");
+			if (
+				!reservationData.time ||
+				!reservationData.date ||
+				!numberOfPeople ||
+				typeof numberOfPeople !== "string"
+			) {
+				throw new Error("Invalid form data");
+			}
 
-			router.push("/book-table/availability");
+			const formDataObject = {
+				date: reservationData.date,
+				time: reservationData.time,
+				numberOfPeople,
+			};
+
+			const response = await handleStepOneAction(formDataObject, userId);
+			if (!response.success) {
+				setErrors(response?.errors);
+			} else {
+				updateReservationDetails(formDataObject);
+				router.push("/book-table/availability");
+				toast({
+					title: "Date selected successfully",
+					description: response.message,
+				});
+			}
+		} catch (error) {
 			toast({
-				title: "Date selected successfully",
-				description: response.message,
+				title: "Error",
+				description: "Something went wrong. Please try again.",
+				variant: "destructive",
 			});
 		}
 	};
+
 	return (
 		<form
 			action={handleStepOne}
@@ -82,23 +91,34 @@ export default function StepOneForm({ userId }: { userId: string }) {
 							variant={"outline"}
 							className={cn(
 								"w-full justify-start text-left font-normal bg-white",
-								!date && "text-muted-foreground"
+								!reservationData.date && "text-muted-foreground"
 							)}
 						>
 							<CalendarIcon className="mr-2 h-4 w-4" />
-							{date ? formatDateToString(date) : <span>Pick a date</span>}
+							{reservationData.date ? (
+								formatDateToString(new Date(reservationData.date))
+							) : (
+								<span>Pick a date</span>
+							)}
 						</Button>
 					</PopoverTrigger>
 					<PopoverContent className="w-auto p-0">
 						<Calendar
-							value={date}
+							value={
+								reservationData.date
+									? new Date(reservationData.date)
+									: new Date()
+							}
 							minDate={new Date()}
 							maxDate={
 								new Date(new Date().setFullYear(new Date().getFullYear() + 1))
 							}
 							className="bg-white"
 							onClickDay={(dateValue: Date) => {
-								setDate(dateValue);
+								updateReservationDetails({
+									...reservationData,
+									date: getLocalizedDateTime(dateValue),
+								});
 								setIsCalendarOpen(false);
 							}}
 						/>
@@ -110,20 +130,19 @@ export default function StepOneForm({ userId }: { userId: string }) {
 			<div className="flex flex-col gap-4">
 				<Label htmlFor="time">Time</Label>
 				<Select
-					value={time}
+					value={reservationData.time}
 					onValueChange={(timeValue) => {
-						setTime(timeValue);
+						updateReservationDetails({ ...reservationData, time: timeValue });
 					}}
 					required
 				>
 					<SelectTrigger className="bg-white" id="time" name="time">
 						<SelectValue placeholder="Select a time">
-							{time ? time : "Select a time"}
+							{reservationData.time ? reservationData.time : "Select a time"}
 						</SelectValue>
 					</SelectTrigger>
 					<SelectContent>
-						{/* at the moment we are rendering all the time slots without checking for availabity  */}
-						{date ? (
+						{reservationData.date ? (
 							timeSlots.map((slot) => (
 								<SelectItem key={slot} value={slot}>
 									{slot}
@@ -142,6 +161,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 			<div className="flex flex-col gap-4">
 				<Label>Number of People</Label>
 				<Input
+					defaultValue={reservationData.numberOfPeople}
 					placeholder="Number of people"
 					type="number"
 					className="bg-white"
@@ -153,6 +173,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 					<p className="text-red-500">{errors.numberOfPeople}</p>
 				)}
 			</div>
+
 			<SubmitButton pendingText="Submitting...">Next</SubmitButton>
 		</form>
 	);

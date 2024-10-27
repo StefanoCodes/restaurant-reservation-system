@@ -2,16 +2,25 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ZodError, ZodIssue } from "zod";
 import { set } from "date-fns";
+import { WEEKDAYS } from "@/utils/constants";
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
 // calculate the time picking based off the start and end time of the resturaunt
 
-export function calculateTimeSlots(open: number, close: number) {
-	const difference = close - open; // this will give us the array length to fill it up with the times
+export function calculateTimeSlots() {
+	// this needs to figure out which day of the week it is to the calculat the difference
+	const dayOfWeek = Intl.DateTimeFormat(undefined, { weekday: "long" })
+		.format(new Date())
+		.toUpperCase();
+
+	const openingHours = WEEKDAYS[dayOfWeek as keyof typeof WEEKDAYS].OPEN;
+	const closingHours = WEEKDAYS[dayOfWeek as keyof typeof WEEKDAYS].CLOSE;
+
+	const difference = closingHours - openingHours;
 	const timeSlots = Array.from({ length: difference }, (_, index) => {
-		const hours = index + open;
+		const hours = index + openingHours;
 		return `${hours.toString().padStart(2, "0")}:00`;
 	});
 	return timeSlots;
