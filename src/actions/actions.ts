@@ -1,9 +1,5 @@
 "use server";
-import {
-	loginSchema,
-	registerSchema,
-	reservationSchema,
-} from "@/validations/index";
+import { loginSchema, registerSchema } from "@/validations/index";
 import { db } from "@/db/db";
 import {
 	permissionsTable,
@@ -11,15 +7,9 @@ import {
 	reservationsTable,
 	usersTable,
 } from "@/db/schema";
-import { ReservationDetails } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
-import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { formatZodErrors, getEndTime } from "@/lib/utils";
-import { sendEmailPendingConfirmation } from "./email";
-import { getUserRole } from "@/lib/data";
-import { redirect } from "next/navigation";
-import { BOOKING_DURATION } from "@/utils/constants";
+
 // AUTH
 export async function registerUser(formData: FormData) {
 	// retreiving form data
