@@ -87,10 +87,10 @@ export default function StepOneForm({ userId }: { userId: string }) {
 	return (
 		<form
 			action={handleStepOne}
-			className="flex flex-col gap-4 mt-4 sm:px-4 md:px-13 max-w-2xl mx-auto"
+			className="flex flex-col gap-4 mt-4 sm:px-4 md:px-13  w-full max-w-2xl mx-auto"
 		>
 			{/* Date */}
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col  gap-4 w-full">
 				<Label>
 					Select A Date <span className="text-red-500">*</span>
 				</Label>
@@ -136,7 +136,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 				{errors?.date && <p className="text-red-500">{errors.date}</p>}
 			</div>
 			{/* TIME */}
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 w-full">
 				<Label htmlFor="time">Time</Label>
 				<Select
 					value={reservationData.time}
@@ -167,13 +167,13 @@ export default function StepOneForm({ userId }: { userId: string }) {
 				{errors?.time && <p className="text-red-500">{errors.time}</p>}
 			</div>
 			{/* Number Of People */}
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col  gap-4 w-full">
 				<Label>Number of People</Label>
 				<Input
 					defaultValue={reservationData.numberOfPeople}
 					placeholder="Number of people"
 					type="number"
-					className="bg-white"
+					className="bg-white  "
 					name="numberOfPeople"
 					required
 					onFocus={() => setErrors(undefined)}

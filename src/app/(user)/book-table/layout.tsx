@@ -7,7 +7,9 @@ export default function BookTableLayout({
 }) {
 	return (
 		<CreateReservationContextProvider>
-			<div className="max-w-7xl mx-auto p-4 flex flex-col">{children}</div>
+			<div className="max-w-7xl mx-auto p-4 pt-8 sm:pt-12 flex flex-col">
+				{children}
+			</div>
 		</CreateReservationContextProvider>
 	);
 }
