@@ -20,14 +20,19 @@ export async function isAuthenticatedUser() {
 		data: { user },
 	} = await client.auth.getUser();
 	if (!user) return { user: null, userInDb: null };
-	const userInDb = await getUserDetails(user.id);
-	if (!userInDb) {
-		await logout();
-		return { user: null, userInDb: null };
+	try {
+		const userInDb = await getUserDetails(user.id);
+		if (!userInDb) {
+			await logout();
+			return { user: null, userInDb: null };
+		}
+		return { user, userInDb };
+	} catch (error) {
+		console.error("Error fetching user details:", error);
+		throw new Error("DATABASE_ERROR");
 	}
-
-	return { user, userInDb };
 }
+
 // ensuring any route that requires an admin is protected
 export async function isAuthorizedAdmin() {
 	const { user, userInDb } = await isAuthenticatedUser();
@@ -45,14 +50,32 @@ export async function isAuthorizedUser() {
 	return { user, userInDb };
 }
 export const getUserDetails = async (userId: string): Promise<User | null> => {
-	const userDetails = await db
-		.select()
-		.from(usersTable)
-		.where(eq(usersTable.userId, userId));
-	if (!userDetails[0]) {
-		return null;
+	try {
+		const userDetails = await db
+			.select()
+			.from(usersTable)
+			.where(eq(usersTable.userId, userId));
+
+		if (!userDetails[0]) {
+			return null;
+		}
+		return userDetails[0];
+	} catch (error) {
+		// Check if it's a network error
+		if (
+			error instanceof Error &&
+			("networkError" in error ||
+				error.message.includes("network") ||
+				error.message.includes("connection") ||
+				!window.navigator.onLine)
+		) {
+			console.error("Network connection error:", error);
+			throw new Error("NETWORK_ERROR");
+		}
+
+		console.error("Database error:", error);
+		throw new Error("DATABASE_ERROR");
 	}
-	return userDetails[0];
 };
 
 export const getUserReservationDetails = async (userId: string) => {

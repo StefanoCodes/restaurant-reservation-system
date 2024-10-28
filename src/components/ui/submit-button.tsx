@@ -19,7 +19,7 @@ export default function SubmitButton({
 	return (
 		<Button
 			type="submit"
-			disabled={pending}
+			disabled={pending || props.disabled}
 			{...props}
 			className="flex items-center gap-2"
 		>

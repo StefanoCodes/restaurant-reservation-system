@@ -4,10 +4,29 @@ import Table from "./table";
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import SubmitButton from "@/components/ui/submit-button";
 import { handleStepTwoAction } from "../action";
 import { useRouter } from "next/navigation";
 import { useCreateReservationContext } from "@/contexts/createReservationContext";
+import { useFormStatus } from "react-dom";
+import ButtonLoader from "@/app/button-loader";
+function SubmitTableButton({
+	selectedTable,
+}: {
+	selectedTable: TableType | null;
+}) {
+	const { pending } = useFormStatus();
+
+	return (
+		<Button
+			className="w-full sm:w-[7.5rem]"
+			disabled={!selectedTable || pending}
+		>
+			{!selectedTable && "Select A Table"}
+			{selectedTable && !pending && "Submit"}
+			{pending && <ButtonLoader />}
+		</Button>
+	);
+}
 export default function DisplayTables({
 	tables,
 	userId,
@@ -27,6 +46,7 @@ export default function DisplayTables({
 		const response = await handleStepTwoAction(selectedTable, userId);
 		if (!response.success) {
 			setError(response?.error);
+
 			return;
 		} else {
 			updateReservationDetails({
@@ -51,13 +71,11 @@ export default function DisplayTables({
 					})}
 					{error ? <p className="text-red-500">error</p> : null}
 				</div>
-				<div className="flex flex-col md:flex-row justify-center gap-4">
+				<div className="flex flex-col sm:flex-row justify-center gap-4">
 					<Button asChild variant={"outline"}>
 						<Link href={"/book-table"}>Back</Link>
 					</Button>
-					<SubmitButton disabled={!selectedTable}>
-						{selectedTable ? "Submit" : "Select A Table"}
-					</SubmitButton>
+					<SubmitTableButton selectedTable={selectedTable} />
 				</div>
 			</div>
 		</form>

@@ -18,14 +18,31 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState, useTransition } from "react";
+import { useState } from "react";
 import { StepOneFormDataErrors } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
 import SubmitButton from "@/components/ui/submit-button";
 import { useRouter } from "next/navigation";
 import { useCreateReservationContext } from "@/contexts/createReservationContext";
-
+import { useFormStatus } from "react-dom";
+import ButtonLoader from "@/app/button-loader";
+import Link from "next/link";
+function SubmitTableButton() {
+	const { pending } = useFormStatus();
+	const { reservationData } = useCreateReservationContext();
+	console.log(reservationData);
+	return (
+		<Button
+			className="w-full sm:w-[7.5rem]"
+			disabled={!reservationData.date || !reservationData.time || pending}
+		>
+			{reservationData.date && reservationData.time && !pending && "Next"}
+			{pending && <ButtonLoader />}
+			{!reservationData.date && !reservationData.time && "Select A Date"}
+		</Button>
+	);
+}
 export default function StepOneForm({ userId }: { userId: string }) {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 	const [errors, setErrors] = useState<StepOneFormDataErrors | undefined>(
@@ -33,9 +50,9 @@ export default function StepOneForm({ userId }: { userId: string }) {
 	);
 	const timeSlots = calculateTimeSlots();
 	const router = useRouter();
-
 	const { reservationData, updateReservationDetails } =
 		useCreateReservationContext();
+
 	const handleStepOne = async (formData: FormData) => {
 		const numberOfPeople = formData.get("numberOfPeople");
 		try {
@@ -59,6 +76,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 				setErrors(response?.errors);
 				return;
 			}
+
 			router.push("/book-table/availability");
 			updateReservationDetails(formDataObject);
 		} catch (error) {
@@ -164,8 +182,12 @@ export default function StepOneForm({ userId }: { userId: string }) {
 					<p className="text-red-500">{errors.numberOfPeople}</p>
 				)}
 			</div>
-
-			<SubmitButton>Next</SubmitButton>
+			<div className="flex flex-col sm:flex-row justify-center gap-4">
+				<Button asChild variant={"outline"}>
+					<Link href={"/"}>Cancel</Link>
+				</Button>
+				<SubmitTableButton />
+			</div>
 		</form>
 	);
 }

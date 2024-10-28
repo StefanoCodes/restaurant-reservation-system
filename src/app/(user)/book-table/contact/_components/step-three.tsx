@@ -13,6 +13,8 @@ import { useState } from "react";
 import { User } from "@/lib/types";
 import { stepThreeAction } from "../actions";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type StepThreeFormDataErrors = {
 	name: string;
@@ -120,9 +122,9 @@ export default function StepThreeForm({ user }: { user: User }) {
 					<p className="text-red-500">{errors.specialRequests}</p>
 				)}
 			</div>
-			<SubmitButton>
-				Create Reservation
-			</SubmitButton>
+			<div className="flex justify-end">
+				<SubmitButton>Create Reservation</SubmitButton>
+			</div>
 		</form>
 	);
 }
