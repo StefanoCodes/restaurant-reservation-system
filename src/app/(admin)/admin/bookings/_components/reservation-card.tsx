@@ -12,7 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -86,7 +85,7 @@ export default function AdminReservationCard({
 				<div className="flex items-center space-x-2">
 					<Utensils className="w-5 h-5 text-muted-foreground" />
 					<span>
-						{table.name} (Capacity: {table.capacity})
+						{reservation.reservationName} (Capacity: {table.capacity})
 					</span>
 				</div>
 				<div className="flex items-center space-x-2">
@@ -98,11 +97,11 @@ export default function AdminReservationCard({
 				<div className="w-full text-sm space-y-2">
 					<div className="flex justify-between">
 						<span className="font-semibold">Email:</span>
-						<span>{user.email}</span>
+						<span>{reservation.reservationEmail}</span>
 					</div>
 					<div className="flex justify-between">
 						<span className="font-semibold">Phone:</span>
-						<span>{user.phoneNumber}</span>
+						<span>{reservation.reservationPhone}</span>
 					</div>
 					{reservation.notes && (
 						<div className="mt-3 pt-3 border-t border-secondary-foreground/20">

@@ -7,24 +7,34 @@ import { Button } from "@/components/ui/button";
 import SubmitButton from "@/components/ui/submit-button";
 import { handleStepTwoAction } from "../action";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
-export default function DisplayTables({ tables,userId }: { tables: TableType[],userId:string }) {
+import { Loader2 } from "lucide-react";
+import { useCreateReservationContext } from "@/contexts/createReservationContext";
+import ButtonLoader from "@/app/button-loader";
+export default function DisplayTables({
+	tables,
+	userId,
+}: {
+	tables: TableType[];
+	userId: string;
+}) {
 	const [selectedTable, setSelectedTable] = useState<TableType | null>(null);
-	const [error, setError] = useState<Record<string, string> | undefined>(undefined);
-    const router = useRouter();
-    const {toast} = useToast();
+	const [error, setError] = useState<Record<string, string> | undefined>(
+		undefined
+	);
+	const { updateReservationDetails } = useCreateReservationContext();
+	const router = useRouter();
 	const handleStepTwo = async () => {
 		if (!selectedTable) throw new Error("No table selected");
-		const response = await handleStepTwoAction(selectedTable,userId);
+		const response = await handleStepTwoAction(selectedTable, userId);
 		if (!response.success) {
 			setError(response?.error);
 			return;
+		} else {
+			updateReservationDetails({
+				tableName: selectedTable.name,
+			});
+			router.push("/book-table/contact");
 		}
-		router.push("/book-table/personal");
-		toast({
-			title: "Table selected successfully",
-			description: response.message,
-		});
 	};
 	return (
 		<form action={handleStepTwo}>
@@ -46,7 +56,11 @@ export default function DisplayTables({ tables,userId }: { tables: TableType[],u
 					<Button asChild variant={"outline"}>
 						<Link href={"/book-table"}>Back</Link>
 					</Button>
-					<SubmitButton disabled={!selectedTable} pendingText="Submitting...">{selectedTable ? "Submit" : 'Select A Table'}</SubmitButton>
+					<SubmitButton
+						props={{ disabled: !selectedTable }}
+					>
+						{selectedTable ? "Submit" : "Select A Table"}
+					</SubmitButton>
 				</div>
 			</div>
 		</form>

@@ -20,8 +20,11 @@ const steps = [
 ];
 
 const Step = ({ idx, step }: { idx: number; step: (typeof steps)[0] }) => {
-	const currentStep = usePathname().split("/").length;
+	// Replace path length logic with direct path comparison
+	const pathname = usePathname();
+	const isActive = steps.findIndex((s) => s.link === pathname) >= idx;
 	const index = idx + 1;
+
 	return (
 		<>
 			<div key={idx} className="flex flex-col items-center p-2">
@@ -29,7 +32,7 @@ const Step = ({ idx, step }: { idx: number; step: (typeof steps)[0] }) => {
 					prefetch
 					className={cn(
 						`w-10 h-10 flex items-center justify-center rounded-full text-white`,
-						index < currentStep ? "bg-orange-500" : "bg-gray-300"
+						isActive ? "bg-orange-500" : "bg-gray-300"
 					)}
 					href={step.link}
 				>
@@ -41,7 +44,7 @@ const Step = ({ idx, step }: { idx: number; step: (typeof steps)[0] }) => {
 				<div
 					className={cn(
 						`h-1 w-full`,
-						index + 1 < currentStep ? "bg-orange-500" : "bg-gray-300"
+						isActive ? "bg-orange-500" : "bg-gray-300"
 					)}
 				></div>
 			)}

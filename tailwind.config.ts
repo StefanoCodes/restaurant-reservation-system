@@ -68,7 +68,8 @@ const config: Config = {
     		}
     	},
     	animation: {
-    		steam: 'steam 2s ease-out infinite'
+    		steam: 'steam 2s ease-out infinite',
+			spin: 'spin 1s linear infinite'
     	},
     	keyframes: {
     		steam: {

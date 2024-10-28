@@ -7,7 +7,10 @@ import { formatZodErrors } from "@/lib/utils";
 import { stepTwoSchema } from "@/validations";
 import { eq } from "drizzle-orm";
 
-export const handleStepTwoAction = async (selectedTable: Table, userId: string) => {
+export const handleStepTwoAction = async (
+	selectedTable: Table,
+	userId: string
+) => {
 	// protect the action
 	const { user, userInDb } = await isAuthenticatedUser();
 	if (!userInDb || !user) throw new Error("Unauthorized");

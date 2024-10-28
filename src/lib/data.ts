@@ -11,6 +11,7 @@ import {
 import { ReservationCardProps, User } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
+import { logout } from "@/actions/actions";
 
 // Ensures that we have a session and that the user in the session exists in the db
 export async function isAuthenticatedUser() {
@@ -18,12 +19,10 @@ export async function isAuthenticatedUser() {
 	const {
 		data: { user },
 	} = await client.auth.getUser();
-	if (!user) {
-		redirect("/login");
-	}
+	if (!user) return { user: null, userInDb: null };
 	const userInDb = await getUserDetails(user.id);
 	if (!userInDb) {
-		redirect("/login");
+		await logout();
 	}
 
 	return { user, userInDb };
@@ -31,6 +30,7 @@ export async function isAuthenticatedUser() {
 // ensuring any route that requires an admin is protected
 export async function isAuthorizedAdmin() {
 	const { user, userInDb } = await isAuthenticatedUser();
+	if (!user) return { user: null, userInDb: null };
 	const userRole = await getUserRole(user.id);
 	if (userRole !== "admin") redirect("/");
 	return { user, userInDb };
@@ -38,6 +38,7 @@ export async function isAuthorizedAdmin() {
 // ensuring any route that requires a user is protected and admins cannot access them
 export async function isAuthorizedUser() {
 	const { user, userInDb } = await isAuthenticatedUser();
+	if (!user) return { user: null, userInDb: null };
 	const userRole = await getUserRole(user.id);
 	if (userRole !== "user") redirect("/admin");
 	return { user, userInDb };
@@ -139,6 +140,17 @@ export const getTables = async (): Promise<Table[]> => {
 		return [];
 	}
 	return tables;
+};
+
+export const getTableIdByName = async (tableName: string) => {
+	const tableId = await db
+		.select({ id: tablesTable.id })
+		.from(tablesTable)
+		.where(eq(tablesTable.name, tableName));
+	if (!tableId[0]) {
+		return null;
+	}
+	return tableId[0].id;
 };
 
 // export const getAvailableTables = async (

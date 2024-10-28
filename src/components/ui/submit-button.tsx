@@ -1,37 +1,23 @@
-"use client";
-import { useFormStatus } from "react-dom";
-import { Button, ButtonProps } from "./button";
-import { cn } from "@/lib/utils";
+'use client'
+ 
+import { useFormStatus } from 'react-dom'
+import { Button } from './button'
+import ButtonLoader from '@/app/button-loader'
+import { ButtonHTMLAttributes } from 'react'
 
-type SubmitButtonProps = ButtonProps & {
-	children: React.ReactNode;
-	pendingText?: string;
-	variant?:
-		| "ghost"
-		| "default"
-		| "destructive"
-		| "outline"
-		| "secondary"
-		| "link"
-		| null;
-};
-export default function SubmitButton({
-	children,
-	pendingText = "loading...",
-	...props
-}: SubmitButtonProps) {
-	const { pending } = useFormStatus();
+export default function SubmitButton({ children,props }: { children: React.ReactNode,props?: ButtonHTMLAttributes<HTMLButtonElement> }) {
+  const { pending } = useFormStatus()
+ 
 	return (
-		<Button
-			type="submit"
-			className={cn(
-				pending && `opacity-50 disabled:cursor-not-allowed`,
-				props.className
-			)}
-			disabled={pending}
-			{...props}
-		>
-			{pending ? pendingText : children}
-		</Button>
-	);
+		<Button type="submit" disabled={pending} {...props}>
+			{pending ? (
+				<>
+					<ButtonLoader />
+					Submitting...
+				</>
+      ) : (
+        children
+      )}
+    </Button>
+  )
 }

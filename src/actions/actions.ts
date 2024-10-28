@@ -15,13 +15,9 @@ import { ReservationDetails } from "@/lib/types";
 import { createClient } from "@/supabase/utils/server";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { calculateTimeSlots, formatZodErrors, getEndTime } from "@/lib/utils";
+import { formatZodErrors, getEndTime } from "@/lib/utils";
 import { sendEmailPendingConfirmation } from "./email";
-import {
-	getAvailableTables,
-	getReservationsForDateSelected,
-	getUserRole,
-} from "@/lib/data";
+import { getUserRole } from "@/lib/data";
 import { redirect } from "next/navigation";
 import { BOOKING_DURATION } from "@/utils/constants";
 // AUTH

@@ -28,6 +28,9 @@ export type ReservationCardProps = {
 		createdAt: Date | null;
 		notes: string | null;
 		reservationDate: Date | string;
+		reservationName: string;
+		reservationPhone: string;
+		reservationEmail: string;
 	};
 	table: {
 		name: string;

@@ -21,7 +21,7 @@ export default function BookingCard({
 		<Card className="w-full max-w-md mx-auto overflow-hidden transition-shadow duration-300 ease-in-out hover:shadow-lg">
 			<CardHeader className="bg-primary text-primary-foreground">
 				<CardTitle className="flex justify-between items-center">
-					<span>{user.name}'s Reservation</span>
+					<span>{reservation.reservationName}'s Reservation</span>
 					<Badge
 						variant="secondary"
 						className={cn(
@@ -61,11 +61,11 @@ export default function BookingCard({
 				<div className="w-full text-sm space-y-2">
 					<div className="flex justify-between">
 						<span className="font-semibold">Email:</span>
-						<span>{user.email}</span>
+						<span>{reservation.reservationEmail}</span>
 					</div>
 					<div className="flex justify-between">
 						<span className="font-semibold">Phone:</span>
-						<span>{user.phoneNumber}</span>
+						<span>{reservation.reservationPhone}</span>
 					</div>
 					{reservation?.notes && (
 						<div className="mt-3 pt-3 border-t border-secondary-foreground/20">

@@ -54,6 +54,15 @@ export const reservationsTable = pgTable("reservations", {
 	endTime: varchar("end_time", {
 		length: 255,
 	}).notNull(),
+	reservationName: varchar("reservation_name", {
+		length: 255,
+	}).notNull(),
+	reservationPhone: varchar("reservation_phone", {
+		length: 255,
+	}).notNull(),
+	reservationEmail: varchar("reservation_email", {
+		length: 255,
+	}).notNull(),
 	status: reservationStatusEnum("status").default("pending"),
 	numberOfPeople: integer("number_of_people").notNull(),
 	createdAt: timestamp("created_at").defaultNow(),

@@ -24,8 +24,8 @@ import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
 import SubmitButton from "@/components/ui/submit-button";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 import { useCreateReservationContext } from "@/contexts/createReservationContext";
+import ButtonLoader from "@/app/button-loader";
 
 export default function StepOneForm({ userId }: { userId: string }) {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 	);
 	const timeSlots = calculateTimeSlots();
 	const router = useRouter();
-	const { toast } = useToast();
+
 	const { reservationData, updateReservationDetails } =
 		useCreateReservationContext();
 	const handleStepOne = async (formData: FormData) => {
@@ -57,21 +57,14 @@ export default function StepOneForm({ userId }: { userId: string }) {
 
 			const response = await handleStepOneAction(formDataObject, userId);
 			if (!response.success) {
+				console.log(response.errors);
 				setErrors(response?.errors);
 			} else {
 				updateReservationDetails(formDataObject);
 				router.push("/book-table/availability");
-				toast({
-					title: "Date selected successfully",
-					description: response.message,
-				});
 			}
 		} catch (error) {
-			toast({
-				title: "Error",
-				description: "Something went wrong. Please try again.",
-				variant: "destructive",
-			});
+			console.error(error);
 		}
 	};
 
@@ -174,7 +167,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 				)}
 			</div>
 
-			<SubmitButton pendingText="Submitting...">Next</SubmitButton>
+			<SubmitButton>Next</SubmitButton>
 		</form>
 	);
 }

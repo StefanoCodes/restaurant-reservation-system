@@ -94,13 +94,34 @@ export const stepTwoSchema = z.object({
 	id: z.string(),
 });
 
+export const stepThreeSchema = z.object({
+	date: z.string({
+		message: "Date is required",
+	}),
+	time: z.string({
+		message: "Time is required",
+	}),
+	numberOfPeople: z.coerce.number().int().positive().min(1, {
+		message: "Number of people must be at least 1",
+	}),
+	specialRequests: z.string().optional(),
+	tableName: z.string(),
+	name: z.string().min(3, {
+		message: "Name must be at least 3 characters",
+	}),
+	email: z.string().email({
+		message: "Invalid email address",
+	}),
+	phone: z.string().min(10, {
+		message: "Phone number must be at least 10 characters",
+	}),
+});
+
 export const newReservationInitialValuesType = z.object({
 	date: z.string(),
 	time: z.string(),
 	numberOfPeople: z.string(),
-	name: z.string(),
-	email: z.string(),
-	phone: z.string(),
+	tableName: z.string(),
 });
 
 export const findAvailableTablesSchema = z.object({
@@ -118,4 +139,6 @@ export const findAvailableTablesSchema = z.object({
 export type newReservationInitialValuesType = z.infer<
 	typeof newReservationInitialValuesType
 >;
-export type findAvailableTablesSchema = z.infer<typeof findAvailableTablesSchema>;
+export type findAvailableTablesSchema = z.infer<
+	typeof findAvailableTablesSchema
+>;

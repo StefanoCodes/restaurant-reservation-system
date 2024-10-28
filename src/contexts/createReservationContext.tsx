@@ -8,13 +8,11 @@ import {
 	useState,
 } from "react";
 
-const defaultReservationData: newReservationInitialValuesType = {
+export const defaultReservationData: newReservationInitialValuesType = {
 	date: "",
 	time: "",
 	numberOfPeople: "",
-	name: "",
-	email: "",
-	phone: "",
+	tableName: "",
 };
 
 type CreateReservationContextType = {

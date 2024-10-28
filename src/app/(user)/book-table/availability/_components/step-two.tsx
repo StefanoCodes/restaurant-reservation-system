@@ -1,12 +1,6 @@
 // "use client";
-// import { useState, useEffect } from "react";
-// import DisplayTables from "./display-tables";
-import { useCreateReservationContext } from "@/contexts/createReservationContext";
-import { Table } from "@/db/schema";
-import { getTables } from "@/lib/data";
-import { findAvailableTablesSchema } from "@/validations";
-import { redirect } from "next/navigation";
 import DisplayTables from "./display-tables";
+import { getTables } from "@/lib/data";
 export default async function StepTwo({ userId }: { userId: string }) {
 	const tables = await getTables();
 	// const { reservationData } = useCreateReservationContext();

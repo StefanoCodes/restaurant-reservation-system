@@ -1,11 +1,12 @@
+import { isAuthorizedUser } from "@/lib/data";
 import { getUserFormCompletionStatus } from "../actions";
 import { redirect } from "next/navigation";
-import { isAuthorizedUser } from "@/lib/data";
 import ProgressBar from "../_components/progress-bar";
+import StepThreeForm from "./_components/step-three";
 
 export default async function Page() {
 	const { userInDb } = await isAuthorizedUser();
-
+	// check if the previous steps are completed
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);
@@ -19,7 +20,9 @@ export default async function Page() {
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
 			<ProgressBar />
-			<div className="bg-gray-300 rounded-lg p-4 w-full"></div>
+			<div className="bg-gray-300 rounded-lg px-4 py-6 md:px-12 md:py-8 w-full">
+				<StepThreeForm user={userInDb} />
+			</div>
 		</div>
 	);
 }

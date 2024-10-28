@@ -1,5 +1,5 @@
 {
-  "id": "fa7f03b7-8df1-4a50-b433-39a8c4a1ea0c",
+  "id": "3d9f9a2c-ea29-4d90-b8de-602865ccd308",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -151,6 +151,24 @@
         },
         "end_time": {
           "name": "end_time",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reservation_name": {
+          "name": "reservation_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reservation_phone": {
+          "name": "reservation_phone",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "reservation_email": {
+          "name": "reservation_email",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true

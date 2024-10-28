@@ -1,13 +1,15 @@
 "use server";
+import { logout } from "@/actions/actions";
 import { db } from "@/db/db";
 import {
 	ReservationFormCompletionStatus,
 	reservationFormCompletionStatusTable,
 } from "@/db/schema";
-import { isAuthenticatedUser } from "@/lib/data";
+import { isAuthenticatedUser, isAuthorizedUser } from "@/lib/data";
 import { formatZodErrors } from "@/lib/utils";
 import { createBookTableSchema } from "@/validations";
 import { eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 // GET USER FORM COMPLETION STATUS FROM DB
 export const getUserFormCompletionStatus = async (
@@ -23,6 +25,29 @@ export const getUserFormCompletionStatus = async (
 	}
 	return userFormCompletionStatus[0];
 };
+
+// reset user form completion status
+export const resetAllUserFormCompletionStatus = async (userId: string) => {
+
+	try {
+		await db
+		.update(reservationFormCompletionStatusTable)
+		.set({
+			stepOne: false,
+			stepTwo: false,
+			stepThree: false,
+			})
+			.where(eq(reservationFormCompletionStatusTable.userId, userId));
+		return {
+			success: true,
+		};
+	} catch (error) {
+		return {
+			success: false,
+		};
+	}
+};
+
 // RESET USER FORM COMPLETION STATUS everytime the user goes back to the previous step
 export const resetUserFormCompletionStatus = async (
 	userId: string,
@@ -49,6 +74,13 @@ export const handleStepOneAction = async (
 	userId: string
 ) => {
 	// zod validation
+	const { user, userInDb } = await isAuthorizedUser();
+	if (!user) {
+		redirect("/login");
+	}
+	if (!userInDb) {
+		await logout();
+	}
 	const isDataValidSchema = await createBookTableSchema();
 	const isDataValid = isDataValidSchema.safeParse(formData);
 	if (!isDataValid.success) {
