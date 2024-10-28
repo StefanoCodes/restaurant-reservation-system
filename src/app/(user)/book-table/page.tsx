@@ -6,8 +6,6 @@ import {
 	resetUserFormCompletionStatus,
 } from "./actions";
 import ProgressBar from "./_components/progress-bar";
-import { redirect } from "next/navigation";
-
 export const metadata: Metadata = {
 	keywords: ["restaurant", "reservation", "system", "book", "table"],
 	title: "Book a Table",
@@ -29,8 +27,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BookTablePage() {
-	const {  userInDb } = await isAuthorizedUser();
-	if(!userInDb) redirect('/login')
+	const { userInDb } = await isAuthorizedUser();
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);

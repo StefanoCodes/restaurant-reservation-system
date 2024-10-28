@@ -23,6 +23,7 @@ export async function isAuthenticatedUser() {
 	const userInDb = await getUserDetails(user.id);
 	if (!userInDb) {
 		await logout();
+		return { user: null, userInDb: null };
 	}
 
 	return { user, userInDb };
@@ -30,7 +31,7 @@ export async function isAuthenticatedUser() {
 // ensuring any route that requires an admin is protected
 export async function isAuthorizedAdmin() {
 	const { user, userInDb } = await isAuthenticatedUser();
-	if (!user) return { user: null, userInDb: null };
+	if (!user) redirect("/login");
 	const userRole = await getUserRole(user.id);
 	if (userRole !== "admin") redirect("/");
 	return { user, userInDb };
@@ -38,7 +39,7 @@ export async function isAuthorizedAdmin() {
 // ensuring any route that requires a user is protected and admins cannot access them
 export async function isAuthorizedUser() {
 	const { user, userInDb } = await isAuthenticatedUser();
-	if (!user) return { user: null, userInDb: null };
+	if (!user) redirect("/login");
 	const userRole = await getUserRole(user.id);
 	if (userRole !== "user") redirect("/admin");
 	return { user, userInDb };

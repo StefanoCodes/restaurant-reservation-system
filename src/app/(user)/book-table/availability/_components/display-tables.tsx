@@ -7,9 +7,7 @@ import { Button } from "@/components/ui/button";
 import SubmitButton from "@/components/ui/submit-button";
 import { handleStepTwoAction } from "../action";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 import { useCreateReservationContext } from "@/contexts/createReservationContext";
-import ButtonLoader from "@/app/button-loader";
 export default function DisplayTables({
 	tables,
 	userId,
@@ -23,6 +21,7 @@ export default function DisplayTables({
 	);
 	const { updateReservationDetails } = useCreateReservationContext();
 	const router = useRouter();
+
 	const handleStepTwo = async () => {
 		if (!selectedTable) throw new Error("No table selected");
 		const response = await handleStepTwoAction(selectedTable, userId);

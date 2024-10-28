@@ -18,14 +18,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { StepOneFormDataErrors } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
 import SubmitButton from "@/components/ui/submit-button";
 import { useRouter } from "next/navigation";
 import { useCreateReservationContext } from "@/contexts/createReservationContext";
-import ButtonLoader from "@/app/button-loader";
 
 export default function StepOneForm({ userId }: { userId: string }) {
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -38,8 +37,8 @@ export default function StepOneForm({ userId }: { userId: string }) {
 	const { reservationData, updateReservationDetails } =
 		useCreateReservationContext();
 	const handleStepOne = async (formData: FormData) => {
+		const numberOfPeople = formData.get("numberOfPeople");
 		try {
-			const numberOfPeople = formData.get("numberOfPeople");
 			if (
 				!reservationData.time ||
 				!reservationData.date ||
@@ -57,12 +56,11 @@ export default function StepOneForm({ userId }: { userId: string }) {
 
 			const response = await handleStepOneAction(formDataObject, userId);
 			if (!response.success) {
-				console.log(response.errors);
 				setErrors(response?.errors);
-			} else {
-				updateReservationDetails(formDataObject);
-				router.push("/book-table/availability");
+				return;
 			}
+			router.push("/book-table/availability");
+			updateReservationDetails(formDataObject);
 		} catch (error) {
 			console.error(error);
 		}
