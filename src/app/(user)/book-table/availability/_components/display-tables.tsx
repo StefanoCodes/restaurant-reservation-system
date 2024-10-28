@@ -56,9 +56,7 @@ export default function DisplayTables({
 					<Button asChild variant={"outline"}>
 						<Link href={"/book-table"}>Back</Link>
 					</Button>
-					<SubmitButton
-						props={{ disabled: !selectedTable }}
-					>
+					<SubmitButton disabled={!selectedTable}>
 						{selectedTable ? "Submit" : "Select A Table"}
 					</SubmitButton>
 				</div>
