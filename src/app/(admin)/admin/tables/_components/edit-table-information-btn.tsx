@@ -97,8 +97,6 @@ export default function EditTableButton({ table }: { table: TableData }) {
 							</Button>
 							<SubmitButton
 								className="bg-green-500 hover:bg-green-700"
-								variant={"default"}
-								pendingText="Editing..."
 							>
 								Save
 							</SubmitButton>

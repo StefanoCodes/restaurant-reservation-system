@@ -59,7 +59,6 @@ export default function DeleteTableButton({ tableId }: { tableId: string }) {
 						<SubmitButton
 							className="bg-red-500 hover:bg-red-700"
 							variant={"default"}
-							pendingText="Deleting..."
 						>
 							Delete
 						</SubmitButton>

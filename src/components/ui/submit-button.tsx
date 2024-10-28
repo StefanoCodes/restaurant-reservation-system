@@ -1,13 +1,21 @@
 'use client'
  
 import { useFormStatus } from 'react-dom'
-import { Button } from './button'
 import ButtonLoader from '@/app/button-loader'
-import { ButtonHTMLAttributes } from 'react'
+import { Button, ButtonProps, buttonVariants } from './button';
+import { VariantProps } from 'class-variance-authority';
 
-export default function SubmitButton({ children,props }: { children: React.ReactNode,props?: ButtonHTMLAttributes<HTMLButtonElement> }) {
-  const { pending } = useFormStatus()
- 
+export interface SubmitButtonProps
+	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+			VariantProps<typeof buttonVariants> {
+	asChild?: boolean;
+}
+export default function SubmitButton({
+	children,
+	...props
+}: SubmitButtonProps) {
+	const { pending } = useFormStatus();
+
 	return (
 		<Button type="submit" disabled={pending} {...props}>
 			{pending ? (
@@ -15,9 +23,9 @@ export default function SubmitButton({ children,props }: { children: React.React
 					<ButtonLoader />
 					Submitting...
 				</>
-      ) : (
-        children
-      )}
-    </Button>
-  )
+			) : (
+				children
+			)}
+		</Button>
+	);
 }

@@ -59,7 +59,6 @@ export default function ChangeTableStatus({ tableId }: { tableId: string }) {
 						<SubmitButton
 							className="bg-yellow-500 hover:bg-yellow-700"
 							variant={"default"}
-							pendingText="Changing..."
 						>
 							Change
 						</SubmitButton>
