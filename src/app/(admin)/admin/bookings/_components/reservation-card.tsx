@@ -132,7 +132,7 @@ export default function AdminReservationCard({
 								className=" px-0 py-0"
 								action={handleDeleteReservation.bind(null, reservation.id)}
 							>
-								<SubmitButton pendingText="Deleting...">Delete</SubmitButton>
+								<SubmitButton>Delete</SubmitButton>
 							</form>
 						</AlertDialogFooter>
 					</AlertDialogContent>
