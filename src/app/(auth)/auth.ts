@@ -27,7 +27,7 @@ export async function isAuthenticatedUser(shouldRedirect = true) {
 		if (errorMessage || !userInDb) {
 			await logout();
 			if (shouldRedirect) redirect("/login");
-			return { user: null };
+			return { user: null, userInDb: null };
 		}
 
 		return { user, userInDb };
@@ -46,7 +46,7 @@ export async function isAuthenticatedUser(shouldRedirect = true) {
 		// For other errors, proceed with logout and redirect
 		await logout();
 		if (shouldRedirect) redirect("/login");
-		return { user: null };
+		return { user: null, userInDb: null };
 	}
 }
 
