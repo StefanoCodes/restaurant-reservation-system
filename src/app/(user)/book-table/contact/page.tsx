@@ -6,6 +6,7 @@ import StepThreeForm from "./_components/step-three-form";
 
 export default async function Page() {
 	const { userInDb } = await isAuthorizedUser();
+	if (!userInDb) redirect("/login");
 	// check if the previous steps are completed
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId

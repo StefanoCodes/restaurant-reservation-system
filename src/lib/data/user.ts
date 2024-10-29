@@ -4,11 +4,13 @@ import { reservationsTable, tablesTable, usersTable } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 
 import { isAuthorizedUser } from "@/app/(auth)/auth";
+import { redirect } from "next/navigation";
 
 // User Bookings Get Requests
 // User Bookings Get Requests
 export const getBookingsForUser = async () => {
 	const { userInDb } = await isAuthorizedUser();
+	if (!userInDb) redirect("/login");
 	try {
 		const bookings = await db
 			.select({
