@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { ZodError, ZodIssue } from "zod";
+import { date, ZodError, ZodIssue } from "zod";
 import { set } from "date-fns";
 import { WEEKDAYS } from "@/utils/constants";
 export function cn(...inputs: ClassValue[]) {
@@ -45,7 +45,7 @@ export function getEndTime(timeString: string, duration: number): string {
 	return date.toTimeString().slice(0, 5);
 }
 export const formatDateToString = (
-	date: Date | string | null,
+	date: Date | null,
 	options?: Intl.DateTimeFormatOptions
 ) => {
 	if (!date) return null;

@@ -4,7 +4,7 @@ export type User = {
 	email: string;
 	phoneNumber: string;
 	userId: string;
-	createdAt?: Date | null;
+	createdAt: Date | null;
 };
 export type UserReservationDetails = {
 	name: string;

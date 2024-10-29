@@ -9,6 +9,7 @@ import ProgressBar from "../_components/progress-bar";
 
 export default async function Page() {
 	const { userInDb } = await isAuthorizedUser();
+	if (!userInDb) redirect("/login");
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);

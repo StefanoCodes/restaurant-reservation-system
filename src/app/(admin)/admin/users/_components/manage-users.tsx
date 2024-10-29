@@ -23,6 +23,7 @@ export default async function ManageUsers() {
 					<TableHead className="w-[100px]">Name</TableHead>
 					<TableHead>Email</TableHead>
 					<TableHead>Phone</TableHead>
+					<TableHead>Created At</TableHead>
 					<TableHead className="text-right">User Id</TableHead>
 				</TableRow>
 			</TableHeader>
