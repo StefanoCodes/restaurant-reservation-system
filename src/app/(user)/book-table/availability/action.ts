@@ -2,7 +2,7 @@
 
 import { db } from "@/db/db";
 import { reservationFormCompletionStatusTable, Table } from "@/db/schema";
-import { isAuthenticatedUser } from "@/lib/data";
+import { isAuthenticatedUser } from "@/app/(auth)/auth";
 import { formatZodErrors } from "@/lib/utils";
 import { stepTwoSchema } from "@/validations";
 import { eq } from "drizzle-orm";
