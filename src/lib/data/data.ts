@@ -62,11 +62,12 @@ export const getAvailableTables = async (
 				);
 
 			// If no overlapping reservations found for this table, it's available
-			return tableReservations.length === 0 ? table : null;
+			return {
+				...table,
+				status: tableReservations.length === 0 ? "available" : "reserved",
+				suitable: table.capacity >= parseInt(numberOfPeople, 10),
+			};
 		})
 	);
-	const guests = parseInt(numberOfPeople, 10);
-	return availableTables
-		.filter((table): table is Table => table !== null)
-		.filter((table) => table.capacity >= guests);
+	return availableTables;
 };

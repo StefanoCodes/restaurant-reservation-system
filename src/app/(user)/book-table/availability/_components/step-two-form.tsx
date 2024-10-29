@@ -1,5 +1,7 @@
+import { TableWithStatus } from "@/db/schema";
 import DisplayTables from "./display-tables";
 import { getAvailableTables } from "@/lib/data/data";
+import StatusIndicators from "./status-indicators";
 export default async function StepTwo({
 	userId,
 	date,
@@ -14,10 +16,16 @@ export default async function StepTwo({
 	const availableTables = await getAvailableTables(date, time, numberOfPeople);
 	return (
 		<div className="flex flex-col justify-center gap-5">
-			<h1 className="text-2xl font-bold text-center md:text-left">
-				Select A Table
-			</h1>
-			<DisplayTables tables={availableTables} userId={userId} />
+			<div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+				<h1 className="text-2xl font-bold text-center md:text-left">
+					Select A Table
+				</h1>
+				<StatusIndicators />
+			</div>
+			<DisplayTables
+				tables={availableTables as TableWithStatus[]}
+				userId={userId}
+			/>
 		</div>
 	);
 }

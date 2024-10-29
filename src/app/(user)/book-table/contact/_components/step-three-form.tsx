@@ -2,7 +2,6 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/ui/submit-button";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -13,8 +12,6 @@ import { useState } from "react";
 import { User } from "@/lib/types";
 import { stepThreeAction } from "../actions";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 type StepThreeFormDataErrors = {
 	name: string;

@@ -96,6 +96,10 @@ export const permissionsTable = pgTable("permissions", {
 });
 
 export type Table = typeof tablesTable.$inferSelect;
+export type TableWithStatus = Table & {
+	reservedStatus?: "available" | "reserved";
+	suitable?: boolean;
+};
 export type TableData = typeof tablesTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
 export type Permission = typeof permissionsTable.$inferSelect;
