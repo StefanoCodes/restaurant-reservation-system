@@ -9,14 +9,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ReservationCardProps } from "@/lib/types";
 import { cn, formatDateToString } from "@/lib/utils";
-import NoBookingsFound from "./no-bookings-found";
 
 export default function BookingCard({
 	reservation,
 	table,
-	user,
 }: ReservationCardProps) {
-	if (!reservation && !table && !user) return <NoBookingsFound />;
 	return (
 		<Card className="w-full max-w-md mx-auto overflow-hidden transition-shadow duration-300 ease-in-out hover:shadow-lg">
 			<CardHeader className="bg-primary text-primary-foreground">

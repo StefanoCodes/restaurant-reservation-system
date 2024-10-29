@@ -1,11 +1,12 @@
-import { isAuthorizedUser } from "@/lib/data";
+import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
-import StepOneForm from "./_components/step-one";
+import StepOneForm from "./_components/step-one-form";
 import {
 	getUserFormCompletionStatus,
 	resetUserFormCompletionStatus,
 } from "./actions";
-import ProgressBar from "./_components/progress-bar";
+import ProgressBar from "../_components/progress-bar";
+
 export const metadata: Metadata = {
 	keywords: ["restaurant", "reservation", "system", "book", "table"],
 	title: "Book a Table",

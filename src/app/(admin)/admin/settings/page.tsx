@@ -1,1 +1,3 @@
-export default function AdminSettingsPage() {}
+export default function AdminSettingsPage() {
+	return <div>Admin Settings Page</div>;
+}

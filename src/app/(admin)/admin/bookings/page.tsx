@@ -1,4 +1,4 @@
-import { getUserRole, isAuthorizedAdmin } from "@/lib/data";
+import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import ManageBookings from "./_components/manage-bookings";
 import { Suspense } from "react";
 import Loading from "@/app/loading-spinner";

@@ -1,15 +1,16 @@
 "use server";
 import { logout } from "@/actions/actions";
 import { db } from "@/db/db";
-import { reservationsTable, tablesTable } from "@/db/schema";
-import { getTableIdByName, isAuthorizedUser } from "@/lib/data";
+import { reservationsTable } from "@/db/schema";
+import { isAuthorizedUser } from "@/app/(auth)/auth";
+import { getTableIdByName } from "@/lib/data/user";
 import { formatZodErrors, getEndTime } from "@/lib/utils";
 import { BOOKING_DURATION } from "@/utils/constants";
 import { stepThreeSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { resetAllUserFormCompletionStatus } from "../actions";
+import { resetAllUserFormCompletionStatus } from "../(date)/actions";
 
 export async function stepThreeAction(
 	formDataObject: z.infer<typeof stepThreeSchema>

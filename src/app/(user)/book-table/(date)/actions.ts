@@ -5,7 +5,7 @@ import {
 	ReservationFormCompletionStatus,
 	reservationFormCompletionStatusTable,
 } from "@/db/schema";
-import { isAuthenticatedUser, isAuthorizedUser } from "@/lib/data";
+import { isAuthenticatedUser, isAuthorizedUser } from "@/app/(auth)/auth";
 import { formatZodErrors } from "@/lib/utils";
 import { createBookTableSchema } from "@/validations";
 import { eq } from "drizzle-orm";
@@ -28,14 +28,13 @@ export const getUserFormCompletionStatus = async (
 
 // reset user form completion status
 export const resetAllUserFormCompletionStatus = async (userId: string) => {
-
 	try {
 		await db
-		.update(reservationFormCompletionStatusTable)
-		.set({
-			stepOne: false,
-			stepTwo: false,
-			stepThree: false,
+			.update(reservationFormCompletionStatusTable)
+			.set({
+				stepOne: false,
+				stepTwo: false,
+				stepThree: false,
 			})
 			.where(eq(reservationFormCompletionStatusTable.userId, userId));
 		return {

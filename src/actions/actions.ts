@@ -4,7 +4,6 @@ import { db } from "@/db/db";
 import {
 	permissionsTable,
 	reservationFormCompletionStatusTable,
-	reservationsTable,
 	usersTable,
 } from "@/db/schema";
 import { createClient } from "@/supabase/utils/server";
@@ -41,7 +40,7 @@ export async function registerUser(formData: FormData) {
 	if (error) {
 		return {
 			success: false,
-			error: error.code,
+			error: error.message,
 		};
 	}
 
@@ -126,7 +125,7 @@ export async function loginUser(formData: FormData) {
 			error: "User not found",
 		};
 
-	revalidatePath("/", "layout");
+	revalidatePath("/");
 	return {
 		success: true,
 		message: "User logged in successfully",
@@ -147,98 +146,3 @@ export async function logout() {
 		message: "User logged out successfully",
 	};
 }
-// Creating a reservation
-// export const createReservation = async (
-// 	formData: FormData,
-// 	reservationDetails: ReservationDetails
-// ) => {
-// 	// ensure the action is protectd
-// 	const supabase = await createClient();
-// 	const {
-// 		data: { user },
-// 		error,
-// 	} = await supabase.auth.getUser();
-// 	if (error) {
-// 		return {
-// 			success: false,
-// 			error: error.message,
-// 		};
-// 	}
-// 	if (!user) redirect("/login");
-// 	const userRole = await getUserRole(user.id);
-// 	if (userRole !== "user") redirect("/");
-
-// 	// const selectedTableReservations = await getAvailableTables(
-// 	// 	new Date(reservationDetails.reservationDate),
-// 	// 	reservationDetails.time,
-// 	// 	reservationDetails.numberOfPeople
-// 	// );
-// 	// console.log(selectedTableReservations);
-// 	// data received from client
-// 	const unvalidatedReservationData = {
-// 		name: formData.get("name"),
-// 		email: formData.get("email"),
-// 		phoneNumber: formData.get("phoneNumber"),
-// 		numberOfPeople: formData.get("numberOfPeople"),
-// 		specialRequests: formData.get("specialRequests"),
-// 		reservationDate: reservationDetails.reservationDate,
-// 		time: reservationDetails.time,
-// 		tableId: reservationDetails.tableId,
-// 		userId: reservationDetails.userId,
-// 	};
-// 	//  passing data received from client to zod to ensure its the shape we want it in
-// 	const isReservationDataValid = reservationSchema.safeParse(
-// 		unvalidatedReservationData
-// 	);
-// 	// handling the errors / messages taht we would get back from zod if not successfull
-// 	if (!isReservationDataValid.success) {
-// 		return {
-// 			success: false,
-// 			error: formatZodErrors(isReservationDataValid.error),
-// 		};
-// 	}
-// 	// prevent duplicate reservations
-
-// 	// prevent overlapping reseravtions
-
-// 	// Email Being Sent to the user
-
-// 	// insert reservation into database
-
-// 	// sending email to the user
-
-// 	const insertReservation = await db
-// 		.insert(reservationsTable)
-// 		.values({
-// 			userId: isReservationDataValid.data.userId,
-// 			reservationDate: isReservationDataValid.data.reservationDate,
-// 			tableId: isReservationDataValid.data.tableId,
-// 			startTime: isReservationDataValid.data.time,
-// 			endTime: getEndTime(isReservationDataValid.data.time, BOOKING_DURATION),
-// 			numberOfPeople: isReservationDataValid.data.numberOfPeople,
-// 			notes: isReservationDataValid.data.specialRequests,
-// 		})
-// 		.returning({
-// 			reservationId: reservationsTable.id,
-// 		});
-// 	const { error: emailError } = await sendEmailPendingConfirmation(
-// 		"stefanovidmarbusiness@gmail.com",
-// 		"Reservation Pending Confirmation",
-// 		insertReservation[0].reservationId
-// 	);
-// 	if (emailError) {
-// 		await db
-// 			.delete(reservationsTable)
-// 			.where(eq(reservationsTable.id, insertReservation[0].reservationId));
-// 		return {
-// 			success: false,
-// 			emailError: emailError.message,
-// 		};
-// 	}
-// 	revalidatePath("/bookings", "page");
-// 	revalidatePath("/admin/bookings", "page");
-// 	return {
-// 		success: true,
-// 		message: "Reservation created successfully",
-// 	};
-// };

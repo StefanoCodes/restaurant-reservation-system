@@ -39,9 +39,7 @@ const NavLink = ({
 
 export function NavLinks({
 	setIsOpenMenu,
-	role,
 }: {
-	role: string;
 	setIsOpenMenu?: (isOpen: boolean) => void;
 }) {
 	return (
@@ -61,14 +59,14 @@ export function NavLinks({
 		</div>
 	);
 }
-export default function NavigationList({ role }: { role: string }) {
+export default function NavigationList() {
 	return (
 		<>
 			<div className="hidden sm:flex">
-				<NavLinks role={role} />
+				<NavLinks />
 			</div>
 			<div className="sm:hidden">
-				<MobileNavigation role={role} />
+				<MobileNavigation />
 			</div>
 		</>
 	);

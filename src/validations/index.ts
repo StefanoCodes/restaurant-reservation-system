@@ -1,4 +1,4 @@
-import { getMaxCapacity } from "@/lib/data";
+import { getMaxCapacity } from "@/lib/data/user";
 import { z } from "zod";
 
 export const registerSchema = z.object({
@@ -67,6 +67,9 @@ export const addNewTableSchema = z.object({
 
 export const createBookTableSchema = async () => {
 	const maxCapacity = await getMaxCapacity();
+	if (!maxCapacity) {
+		throw new Error("Max capacity not found");
+	}
 	return z.object({
 		date: z.string({
 			message: "Date is required",

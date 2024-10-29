@@ -9,7 +9,7 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { NavLinks } from "./navigation-list";
 import { useState } from "react";
-export default function MobileNavigation({ role }: { role: string }) {
+export default function MobileNavigation() {
 	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -20,7 +20,7 @@ export default function MobileNavigation({ role }: { role: string }) {
 			</SheetTrigger>
 			<SheetContent aria-describedby={undefined}>
 				<SheetTitle>Navigation</SheetTitle>
-				<NavLinks role={role} setIsOpenMenu={setIsOpen} />
+				<NavLinks setIsOpenMenu={setIsOpen} />
 			</SheetContent>
 		</Sheet>
 	);

@@ -1,5 +1,5 @@
 import Loading from "@/app/loading-spinner";
-import { isAuthorizedAdmin } from "@/lib/data";
+import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import { Suspense } from "react";
 import ManageUsers from "./_components/manage-users";
 

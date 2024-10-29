@@ -4,6 +4,7 @@ export type User = {
 	email: string;
 	phoneNumber: string;
 	userId: string;
+	createdAt?: Date | null;
 };
 export type UserReservationDetails = {
 	name: string;
@@ -35,11 +36,6 @@ export type ReservationCardProps = {
 	table: {
 		name: string;
 		capacity: number;
-	};
-	user: {
-		name: string;
-		email: string;
-		phoneNumber: string;
 	};
 };
 

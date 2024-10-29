@@ -1,10 +1,10 @@
 import Loading from "@/app/loading-spinner";
-import { isAuthorizedAdmin } from "@/lib/data";
+import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import { Suspense } from "react";
 import AddNewTable from "./_components/add-new-table";
 import TablesList from "./_components/manage-tables";
 
-export default async function AdminUsersPage() {
+export default async function AdminTablesPage() {
 	await isAuthorizedAdmin();
 
 	return (

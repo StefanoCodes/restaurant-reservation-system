@@ -1,15 +1,14 @@
-import { getTables, isAuthenticatedUser, isAuthorizedUser } from "@/lib/data";
+import { isAuthorizedUser } from "@/app/(auth)/auth";
 import {
 	getUserFormCompletionStatus,
 	resetUserFormCompletionStatus,
-} from "../actions";
+} from "../(date)/actions";
 import { redirect } from "next/navigation";
-import StepTwo from "./_components/step-two";
+import StepTwo from "./_components/step-two-form";
 import ProgressBar from "../_components/progress-bar";
 
 export default async function Page() {
 	const { userInDb } = await isAuthorizedUser();
-	if (!userInDb) return redirect("/login");
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);

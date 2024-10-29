@@ -7,7 +7,6 @@ export default function TablePageStatistics({
 }: {
 	tables: TableData[];
 }) {
-	console.log(tables.length);
 	const totalTables = tables.length;
 	const totalCapacity = tables.reduce((acc, table) => acc + table.capacity, 0);
 	return (

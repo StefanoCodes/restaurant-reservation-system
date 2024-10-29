@@ -2,7 +2,7 @@
 
 import { db } from "@/db/db";
 import { reservationsTable, Table, tablesTable } from "@/db/schema";
-import { isAuthorizedAdmin } from "@/lib/data";
+import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import { formatZodErrors } from "@/lib/utils";
 import { addNewTableSchema } from "@/validations";
 import { eq } from "drizzle-orm";

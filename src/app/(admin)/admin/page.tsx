@@ -1,8 +1,6 @@
-import { isAuthorizedAdmin } from "@/lib/data";
-import { redirect } from "next/navigation";
+import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 
 export default async function Page() {
 	const { userInDb } = await isAuthorizedAdmin();
-	if (!userInDb) redirect("/login");
 	return <div>Welcome {userInDb.name} this is an admin Area</div>;
 }

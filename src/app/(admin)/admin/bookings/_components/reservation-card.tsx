@@ -30,10 +30,10 @@ import SubmitButton from "@/components/ui/submit-button";
 export default function AdminReservationCard({
 	reservation,
 	table,
-	user,
 }: ReservationCardProps) {
 	const { toast } = useToast();
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
+
 	const handleDeleteReservation = async (reservationId: string) => {
 		const reservationDeletedResponse = await deleteUserReservationAction(
 			reservationId
@@ -55,7 +55,7 @@ export default function AdminReservationCard({
 		<Card className="w-full max-w-md mx-auto overflow-hidden transition-shadow duration-300 ease-in-out hover:shadow-lg">
 			<CardHeader className="bg-primary text-primary-foreground">
 				<CardTitle className="flex justify-between items-center">
-					<span>{user.name}'s Reservation</span>
+					<span>{reservation.reservationName}'s Reservation</span>
 					<Badge
 						variant="secondary"
 						className={cn(
@@ -71,6 +71,7 @@ export default function AdminReservationCard({
 					</Badge>
 				</CardTitle>
 			</CardHeader>
+
 			<CardContent className="mt-4 space-y-4">
 				<div className="flex items-center space-x-2">
 					<CalendarDays className="w-5 h-5 text-muted-foreground" />
@@ -122,7 +123,7 @@ export default function AdminReservationCard({
 							<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 							<AlertDialogDescription>
 								This action cannot be undone. This will permanently delete the
-								reservation for {user.name} on{" "}
+								reservation for {reservation.reservationName} on{" "}
 								{formatDateToString(reservation.createdAt)}.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
