@@ -53,7 +53,7 @@ export const resetUserFormCompletionStatus = async (
 	step: "one" | "two" | "three"
 ) => {
 	const stepToReset = `step${step.slice(0, 1).toUpperCase()}${step.slice(1)}`;
-	console.log(stepToReset);
+	
 	await db
 		.update(reservationFormCompletionStatusTable)
 		.set({
@@ -88,21 +88,12 @@ export const handleStepOneAction = async (
 			errors: formatZodErrors(isDataValid.error),
 		};
 	}
-
-	// keep track of the data
-	const { date, time, numberOfPeople } = isDataValid.data;
-	// we would prorably use something like context to keep track of the data
-	// but for now we will just log it
-	console.log(date, time, numberOfPeople);
-
-	// we need to update in the database that the first step for this user is completed
 	await db
 		.update(reservationFormCompletionStatusTable)
 		.set({
 			stepOne: true,
 		})
 		.where(eq(reservationFormCompletionStatusTable.userId, userId));
-	// send a response
 	return {
 		success: true,
 		message: "Completed successfully",

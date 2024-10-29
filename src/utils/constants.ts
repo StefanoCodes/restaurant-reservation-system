@@ -1,4 +1,4 @@
-import { Calendar, Mail, Table, User } from "lucide-react";
+import { Calendar, Mail, Settings, Table, User } from "lucide-react";
 
 export const BOOKING_DURATION = 2;
 // this will in future be part of the confg / settings in the admin panel
@@ -65,5 +65,10 @@ export const ADMIN_ROUTES = [
 		name: "Manage Tables",
 		path: "/admin/tables",
 		icon: Table,
+	},
+	{
+		name: "Settings",
+		path: "/admin/settings",
+		icon: Settings,
 	},
 ];

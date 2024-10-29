@@ -7,7 +7,11 @@ import { redirect } from "next/navigation";
 import StepTwo from "./_components/step-two-form";
 import ProgressBar from "../_components/progress-bar";
 
-export default async function Page() {
+export default async function Page({
+	searchParams,
+}: {
+	searchParams: Promise<{ date: string; time: string; numberOfPeople: string }>;
+}) {
 	const { userInDb } = await isAuthorizedUser();
 	if (!userInDb) redirect("/login");
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
@@ -20,11 +24,18 @@ export default async function Page() {
 		await resetUserFormCompletionStatus(userInDb.userId, "two");
 	}
 
+	const { date, time, numberOfPeople } = await searchParams;
+
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
 			<ProgressBar />
 			<div className="bg-gray-300 rounded-lg px-4 py-6 md:px-12 md:py-8 w-full">
-				<StepTwo userId={userInDb.userId} />
+				<StepTwo
+					userId={userInDb.userId}
+					date={date}
+					time={time}
+					numberOfPeople={numberOfPeople}
+				/>
 			</div>
 		</div>
 	);

@@ -30,7 +30,6 @@ import Link from "next/link";
 function SubmitTableButton() {
 	const { pending } = useFormStatus();
 	const { reservationData } = useCreateReservationContext();
-	console.log(reservationData);
 	return (
 		<Button
 			className="w-full sm:w-[7.5rem]"
@@ -75,8 +74,9 @@ export default function StepOneForm({ userId }: { userId: string }) {
 				setErrors(response?.errors);
 				return;
 			}
-
-			router.push("/book-table/availability");
+			router.push(
+				`/book-table/availability?date=${reservationData.date}&time=${reservationData.time}&numberOfPeople=${numberOfPeople}`
+			);
 			updateReservationDetails(formDataObject);
 		} catch (error) {
 			console.error(error);

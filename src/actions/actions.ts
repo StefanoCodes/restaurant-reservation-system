@@ -8,6 +8,7 @@ import {
 } from "@/db/schema";
 import { createClient } from "@/supabase/utils/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 // AUTH
 export async function registerUser(formData: FormData) {
@@ -113,7 +114,7 @@ export async function loginUser(formData: FormData) {
 	if (error) {
 		return {
 			success: false,
-			error: error.code,
+			error: error.message,
 		};
 	}
 
@@ -141,8 +142,5 @@ export async function logout() {
 			message: error.message,
 		};
 	}
-	return {
-		success: true,
-		message: "User logged out successfully",
-	};
+	redirect("/login");
 }

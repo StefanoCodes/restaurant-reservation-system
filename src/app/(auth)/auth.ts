@@ -2,15 +2,13 @@ import "server-only";
 import { createClient } from "@/supabase/utils/server";
 import { redirect } from "next/navigation";
 import { logout } from "@/actions/actions";
-// import { getUserDetails } from "@/lib/data/user";
-// import { getUserRole } from "@/lib/data/user";
 import { permissionsTable, usersTable } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/utils";
 
 // Ensures that we have a session and that the user in the session exists in the db
-export async function isAuthenticatedUser(shouldRedirect = true) {
+export async function isAuthenticatedUser() {
 	try {
 		const client = await createClient();
 		const {
@@ -26,7 +24,6 @@ export async function isAuthenticatedUser(shouldRedirect = true) {
 		const { userInDb, errorMessage } = await getUserDetails(user.id);
 		if (errorMessage || !userInDb) {
 			await logout();
-			if (shouldRedirect) redirect("/login");
 			return { user: null, userInDb: null };
 		}
 
@@ -35,17 +32,11 @@ export async function isAuthenticatedUser(shouldRedirect = true) {
 		// Check for network errors
 		if (error instanceof TypeError && error.message.includes("network")) {
 			// You could either:
-			// 1. Throw the error to be handled by your error boundary
+
 			throw new Error(
 				"Unable to verify authentication. Please check your connection."
 			);
-			// 2. Or redirect to an error page
-			// redirect('/error?message=network-error');
 		}
-
-		// For other errors, proceed with logout and redirect
-		await logout();
-		if (shouldRedirect) redirect("/login");
 		return { user: null, userInDb: null };
 	}
 }

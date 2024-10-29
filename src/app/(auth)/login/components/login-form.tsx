@@ -36,7 +36,7 @@ export default function LoginForm() {
 			router.push("/");
 		} else {
 			toast({
-				title: response.message,
+				title: response.error as string,
 				className: "border-none bg-red-600 text-white",
 				duration: 2000,
 			});

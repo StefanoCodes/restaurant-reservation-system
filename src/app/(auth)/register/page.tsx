@@ -2,12 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 import RegistrationForm from "./components/registration-form";
-import { isAuthenticatedUser } from "@/app/(auth)/auth";
-import { redirect } from "next/navigation";
 export default async function Register() {
-	const { user } = await isAuthenticatedUser(false);
-	if (user) redirect("/");
-
 	return (
 		<main className="h-full w-full overflow-hidden ">
 			<div className="w-full lg:grid lg:grid-cols-2 md:min-h-screen px-4 sm:px-0 relative">

@@ -27,8 +27,6 @@ export async function stepThreeAction(
 		};
 	}
 
-	console.log(formDataObject);
-
 	// pass the data through zod
 	const isDataValid = stepThreeSchema.safeParse(formDataObject);
 	if (!isDataValid.success) {

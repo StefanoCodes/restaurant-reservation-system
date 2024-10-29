@@ -56,7 +56,6 @@ export async function addNewTableAction(formData: FormData) {
 	});
 
 	if (!isValidTableData.success) {
-		console.log(isValidTableData.error);
 		return {
 			success: false,
 			error: formatZodErrors(isValidTableData.error),
@@ -119,7 +118,6 @@ export async function editTableDataAction(formData: FormData, tableId: string) {
 	const name = formData.get("tableName");
 
 	const capacity = formData.get("tableCapacity");
-	console.log(name, capacity);
 	const isValidTableData = addNewTableSchema.safeParse({
 		name,
 		capacity,
