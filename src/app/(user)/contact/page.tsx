@@ -1,8 +1,6 @@
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { createClient } from "@/supabase/utils/server";
-import { getUserRole, isAuthorizedUser } from "@/app/(auth)/auth";
-import { redirect } from "next/navigation";
+import { isAuthorizedUser } from "@/app/(auth)/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 export default async function Page() {
