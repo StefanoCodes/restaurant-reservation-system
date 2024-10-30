@@ -1,11 +1,12 @@
+export const dynamic = "force-dynamic";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
-import StepOneForm from "./_components/step-one-form";
+import StepOneForm from "./_date/_components/step-one-form";
 import {
 	getUserFormCompletionStatus,
 	resetUserFormCompletionStatus,
-} from "./actions";
-import ProgressBar from "../_components/progress-bar";
+} from "./_date/actions";
+import ProgressBar from "./_components/progress-bar";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function BookTablePage() {
+export default async function Page() {
 	const { userInDb } = await isAuthorizedUser();
 	if (!userInDb) redirect("/login");
 	const userFormCompletionStatus = await getUserFormCompletionStatus(

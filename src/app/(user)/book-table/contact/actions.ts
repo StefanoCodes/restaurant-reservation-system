@@ -10,7 +10,7 @@ import { stepThreeSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { resetAllUserFormCompletionStatus } from "../(date)/actions";
+import { resetAllUserFormCompletionStatus } from "../_date/actions";
 
 export async function stepThreeAction(
 	formDataObject: z.infer<typeof stepThreeSchema>

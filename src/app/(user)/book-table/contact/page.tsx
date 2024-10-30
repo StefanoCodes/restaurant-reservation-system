@@ -1,5 +1,7 @@
+export const dynamic = "force-dynamic";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
-import { getUserFormCompletionStatus } from "../(date)/actions";
+
+import { getUserFormCompletionStatus } from "../_date/actions";
 import { redirect } from "next/navigation";
 import ProgressBar from "../_components/progress-bar";
 import StepThreeForm from "./_components/step-three-form";
