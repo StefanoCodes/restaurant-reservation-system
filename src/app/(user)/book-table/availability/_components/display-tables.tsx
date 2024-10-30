@@ -31,16 +31,14 @@ export default function DisplayTables({
 	tables,
 	userId,
 }: {
-	tables: TableWithStatus[];
+	tables: TableType[];
 	userId: string;
 }) {
 	const isAvailableTables = tables.length === 0;
 	if (isAvailableTables) {
 		return <p>No tables available</p>;
 	}
-	const [selectedTable, setSelectedTable] = useState<TableWithStatus | null>(
-		null
-	);
+	const [selectedTable, setSelectedTable] = useState<TableType | null>(null);
 	const [error, setError] = useState<Record<string, string> | undefined>(
 		undefined
 	);

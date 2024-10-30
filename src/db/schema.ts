@@ -18,6 +18,7 @@ export const reservationStatusEnum = pgEnum("reservation_status", [
 // incase the table has mantaince or something
 export const tableStatusEnum = pgEnum("table_status", [
 	"available",
+	"reserved",
 	"unavailable",
 ]);
 // USER TABLE
@@ -63,7 +64,9 @@ export const reservationsTable = pgTable("reservations", {
 	reservationEmail: varchar("reservation_email", {
 		length: 255,
 	}).notNull(),
-	status: reservationStatusEnum("status").default("pending"),
+	reservationStatus: reservationStatusEnum("status")
+		.default("pending")
+		.notNull(),
 	numberOfPeople: integer("number_of_people").notNull(),
 	createdAt: timestamp("created_at").defaultNow(),
 	notes: text("notes").default(""),
@@ -97,8 +100,8 @@ export const permissionsTable = pgTable("permissions", {
 
 export type Table = typeof tablesTable.$inferSelect;
 export type TableWithStatus = Table & {
-	reservedStatus?: "available" | "reserved";
-	suitable?: boolean;
+	reservedStatus: "available" | "reserved";
+	suitable: boolean;
 };
 export type TableData = typeof tablesTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;

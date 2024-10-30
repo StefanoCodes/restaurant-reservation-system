@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table as TableType, TableWithStatus } from "@/db/schema";
+import { Table as TableType } from "@/db/schema";
 import { cn, formatTableName } from "@/lib/utils";
 import { User2Icon } from "lucide-react";
 export default function Table({
@@ -9,17 +9,22 @@ export default function Table({
 	setSelectedTable,
 	selectedTable,
 }: {
-	table: TableWithStatus;
-	setSelectedTable: React.Dispatch<
-		React.SetStateAction<TableWithStatus | null>
-	>;
-	selectedTable: TableWithStatus | null;
+	table: TableType;
+	setSelectedTable: React.Dispatch<React.SetStateAction<TableType | null>>;
+	selectedTable: TableType | null;
 }) {
 	const tableName = formatTableName(table.name);
 	const people = Array.from({ length: table.capacity });
-	const isDisabled = table.reservedStatus === "reserved";
-	const isNotSuitable = !table.suitable;
-	const isAvailable = table.reservedStatus === "available";
+	// unavailable means that the selected number of people is greater than what tha table can accomodate
+	// color yellow
+	const Isunavailable = table.status === "unavailable";
+	// reserved will be the color red
+	const isReserved = table.status === "reserved";
+	// color white meaning it can be clicked
+	const isAvailable = table.status === "available";
+	// this will allow the unavaibale and reserved ones to not be clicked
+	const isDisabled = isReserved || Isunavailable;
+
 	return (
 		<Button
 			asChild
@@ -27,7 +32,7 @@ export default function Table({
 			disabled={isDisabled}
 			variant="ghost"
 			onClick={() => {
-				if (!isDisabled && !isNotSuitable)
+				if (!isDisabled)
 					setSelectedTable((prev) => (prev === table ? null : table));
 			}}
 		>
@@ -37,9 +42,10 @@ export default function Table({
 					`w-[7rem] h-[7rem] md:w-[10rem] text-black md:h-[10rem] lg:w-[14rem] lg:h-[14rem] cursor-pointer hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed`,
 					isDisabled &&
 						"bg-red-500/30 opacity-50 hover:scale-100 cursor-not-allowed hover:bg-red-500/30",
-					isNotSuitable &&
+						// this means that the capaity is less than what is requestsed
+					Isunavailable &&
 						"bg-yellow-500/30 opacity-50 hover:scale-100 cursor-not-allowed hover:bg-yellow-500/30",
-					selectedTable === table
+					selectedTable === table && isAvailable
 						? "scale-105 bg-green-500/30 hover:bg-green-500/50"
 						: "scale-100 hover:scale-100 hover:bg-none"
 				)}

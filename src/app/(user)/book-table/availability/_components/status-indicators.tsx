@@ -1,11 +1,11 @@
 import { cn } from "@/lib/utils";
 
-const statuses = ["available", "reserved", "unavailable"];
+const statuses = ["available", "capacity", "reserved"];
 // each status has a color
 const statusColors = {
 	available: "bg-gray-500",
-	reserved: "bg-yellow-500",
-	unavailable: "bg-red-500",
+	capacity: "bg-yellow-500",
+	reserved: "bg-red-500",
 };
 export default function StatusIndicators() {
 	return (
@@ -18,7 +18,9 @@ export default function StatusIndicators() {
 							"rounded-full w-2 h-2"
 						)}
 					/>
-					<p>{status}</p>
+					<p>
+						{status === "capacity" ? "capacity is less than requested" : status}
+					</p>
 				</div>
 			))}
 		</div>

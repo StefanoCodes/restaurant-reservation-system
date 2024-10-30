@@ -50,6 +50,8 @@ export const USER_ROUTES = [
 		icon: Mail,
 	},
 ];
+
+// TODO: add new admin routes 1. Manage Admins 2. Configure Settings
 export const ADMIN_ROUTES = [
 	{
 		name: "Manage Bookings",

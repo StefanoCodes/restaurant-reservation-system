@@ -57,10 +57,6 @@ export default function LogoutButton() {
 			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
-					<AlertDialogDescription>
-						This action cannot be undone. This will permanently delete your
-						account and remove your data from our servers.
-					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>

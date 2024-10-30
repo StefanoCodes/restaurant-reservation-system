@@ -23,21 +23,21 @@ export default function BookingCard({
 						variant="secondary"
 						className={cn(
 							`text-white`,
-							reservation.status === "pending"
+							reservation.reservationStatus === "pending"
 								? "bg-yellow-500"
-								: reservation.status === "confirmed"
+								: reservation.reservationStatus === "confirmed"
 								? "bg-green-500"
 								: "bg-red-500"
 						)}
 					>
-						{reservation.status}
+						{reservation.reservationStatus}
 					</Badge>
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="mt-4 space-y-4">
 				<div className="flex items-center space-x-2">
 					<CalendarDays className="w-5 h-5 text-muted-foreground" />
-					<span>{formatDateToString(reservation.createdAt)}</span>
+					<span>{formatDateToString(reservation.reservationDate)}</span>
 				</div>
 				<div className="flex items-center space-x-2">
 					<Clock className="w-5 h-5 text-muted-foreground" />

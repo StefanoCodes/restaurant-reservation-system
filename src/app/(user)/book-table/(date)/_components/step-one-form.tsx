@@ -46,11 +46,11 @@ export default function StepOneForm({ userId }: { userId: string }) {
 	const [errors, setErrors] = useState<StepOneFormDataErrors | undefined>(
 		undefined
 	);
-	const timeSlots = calculateTimeSlots();
+
 	const router = useRouter();
 	const { reservationData, updateReservationDetails } =
 		useCreateReservationContext();
-
+	const timeSlots = calculateTimeSlots(reservationData.date);
 	const handleStepOne = async (formData: FormData) => {
 		const numberOfPeople = formData.get("numberOfPeople");
 		try {
@@ -62,7 +62,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
 			) {
 				throw new Error("Invalid form data");
 			}
-
+			// check what is the date being selected is it accruate ?
 			const formDataObject = {
 				date: reservationData.date,
 				time: reservationData.time,

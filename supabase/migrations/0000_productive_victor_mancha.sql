@@ -11,7 +11,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."table_status" AS ENUM('available', 'unavailable');
+ CREATE TYPE "public"."table_status" AS ENUM('available', 'reserved', 'unavailable');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

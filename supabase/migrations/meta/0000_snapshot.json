@@ -1,5 +1,5 @@
 {
-  "id": "3d9f9a2c-ea29-4d90-b8de-602865ccd308",
+  "id": "dad89466-abe1-44c0-bee1-63162a71fcdc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -358,6 +358,7 @@
       "schema": "public",
       "values": [
         "available",
+        "reserved",
         "unavailable"
       ]
     }

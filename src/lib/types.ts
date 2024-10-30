@@ -24,7 +24,6 @@ export type ReservationCardProps = {
 		id: string;
 		startTime: string;
 		endTime: string;
-		status: "pending" | "confirmed" | "cancelled" | null;
 		numberOfPeople: number;
 		createdAt: Date | null;
 		notes: string | null;
@@ -32,6 +31,7 @@ export type ReservationCardProps = {
 		reservationName: string;
 		reservationPhone: string;
 		reservationEmail: string;
+		reservationStatus: "pending" | "confirmed" | "cancelled";
 	};
 	table: {
 		name: string;

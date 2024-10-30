@@ -9,8 +9,14 @@ export function cn(...inputs: ClassValue[]) {
 
 // calculate the time picking based off the start and end time of the resturaunt
 
-export function calculateTimeSlots() {
-	// this needs to figure out which day of the week it is to the calculat the difference
+export function calculateTimeSlots(selectedDate: string) {
+	// const selectedDateFormatted = new Date(selectedDate);
+	// const selectedDateToString = selectedDateFormatted
+	// 	.toISOString()
+	// 	.split("T")[0];
+	// const currentDate = new Date().toISOString().split("T")[0];
+	// console.log(currentDate, "currentDate");
+	// console.log(selectedDateToString, "selectedDateToString");
 	const dayOfWeek = Intl.DateTimeFormat(undefined, { weekday: "long" })
 		.format(new Date())
 		.toUpperCase();
@@ -20,8 +26,14 @@ export function calculateTimeSlots() {
 
 	const difference = closingHours - openingHours;
 	const timeSlots = Array.from({ length: difference }, (_, index) => {
-		const hours = index + openingHours;
-		return `${hours.toString().padStart(2, "0")}:00`;
+		if (new Date().getHours() > openingHours) {
+			// we need start from the current time
+			const hours = index + new Date().getHours();
+			return `${hours.toString().padStart(2, "0")}:00`;
+		} else {
+			const hours = index + openingHours;
+			return `${hours.toString().padStart(2, "0")}:00`;
+		}
 	});
 	return timeSlots;
 }
@@ -45,7 +57,7 @@ export function getEndTime(timeString: string, duration: number): string {
 	return date.toTimeString().slice(0, 5);
 }
 export const formatDateToString = (
-	date: Date | null,
+	date: Date | null | string,
 	options?: Intl.DateTimeFormatOptions
 ) => {
 	if (!date) return null;

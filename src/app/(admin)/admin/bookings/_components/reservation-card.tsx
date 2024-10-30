@@ -60,14 +60,14 @@ export default function AdminReservationCard({
 						variant="secondary"
 						className={cn(
 							`text-white`,
-							reservation.status === "pending"
+							reservation.reservationStatus === "pending"
 								? "bg-yellow-500"
-								: reservation.status === "confirmed"
+								: reservation.reservationStatus === "confirmed"
 								? "bg-green-500"
 								: "bg-red-500"
 						)}
 					>
-						{reservation.status}
+						{reservation.reservationStatus}
 					</Badge>
 				</CardTitle>
 			</CardHeader>

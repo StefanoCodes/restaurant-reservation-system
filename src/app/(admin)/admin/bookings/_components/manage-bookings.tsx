@@ -8,9 +8,9 @@ export default async function ManageBookings() {
 	if (isBookingsEmpty) return <div>No bookings found</div>;
 	return (
 		<>
-			{reservations.map((reservation, idx) => (
+			{reservations.map((reservation) => (
 				<AdminReservationCard
-					key={idx}
+					key={reservation.reservation.id}
 					reservation={reservation.reservation}
 					table={reservation.table}
 				/>

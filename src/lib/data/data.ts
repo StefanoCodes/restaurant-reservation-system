@@ -60,12 +60,14 @@ export const getAvailableTables = async (
 						)
 					)
 				);
-
-			// If no overlapping reservations found for this table, it's available
 			return {
 				...table,
-				status: tableReservations.length === 0 ? "available" : "reserved",
-				suitable: table.capacity >= parseInt(numberOfPeople, 10),
+				status:
+					tableReservations.length === 0
+						? table.capacity >= parseInt(numberOfPeople, 10)
+							? "available"
+							: "unavailable"
+						: "reserved",
 			};
 		})
 	);
