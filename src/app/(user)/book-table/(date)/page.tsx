@@ -34,6 +34,7 @@ export default async function BookTablePage() {
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);
+	// push
 	if (userFormCompletionStatus?.stepOne) {
 		// we want to reset the form completion status
 		// the values will be shown by default in the user inputs
