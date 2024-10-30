@@ -1,5 +1,5 @@
 "use server";
-import { logout } from "@/app/(auth)/auth";
+import { logout } from "@/app/auth";
 import { db } from "@/db/db";
 import {
 	ReservationFormCompletionStatus,
