@@ -35,7 +35,10 @@ function SubmitTableButton() {
 			className="w-full sm:w-[7.5rem]"
 			disabled={!reservationData.date || !reservationData.time || pending}
 		>
-			{reservationData.date && reservationData.time && !pending && "Next"}
+			{reservationData.date &&
+				reservationData.time !== "select a time" &&
+				!pending &&
+				"Next"}
 			{pending && <ButtonLoader />}
 			{!reservationData.date && !reservationData.time && "Select A Date"}
 		</Button>

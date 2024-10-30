@@ -1,5 +1,5 @@
 {
-  "id": "dad89466-abe1-44c0-bee1-63162a71fcdc",
+  "id": "3a3d3eae-cb6f-424b-96a9-8535b901d43e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -178,7 +178,7 @@
           "type": "reservation_status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "'pending'"
         },
         "number_of_people": {

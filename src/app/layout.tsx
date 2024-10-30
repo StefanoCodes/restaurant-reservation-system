@@ -22,7 +22,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${dmSans.className} antialiased bg-gray-100`}>
+			<body
+				className={`${dmSans.className} antialiased bg-gray-100 min-h-[100dvh]`}
+			>
 				<NextTopLoader showSpinner={false} color="#ffffff" />
 				{children}
 				<Toaster />

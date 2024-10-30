@@ -26,14 +26,8 @@ export function calculateTimeSlots(selectedDate: string) {
 
 	const difference = closingHours - openingHours;
 	const timeSlots = Array.from({ length: difference }, (_, index) => {
-		if (new Date().getHours() > openingHours) {
-			// we need start from the current time
-			const hours = index + new Date().getHours();
-			return `${hours.toString().padStart(2, "0")}:00`;
-		} else {
-			const hours = index + openingHours;
-			return `${hours.toString().padStart(2, "0")}:00`;
-		}
+		const hours = index + openingHours;
+		return `${hours.toString().padStart(2, "0")}:00`;
 	});
 	return timeSlots;
 }

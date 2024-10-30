@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS "reservations" (
 	"reservation_name" varchar(255) NOT NULL,
 	"reservation_phone" varchar(255) NOT NULL,
 	"reservation_email" varchar(255) NOT NULL,
-	"status" "reservation_status" DEFAULT 'pending',
+	"status" "reservation_status" DEFAULT 'pending' NOT NULL,
 	"number_of_people" integer NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"notes" text DEFAULT ''

@@ -22,6 +22,7 @@ export default async function Page({
 	}
 	if (userFormCompletionStatus?.stepTwo) {
 		await resetUserFormCompletionStatus(userInDb.userId, "two");
+		redirect("/book-table");
 	}
 
 	const { date, time, numberOfPeople } = await searchParams;
