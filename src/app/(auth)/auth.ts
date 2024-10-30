@@ -11,7 +11,7 @@ import { eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/utils";
 import { loginSchema, registerSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
-import { logout } from "../logout";
+import { logout } from "@/app/logout";
 
 // AUTH
 export async function registerUser(formData: FormData) {
