@@ -29,22 +29,21 @@ export const metadata: Metadata = {
 };
 
 export default async function BookTablePage() {
-	// const { userInDb } = await isAuthorizedUser();
-	// if (!userInDb) redirect("/login");
-	// const userFormCompletionStatus = await getUserFormCompletionStatus(
-	// 	userInDb.userId
-	// );
-	// push
-	// if (userFormCompletionStatus?.stepOne) {
-	// 	// we want to reset the form completion status
-	// 	// the values will be shown by default in the user inputs
-	// 	await resetUserFormCompletionStatus(userInDb.userId, "one");
-	// }
+	const { userInDb } = await isAuthorizedUser();
+	if (!userInDb) redirect("/login");
+	const userFormCompletionStatus = await getUserFormCompletionStatus(
+		userInDb.userId
+	);
+	if (userFormCompletionStatus?.stepOne) {
+		// we want to reset the form completion status
+		// the values will be shown by default in the user inputs
+		await resetUserFormCompletionStatus(userInDb.userId, "one");
+	}
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
 			<ProgressBar />
 			<div className="bg-gray-300 rounded-lg p-4 w-full">
-				{/* <StepOneForm userId={userInDb.userId} /> */}
+				<StepOneForm userId={userInDb.userId} />
 			</div>
 		</div>
 	);
