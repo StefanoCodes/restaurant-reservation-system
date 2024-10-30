@@ -9,7 +9,6 @@ const dmSans = DM_Sans({
 });
 export default async function Navigation() {
 	const { userInDb } = await isAuthorizedUser();
-
 	return (
 		<nav className="bg-gradient-to-r from-orange-500 to-orange-600">
 			<div className="flex justify-between items-center max-w-7xl mx-auto py-4 px-4">
