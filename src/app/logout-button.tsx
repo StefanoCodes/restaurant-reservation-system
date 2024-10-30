@@ -1,12 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { logout } from "@/app/(auth)/auth";
+import { logout } from "./logout";
 import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import {
 	AlertDialog,
 	AlertDialogContent,
-	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,

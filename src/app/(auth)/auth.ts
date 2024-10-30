@@ -11,6 +11,7 @@ import { eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/utils";
 import { loginSchema, registerSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
+import { logout } from "../logout";
 
 // AUTH
 export async function registerUser(formData: FormData) {
@@ -133,18 +134,6 @@ export async function loginUser(formData: FormData) {
 		success: true,
 		message: "User logged in successfully",
 	};
-}
-
-export async function logout() {
-	const supabase = await createClient();
-	const { error } = await supabase.auth.signOut();
-	if (error) {
-		return {
-			success: false,
-			message: error.message,
-		};
-	}
-	redirect("/login");
 }
 
 // Ensures that we have a session and that the user in the session exists in the db
