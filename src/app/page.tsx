@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 
 export default async function MarketingPage() {
 	const { userInDb } = await isAuthorizedUser();
+	console.log(userInDb);
 
 	return (
 		<div className="flex flex-col min-h-screen items-center mt-[2.5rem] p-3 w-full">
