@@ -35,9 +35,6 @@ export default function DisplayTables({
 	userId: string;
 }) {
 	const isAvailableTables = tables.length === 0;
-	if (isAvailableTables) {
-		return <p>No tables available</p>;
-	}
 	const [selectedTable, setSelectedTable] = useState<TableType | null>(null);
 	const [error, setError] = useState<Record<string, string> | undefined>(
 		undefined
@@ -63,16 +60,20 @@ export default function DisplayTables({
 		<form action={handleStepTwo}>
 			<div className="flex flex-col gap-4 ">
 				<div className="flex flex-wrap gap-4 max-w-5xl items-center justify-center">
-					{tables.map((table) => {
-						return (
-							<Table
-								key={table.id}
-								table={table}
-								selectedTable={selectedTable}
-								setSelectedTable={setSelectedTable}
-							/>
-						);
-					})}
+					{isAvailableTables ? (
+						<p>No tables available</p>
+					) : (
+						tables.map((table) => {
+							return (
+								<Table
+									key={table.id}
+									table={table}
+									selectedTable={selectedTable}
+									setSelectedTable={setSelectedTable}
+								/>
+							);
+						})
+					)}
 					{error ? <p className="text-red-500">error</p> : null}
 				</div>
 				<div className="flex flex-col sm:flex-row justify-center gap-4">
