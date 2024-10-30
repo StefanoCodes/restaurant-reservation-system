@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { logout } from "@/app/logout";
+import { logout } from "@/app/auth";
 import { useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
 import {
