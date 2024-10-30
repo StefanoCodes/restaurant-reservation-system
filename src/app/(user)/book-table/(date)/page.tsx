@@ -30,6 +30,7 @@ export const metadata: Metadata = {
 
 export default async function BookTablePage() {
 	const { userInDb } = await isAuthorizedUser();
+	console.log(userInDb);
 	if (!userInDb) redirect("/login");
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
