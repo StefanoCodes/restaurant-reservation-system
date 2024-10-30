@@ -1,5 +1,5 @@
 "use server";
-import { logout } from "@/actions/actions";
+import { logout } from "@/app/(auth)/auth";
 import { db } from "@/db/db";
 import { reservationsTable } from "@/db/schema";
 import { isAuthorizedUser } from "@/app/(auth)/auth";

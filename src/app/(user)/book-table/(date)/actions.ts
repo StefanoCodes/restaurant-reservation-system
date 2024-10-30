@@ -1,5 +1,5 @@
 "use server";
-import { logout } from "@/actions/actions";
+import { logout } from "@/app/(auth)/auth";
 import { db } from "@/db/db";
 import {
 	ReservationFormCompletionStatus,
@@ -53,7 +53,7 @@ export const resetUserFormCompletionStatus = async (
 	step: "one" | "two" | "three"
 ) => {
 	const stepToReset = `step${step.slice(0, 1).toUpperCase()}${step.slice(1)}`;
-	
+
 	await db
 		.update(reservationFormCompletionStatusTable)
 		.set({
