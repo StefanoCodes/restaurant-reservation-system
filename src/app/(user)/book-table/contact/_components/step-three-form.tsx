@@ -53,7 +53,6 @@ export default function StepThreeForm({ user }: { user: User }) {
 				return;
 			}
 			// if the response is success we will show the success toast and redirect the user to the bookings page
-
 			toast({
 				title: "Success!",
 				description: "Check your Email for confirmation",

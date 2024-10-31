@@ -21,7 +21,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body
 				className={`${dmSans.className} antialiased bg-gray-100 min-h-[100dvh]`}
 			>

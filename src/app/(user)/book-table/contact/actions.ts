@@ -11,10 +11,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { resetAllUserFormCompletionStatus } from "../_date/actions";
-import {
-	checkIfReservationAlreadyExists,
-	getAvailableTables,
-} from "@/lib/data/data";
+import { checkIfReservationAlreadyExists } from "@/lib/data/data";
 
 export async function stepThreeAction(
 	formDataObject: z.infer<typeof stepThreeSchema>
@@ -55,6 +52,7 @@ export async function stepThreeAction(
 		if (isReservationAlreadyExists) {
 			throw new Error("Reservation already exists");
 		}
+		// if the reservation is not already exists we will insert the reservation
 		const insertReservation = await db.insert(reservationsTable).values({
 			reservationName: isDataValid.data.name,
 			reservationPhone: isDataValid.data.phone,
@@ -67,9 +65,9 @@ export async function stepThreeAction(
 			numberOfPeople: isDataValid.data.numberOfPeople,
 			notes: isDataValid.data.specialRequests,
 		});
+		// if the insertion is successful we will return the success message
 	} catch (error) {
-		console.error("Reservation creation failed:", error);
-
+		// if the error is an instance of Error we will return the error message
 		if (error instanceof Error) {
 			return {
 				success: false,
@@ -81,6 +79,7 @@ export async function stepThreeAction(
 	const { success: ResetSucess } = await resetAllUserFormCompletionStatus(
 		userInDb.userId
 	);
+	// if the reset is not successful we will throw an error
 	if (!ResetSucess) {
 		throw new Error("Failed to reset form completion status");
 	}
@@ -88,7 +87,6 @@ export async function stepThreeAction(
 	revalidatePath("/book-table");
 	revalidatePath("/bookings");
 	revalidatePath("/admin/bookings");
-
 	return {
 		success: true,
 		message: "Reservation Created Successfully",
