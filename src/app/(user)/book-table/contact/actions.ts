@@ -53,7 +53,7 @@ export async function stepThreeAction(
 			tableId
 		);
 		if (isReservationAlreadyExists) {
-			redirect("/book-table");
+			throw new Error("Reservation already exists");
 		}
 		const insertReservation = await db.insert(reservationsTable).values({
 			reservationName: isDataValid.data.name,
@@ -70,10 +70,12 @@ export async function stepThreeAction(
 	} catch (error) {
 		console.error("Reservation creation failed:", error);
 
-		return {
-			success: false,
-			message: "Error creating reservation",
-		};
+		if (error instanceof Error) {
+			return {
+				success: false,
+				message: error.message,
+			};
+		}
 	}
 	// reset the user form completion status to false
 	const { success: ResetSucess } = await resetAllUserFormCompletionStatus(

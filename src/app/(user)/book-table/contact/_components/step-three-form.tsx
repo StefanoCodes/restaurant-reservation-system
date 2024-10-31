@@ -19,6 +19,7 @@ type StepThreeFormDataErrors = {
 	email: string;
 	specialRequests: string;
 };
+
 export default function StepThreeForm({ user }: { user: User }) {
 	const [errors, setErrors] = useState<StepThreeFormDataErrors | undefined>(
 		undefined
@@ -46,15 +47,19 @@ export default function StepThreeForm({ user }: { user: User }) {
 					description: response.message,
 					variant: "destructive",
 				});
+				if (response.message === "Reservation already exists") {
+					router.push("/book-table");
+				}
 				return;
-			} else {
-				toast({
-					title: "Success!",
-					description: "Check your Email for confirmation",
-				});
-				updateReservationDetails(defaultReservationData);
-				router.push("/bookings");
 			}
+			// if the response is success we will show the success toast and redirect the user to the bookings page
+
+			toast({
+				title: "Success!",
+				description: "Check your Email for confirmation",
+			});
+			updateReservationDetails(defaultReservationData);
+			router.push("/bookings");
 		} catch (error) {
 			toast({
 				title: "System Error",
