@@ -34,7 +34,7 @@ export default function AdminTablesView({ tables }: { tables: TableData[] }) {
 								</Badge>
 								<DeleteTableButton tableId={table.id} />
 								<EditTableButton table={table} />
-								<ChangeTableStatus tableId={table.id} />
+								<ChangeTableStatus tableId={table.id} status={table.status} />
 							</div>
 						</div>
 					</CardHeader>

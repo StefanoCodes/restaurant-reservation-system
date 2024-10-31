@@ -15,17 +15,14 @@ export default async function StepTwo({
 }) {
 	const availableTables = await getAvailableTables(date, time, numberOfPeople);
 	return (
-		<div className="flex flex-col justify-center gap-5">
-			<div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+		<div className="flex flex-col items-center gap-5 max-w-5xl">
+			<div className="flex flex-col sm:flex-row justify-between items-center gap-2 w-full">
 				<h1 className="text-2xl font-bold text-center md:text-left">
 					Select A Table
 				</h1>
 				<StatusIndicators />
 			</div>
-			<DisplayTables
-				tables={availableTables as TableWithStatus[]}
-				userId={userId}
-			/>
+			<DisplayTables tables={availableTables as TableWithStatus[]} userId={userId} />
 		</div>
 	);
 }

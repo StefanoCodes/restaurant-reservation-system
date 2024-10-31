@@ -2,12 +2,15 @@ import "server-only";
 import { reservationsTable, Table } from "@/db/schema";
 import { tablesTable } from "@/db/schema";
 import { db } from "@/db/db";
-import { eq, and, or, gte, lt, lte, gt, sql } from "drizzle-orm";
+import { eq, and, or, gte, lt, lte, gt, sql, asc } from "drizzle-orm";
 import { BOOKING_DURATION } from "@/utils/constants";
 
 export const getAllTables = async (): Promise<Table[]> => {
 	try {
-		const tables = await db.select().from(tablesTable);
+		const tables = await db
+			.select()
+			.from(tablesTable)
+			.where(eq(tablesTable.status, "available"));
 		return tables;
 	} catch (error) {
 		console.error(error);
@@ -60,6 +63,7 @@ export const getAvailableTables = async (
 						)
 					)
 				);
+			// so here we are overriding the status of the table based on the reservations but not in the db changing the status of the table
 			return {
 				...table,
 				status:
@@ -71,7 +75,7 @@ export const getAvailableTables = async (
 			};
 		})
 	);
-	return availableTables;
+	return availableTables.sort((a, b) => a.capacity - b.capacity);
 };
 
 export const checkIfReservationAlreadyExists = async (
@@ -79,6 +83,18 @@ export const checkIfReservationAlreadyExists = async (
 	time: string,
 	tableId: string
 ) => {
-	const reservation = await db.select().from(reservationsTable).where(and(eq(reservationsTable.reservationDate, date), eq(reservationsTable.tableId, tableId), or(gte(reservationsTable.startTime, time), lte(reservationsTable.endTime, time))));
+	const reservation = await db
+		.select()
+		.from(reservationsTable)
+		.where(
+			and(
+				eq(reservationsTable.reservationDate, date),
+				eq(reservationsTable.tableId, tableId),
+				or(
+					gte(reservationsTable.startTime, time),
+					lte(reservationsTable.endTime, time)
+				)
+			)
+		);
 	return reservation.length > 0;
 };

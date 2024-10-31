@@ -57,3 +57,13 @@ export async function getAllBookings() {
 		return [];
 	}
 }
+export async function getAllTablesAdmin() {
+	await isAuthorizedAdmin();
+	try {
+		const tables = await db.select().from(tablesTable);
+		return tables;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}

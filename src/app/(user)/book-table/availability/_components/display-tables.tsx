@@ -58,8 +58,8 @@ export default function DisplayTables({
 	};
 	return (
 		<form action={handleStepTwo}>
-			<div className="flex flex-col gap-4 ">
-				<div className="flex flex-wrap gap-4 max-w-5xl items-center justify-center">
+			<div className="flex flex-col gap-4 items-center justify-center">
+				<div className="flex flex-wrap gap-4 w-full items-center justify-center">
 					{isAvailableTables ? (
 						<p>No tables available</p>
 					) : (

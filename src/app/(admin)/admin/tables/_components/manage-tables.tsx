@@ -1,9 +1,9 @@
 import AdminTablesView from "@/app/(admin)/admin/tables/_components/admins-tables-view";
-import { getAllTables } from "@/lib/data/data";
 import TablePageStatistics from "./table-page-statistics";
 import NoTablesFound from "./no-tables-found";
+import { getAllTablesAdmin } from "@/lib/data/admin";
 export default async function TablesList() {
-	const tables = await getAllTables();
+	const tables = await getAllTablesAdmin();
 	const isTablesEmpty = tables.length === 0;
 	if (isTablesEmpty) return <NoTablesFound />;
 	return (

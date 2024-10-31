@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 const statuses = ["available", "capacity", "reserved"];
 // each status has a color
 const statusColors = {
-	available: "bg-gray-500",
+	available: "bg-white",
 	capacity: "bg-yellow-500",
 	reserved: "bg-red-500",
 };

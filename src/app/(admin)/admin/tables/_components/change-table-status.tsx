@@ -15,12 +15,12 @@ import { useState } from "react";
 import { changeTableStatusAction } from "../../_actions/actions";
 import { useToast } from "@/hooks/use-toast";
 
-export default function ChangeTableStatus({ tableId }: { tableId: string }) {
+export default function ChangeTableStatus({ tableId,status }: { tableId: string,status:string }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const { toast } = useToast();
 
 	const handleChangeTableStatus = async () => {
-		const response = await changeTableStatusAction(tableId);
+		const response = await changeTableStatusAction(tableId, status);
 		if (response?.success) {
 			toast({
 				title: "Table status changed successfully",
