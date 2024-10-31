@@ -12,10 +12,7 @@ import { revalidatePath } from "next/cache";
 
 export async function deleteUserReservationAction(reservationId: string) {
 	// we will make sure this is protected and authorized users only can trigger it
-	const authorizedUser = await isAuthorizedAdmin();
-	if (!authorizedUser) return;
-	const { user, userInDb } = authorizedUser;
-	if (!user || !userInDb) return;
+	await isAuthorizedAdmin();
 	// if all checks went good we can delete the reservation
 	const deleteReservationInDb = await db
 		.delete(reservationsTable)
@@ -33,19 +30,51 @@ export async function deleteUserReservationAction(reservationId: string) {
 	// on success
 	revalidatePath("/admin/bookings", "page");
 	revalidatePath("/bookings", "page");
+
 	return {
 		success: true,
 		message: "Reservation deleted successfully",
 	};
 }
 
+// Approving a user reservation
+
+export async function approveUserReservationAction(reservationId: string) {
+
+	try {
+		const userReservation = await db
+			.update(reservationsTable)
+			.set({
+				reservationStatus: "confirmed",
+			})
+			.where(eq(reservationsTable.id, reservationId));
+		if (!userReservation) {
+			return {
+				success: false,
+				message: "Reservation not found",
+			};
+		}
+
+		// TODO: an email would be then sent to the user letting them know that their reservation has been approved
+	} catch (error: unknown) {
+		console.error(error);
+		return {
+			success: false,
+			message: "Failed to approve reservation",
+		};
+	}
+	revalidatePath("/admin/bookings", "page");
+	revalidatePath("/bookings", "page");
+	return {
+		success: true,
+		message: "Reservation approved successfully",
+	};
+}
+
 // Adding a new table
 
 export async function addNewTableAction(formData: FormData) {
-	const authorizedUser = await isAuthorizedAdmin();
-	if (!authorizedUser) return;
-	const { user, userInDb } = authorizedUser;
-	if (!user || !userInDb) return;
+	await isAuthorizedAdmin();
 	// if user is authenticaed & authrozied can execute the following
 	const name = formData.get("tableName");
 	const capacity = formData.get("tableCapacity");
@@ -83,10 +112,7 @@ export async function addNewTableAction(formData: FormData) {
 // Deleting a table
 
 export async function deleteTableAction(tableId: string) {
-	const authorizedUser = await isAuthorizedAdmin();
-	if (!authorizedUser) return;
-	const { user, userInDb } = authorizedUser;
-	if (!user || !userInDb) return;
+	await isAuthorizedAdmin();
 	// if all checks went good we can delete the table
 
 	const deleteTableInDb = await db
@@ -110,10 +136,7 @@ export async function deleteTableAction(tableId: string) {
 // Editing a table data
 
 export async function editTableDataAction(formData: FormData, tableId: string) {
-	const authorizedUser = await isAuthorizedAdmin();
-	if (!authorizedUser) return;
-	const { user, userInDb } = authorizedUser;
-	if (!user || !userInDb) return;
+	await isAuthorizedAdmin();
 	// Get Form Data
 	const name = formData.get("tableName");
 

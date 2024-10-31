@@ -8,6 +8,8 @@ const dmSans = DM_Sans({
 	subsets: ["latin"],
 	variable: "--font-dm-sans",
 	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+	display: "swap",
+	preload: true,
 });
 
 export const metadata: Metadata = {

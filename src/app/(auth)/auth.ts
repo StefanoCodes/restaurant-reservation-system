@@ -37,16 +37,6 @@ export async function isAuthenticatedUser() {
 		return { user, userInDb };
 	} catch (error: unknown) {
 		console.error("Authentication check error:", error);
-		if (error instanceof Error) {
-			// Only redirect to login for auth-specific errors
-			if (
-				error.name === "AuthenticationError" ||
-				error.message?.includes("unauthorized") ||
-				error.message?.includes("unauthenticated")
-			) {
-				await logout();
-			}
-		}
 		throw error;
 	}
 }

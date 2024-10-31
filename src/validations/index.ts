@@ -55,7 +55,7 @@ export const reservationSchema = z.object({
 	tableId: z.string(),
 	userId: z.string(),
 });
-
+// name needs to start with the letter T and end in a number
 export const addNewTableSchema = z.object({
 	name: z.string().min(1, {
 		message: "Table name is required",

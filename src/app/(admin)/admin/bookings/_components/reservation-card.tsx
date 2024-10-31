@@ -9,23 +9,16 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-	AlertDialog,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { cn, formatDateToString } from "@/lib/utils";
-import { deleteUserReservationAction } from "../../_actions/actions";
+import {
+	approveUserReservationAction,
+	deleteUserReservationAction,
+} from "../../_actions/actions";
 
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import SubmitButton from "@/components/ui/submit-button";
+import DeleteReservationButton from "./delete-reservation-button";
+import ApproveReservationButton from "./approve-reservation-button";
 
 export default function AdminReservationCard({
 	reservation,
@@ -35,22 +28,47 @@ export default function AdminReservationCard({
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	const handleDeleteReservation = async (reservationId: string) => {
-		const reservationDeletedResponse = await deleteUserReservationAction(
+		const { success, message } = await deleteUserReservationAction(
 			reservationId
 		);
-		if (reservationDeletedResponse?.success) {
+		if (success) {
 			setIsDialogOpen(false);
 			toast({
-				title: "Reservation deleted successfully",
-				description: reservationDeletedResponse.message,
+				title: message,
 			});
 		} else {
 			toast({
-				title: "Failed to delete reservation",
-				description: reservationDeletedResponse?.message,
+				title: message,
 			});
 		}
 	};
+
+	const handleApproveReservation = async (
+		reservationStatus: string,
+		reservationId: string
+	) => {
+		// no need to try the action if the status is already confirmed
+		if (reservationStatus === "confirmed") {
+			toast({
+				title: "Reservation Already Confirmed",
+			});
+			return;
+		}
+		const { success, message } = await approveUserReservationAction(
+			reservationId
+		);
+
+		if (!success) {
+			toast({
+				title: message,
+			});
+		} else {
+			toast({
+				title: message,
+			});
+		}
+	};
+
 	return (
 		<Card className="w-full max-w-md mx-auto overflow-hidden transition-shadow duration-300 ease-in-out hover:shadow-lg flex flex-col justify-between">
 			<CardHeader className="bg-primary text-primary-foreground">
@@ -111,33 +129,19 @@ export default function AdminReservationCard({
 							)}
 						</div>
 					</div>
-					<AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-						<AlertDialogTrigger asChild>
-							<Button variant="destructive" className="w-full">
-								<Trash2 className="w-4 h-4 mr-2" />
-								Delete Reservation
-							</Button>
-						</AlertDialogTrigger>
-						<AlertDialogContent>
-							<AlertDialogHeader>
-								<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-								<AlertDialogDescription>
-									This action cannot be undone. This will permanently delete the
-									reservation for {reservation.reservationName} on{" "}
-									{formatDateToString(reservation.createdAt)}.
-								</AlertDialogDescription>
-							</AlertDialogHeader>
-							<AlertDialogFooter>
-								<AlertDialogCancel>Cancel</AlertDialogCancel>
-								<form
-									className=" px-0 py-0"
-									action={handleDeleteReservation.bind(null, reservation.id)}
-								>
-									<SubmitButton>Delete</SubmitButton>
-								</form>
-							</AlertDialogFooter>
-						</AlertDialogContent>
-					</AlertDialog>
+					<DeleteReservationButton
+						reservation={reservation}
+						isDialogOpen={isDialogOpen}
+						setIsDialogOpen={setIsDialogOpen}
+						handleDeleteReservation={handleDeleteReservation}
+					/>
+					<ApproveReservationButton
+						onClick={handleApproveReservation.bind(
+							null,
+							reservation.reservationStatus,
+							reservation.id
+						)}
+					/>
 				</CardFooter>
 			</div>
 		</Card>
