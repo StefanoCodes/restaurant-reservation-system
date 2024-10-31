@@ -2,8 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
-	let supabaseResponse = NextResponse.next({
-		request,
+	let response = NextResponse.next({
+		request: request.clone(),
 	});
 
 	const supabase = createServerClient(
@@ -15,23 +15,14 @@ export async function updateSession(request: NextRequest) {
 					return request.cookies.getAll();
 				},
 				setAll(cookiesToSet) {
-					cookiesToSet.forEach(({ name, value, options }) =>
-						request.cookies.set(name, value)
-					);
-					supabaseResponse = NextResponse.next({
-						request,
+					cookiesToSet.forEach(({ name, value, options }) => {
+						request.cookies.set(name, value);
+						response.cookies.set(name, value, options);
 					});
-					cookiesToSet.forEach(({ name, value, options }) =>
-						supabaseResponse.cookies.set(name, value, options)
-					);
 				},
 			},
 		}
 	);
-
-	// IMPORTANT: Avoid writing any logic between createServerClient and
-	// supabase.auth.getUser(). A simple mistake could make it very hard to debug
-	// issues with users being randomly logged out.
 
 	const {
 		data: { user },
@@ -42,12 +33,10 @@ export async function updateSession(request: NextRequest) {
 		!request.nextUrl.pathname.startsWith("/login") &&
 		!request.nextUrl.pathname.startsWith("/register")
 	) {
-		// no user, potentially respond by redirecting the user to the login page
 		const url = request.nextUrl.clone();
 		url.pathname = "/login";
 		return NextResponse.redirect(url);
 	}
-	// if there is a user we want to redirect them to the home page
 	if (
 		user &&
 		(request.nextUrl.pathname.startsWith("/login") ||
@@ -58,5 +47,5 @@ export async function updateSession(request: NextRequest) {
 		return NextResponse.redirect(url);
 	}
 
-	return supabaseResponse;
+	return response;
 }

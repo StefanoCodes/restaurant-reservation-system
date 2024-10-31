@@ -16,45 +16,62 @@ export async function isAuthenticatedUser() {
 			error: sessionError,
 		} = await client.auth.getUser();
 
-		// auth status
-		if (sessionError) throw new Error(sessionError.message);
-		if (!user) return { user: null };
-
-		// database status
-		const { userInDb, errorMessage } = await getUserDetails(user.id);
-		if (errorMessage || !userInDb) {
+		// 1. First check: Validate Supabase session
+		if (sessionError) {
 			await logout();
-			return { user: null, userInDb: null };
+			throw new Error("Invalid session");
+		}
+
+		if (!user) {
+			await logout();
+			redirect("/login"); // Redirect to login instead of throwing error
+		}
+
+		// 2. Second check: Validate user exists in our database
+		const { userInDb, errorMessage } = await getUserDetails(user.id);
+		if (!userInDb || errorMessage) {
+			await logout();
+			redirect("/login");
 		}
 
 		return { user, userInDb };
-	} catch (error) {
-		// Check for network errors
-		if (error instanceof TypeError && error.message.includes("network")) {
-			// You could either:
-
-			throw new Error(
-				"Unable to verify authentication. Please check your connection."
-			);
+	} catch (error: unknown) {
+		console.error("Authentication check error:", error);
+		if (error instanceof Error) {
+			// Only redirect to login for auth-specific errors
+			if (
+				error.name === "AuthenticationError" ||
+				error.message?.includes("unauthorized") ||
+				error.message?.includes("unauthenticated")
+			) {
+				await logout();
+			}
 		}
-		return { user: null, userInDb: null };
+		throw error;
 	}
 }
 
 // ensuring any route that requires an admin is protected
 export async function isAuthorizedAdmin() {
 	const { user, userInDb } = await isAuthenticatedUser();
-	if (!user) return { user: null };
 	const userRole = await getUserRole(user.id);
-	if (userRole !== "admin") redirect("/");
+
+	if (userRole !== "admin") {
+		redirect("/");
+	}
+
 	return { user, userInDb };
 }
+
 // ensuring any route that requires a user is protected and admins cannot access them
 export async function isAuthorizedUser() {
 	const { user, userInDb } = await isAuthenticatedUser();
-	if (!user) return { user: null };
 	const userRole = await getUserRole(user.id);
-	if (userRole !== "user") redirect("/admin");
+
+	if (userRole !== "user") {
+		redirect("/admin");
+	}
+
 	return { user, userInDb };
 }
 
@@ -74,7 +91,7 @@ export const getUserDetails = async (userId: string) => {
 			userInDb: userDetails[0],
 		};
 	} catch (error) {
-		return { userInDb: null, errorMessage: getErrorMessage(error) };
+		throw new Error(getErrorMessage(error));
 	}
 };
 

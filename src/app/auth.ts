@@ -19,6 +19,8 @@ export async function logout() {
 			message: error.message,
 		};
 	}
+
+	// Add redirect after successful logout
 	redirect("/login");
 }
 
