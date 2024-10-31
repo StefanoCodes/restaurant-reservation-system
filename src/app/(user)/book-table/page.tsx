@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import StepOneForm from "./_date/_components/step-one-form";
 import {
 	getUserFormCompletionStatus,
+	resetAllUserFormCompletionStatus,
 	resetUserFormCompletionStatus,
 } from "./_date/actions";
 import ProgressBar from "./_components/progress-bar";
@@ -35,11 +36,7 @@ export default async function Page() {
 	const userFormCompletionStatus = await getUserFormCompletionStatus(
 		userInDb.userId
 	);
-	if (userFormCompletionStatus?.stepOne) {
-		// we want to reset the form completion status
-		// the values will be shown by default in the user inputs
-		await resetUserFormCompletionStatus(userInDb.userId, "one");
-	}
+	await resetAllUserFormCompletionStatus(userInDb.userId);
 	return (
 		<div className="flex flex-col items-center justify-center gap-4">
 			<ProgressBar />

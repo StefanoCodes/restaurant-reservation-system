@@ -11,6 +11,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { resetAllUserFormCompletionStatus } from "../_date/actions";
+import { getAvailableTables } from "@/lib/data/data";
 
 export async function stepThreeAction(
 	formDataObject: z.infer<typeof stepThreeSchema>
@@ -40,6 +41,16 @@ export async function stepThreeAction(
 		const tableId = await getTableIdByName(isDataValid.data.tableName);
 		if (!tableId) {
 			throw new Error("Table not found");
+		}
+		// before insertion we need to double check the same logic of the date and time because a user could be waiting and then his spot may be taken
+		const isTableAvailable = await getAvailableTables(
+			isDataValid.data.date,
+			isDataValid.data.time,
+			isDataValid.data.numberOfPeople.toString()
+		);
+		if (isTableAvailable.length === 0) {
+			// because the table is not available we will redirect the user to the book-table page again to start his reservation from the beginning
+			redirect("/book-table");
 		}
 		const insertReservation = await db.insert(reservationsTable).values({
 			reservationName: isDataValid.data.name,
