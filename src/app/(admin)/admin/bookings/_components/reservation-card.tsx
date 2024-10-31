@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import DeleteReservationButton from "./delete-reservation-button";
 import ApproveReservationButton from "./approve-reservation-button";
+import { ToastAction } from "@/components/ui/toast";
 
 export default function AdminReservationCard({
 	reservation,
@@ -47,7 +48,6 @@ export default function AdminReservationCard({
 		reservationStatus: string,
 		reservationId: string
 	) => {
-		// no need to try the action if the status is already confirmed
 		if (reservationStatus === "confirmed") {
 			toast({
 				title: "Reservation Already Confirmed",
@@ -61,6 +61,18 @@ export default function AdminReservationCard({
 		if (!success) {
 			toast({
 				title: message,
+				action: (
+					<ToastAction
+						onClick={handleApproveReservation.bind(
+							null,
+							reservationStatus,
+							reservationId
+						)}
+						altText="Try Again"
+					>
+						Try Again
+					</ToastAction>
+				),
 			});
 		} else {
 			toast({
@@ -129,19 +141,23 @@ export default function AdminReservationCard({
 							)}
 						</div>
 					</div>
-					<DeleteReservationButton
-						reservation={reservation}
-						isDialogOpen={isDialogOpen}
-						setIsDialogOpen={setIsDialogOpen}
-						handleDeleteReservation={handleDeleteReservation}
-					/>
-					<ApproveReservationButton
-						onClick={handleApproveReservation.bind(
-							null,
-							reservation.reservationStatus,
-							reservation.id
-						)}
-					/>
+					<div className="w-full flex flex-col gap-4">
+						<DeleteReservationButton
+							reservation={reservation}
+							isDialogOpen={isDialogOpen}
+							setIsDialogOpen={setIsDialogOpen}
+							handleDeleteReservation={handleDeleteReservation}
+						/>
+						<form
+							action={handleApproveReservation.bind(
+								null,
+								reservation.reservationStatus,
+								reservation.id
+							)}
+						>
+							<ApproveReservationButton />
+						</form>
+					</div>
 				</CardFooter>
 			</div>
 		</Card>

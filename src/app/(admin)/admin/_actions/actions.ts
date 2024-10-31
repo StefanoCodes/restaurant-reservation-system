@@ -40,7 +40,6 @@ export async function deleteUserReservationAction(reservationId: string) {
 // Approving a user reservation
 
 export async function approveUserReservationAction(reservationId: string) {
-
 	try {
 		const userReservation = await db
 			.update(reservationsTable)

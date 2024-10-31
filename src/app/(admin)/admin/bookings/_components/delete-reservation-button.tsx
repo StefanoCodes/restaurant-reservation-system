@@ -48,7 +48,7 @@ export default function DeleteReservationButton({
 				<AlertDialogFooter>
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<form
-						className=" px-0 py-0"
+						className="w-full"
 						action={handleDeleteReservation.bind(null, reservation.id)}
 					>
 						<SubmitButton>Delete</SubmitButton>
