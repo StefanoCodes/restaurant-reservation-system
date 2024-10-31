@@ -11,7 +11,7 @@ export default async function AdminTablesPage() {
 	return (
 		<main className="w-full h-full">
 			<div className="flex flex-col justify-start items-start w-full h-full gap-4">
-				<div className="flex flex-row justify-between items-center w-full mb-4">
+				<div className="flex flex-col gap-4 sm:gap-0 sm:flex-row justify-between items-center w-full mb-4">
 					<H1>Manage Resturaunts Tables</H1>
 					<AddNewTable />
 				</div>
