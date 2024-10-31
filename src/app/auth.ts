@@ -9,6 +9,7 @@ import {
 } from "@/db/schema";
 import { loginSchema, registerSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
+import { formatZodErrors } from "@/lib/utils";
 
 export async function logout() {
 	const supabase = await createClient();
@@ -25,7 +26,7 @@ export async function logout() {
 }
 
 // AUTH
-export async function registerUser(formData: FormData) {
+export async function registerUser(prevState: any, formData: FormData) {
 	// retreiving form data
 	const registrationData = {
 		name: formData.get("name"),
@@ -40,7 +41,6 @@ export async function registerUser(formData: FormData) {
 	// handling the errors / messages taht we would get back from zod if not successfull
 	if (!isRegistrationDataValid.success) {
 		return {
-			success: false,
 			error: isRegistrationDataValid.error.flatten().fieldErrors,
 		};
 	}
@@ -54,8 +54,7 @@ export async function registerUser(formData: FormData) {
 
 	if (error) {
 		return {
-			success: false,
-			error: error.message,
+			message: error.message,
 		};
 	}
 
@@ -63,8 +62,7 @@ export async function registerUser(formData: FormData) {
 
 	if (!user)
 		return {
-			success: false,
-			error: "User not found",
+			message: "User not found",
 		};
 	// adding a new user to the user table
 
@@ -92,18 +90,14 @@ export async function registerUser(formData: FormData) {
 		console.error("Error inserting user into database:", error);
 
 		return {
-			success: false,
-			error: "Error inserting user into database",
+			message: "Error inserting user into database",
 		};
 	}
-	revalidatePath("/register");
-	return {
-		success: true,
-		message: "User registered successfully",
-	};
+
+	redirect("/");
 }
 
-export async function loginUser(formData: FormData) {
+export async function loginUser(prevState: any, formData: FormData) {
 	const loginData = {
 		email: formData.get("email"),
 		password: formData.get("password"),
@@ -113,7 +107,6 @@ export async function loginUser(formData: FormData) {
 
 	if (!isLoginDataValid.success) {
 		return {
-			success: false,
 			error: isLoginDataValid.error.flatten().fieldErrors,
 		};
 	}
@@ -127,8 +120,7 @@ export async function loginUser(formData: FormData) {
 
 	if (error) {
 		return {
-			success: false,
-			error: error.message,
+			loginError: error.message,
 		};
 	}
 
@@ -136,13 +128,8 @@ export async function loginUser(formData: FormData) {
 
 	if (!user)
 		return {
-			success: false,
-			error: "User not found",
+			message: "User not found",
 		};
 
-	revalidatePath("/");
-	return {
-		success: true,
-		message: "User logged in successfully",
-	};
+	redirect("/");
 }

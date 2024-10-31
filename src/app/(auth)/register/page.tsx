@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 import RegistrationForm from "./components/registration-form";
-export default async function Register() {
+export default function Register() {
 	return (
 		<main className="h-full w-full overflow-hidden ">
 			<div className="w-full lg:grid lg:grid-cols-2 md:min-h-screen px-4 sm:px-0 relative">
