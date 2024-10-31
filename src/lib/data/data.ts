@@ -73,3 +73,12 @@ export const getAvailableTables = async (
 	);
 	return availableTables;
 };
+
+export const checkIfReservationAlreadyExists = async (
+	date: string,
+	time: string,
+	tableId: string
+) => {
+	const reservation = await db.select().from(reservationsTable).where(and(eq(reservationsTable.reservationDate, date), eq(reservationsTable.tableId, tableId), or(gte(reservationsTable.startTime, time), lte(reservationsTable.endTime, time))));
+	return reservation.length > 0;
+};
