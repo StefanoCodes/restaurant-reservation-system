@@ -67,24 +67,6 @@ const config: Config = {
 				sm: "calc(var(--radius) - 4px)",
 			},
 		},
-		animation: {
-			steam: "steam 2s ease-out infinite",
-		},
-		keyframes: {
-			steam: {
-				"0%": {
-					transform: "translateY(0) scale(0.1)",
-					opacity: "0",
-				},
-				"50%": {
-					opacity: "1",
-				},
-				"100%": {
-					transform: "translateY(-10px) scale(1)",
-					opacity: "0",
-				},
-			},
-		},
 	},
 	plugins: [require("tailwindcss-animate")],
 };

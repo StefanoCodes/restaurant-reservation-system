@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -15,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { addNewTableAction } from "../../_actions/actions";
 import { useToast } from "@/hooks/use-toast";
 import SubmitButton from "@/components/ui/submit-button";
+import { Button } from "@/components/ui/button";
 
 export default function AddNewTable() {
 	const [open, setOpen] = useState(false);
@@ -42,7 +42,15 @@ export default function AddNewTable() {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline">Add New Table</Button>
+				<Button variant={"outline"}>
+					<span className="flex items-center space-x-2">
+						<span>Add New Table</span>
+						<span className="relative flex h-3 w-3">
+							<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+							<span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+						</span>
+					</span>
+				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-[425px] ">
 				<DialogHeader>
