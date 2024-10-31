@@ -25,7 +25,11 @@ export default function RootLayout({
 			<body
 				className={`${dmSans.className} antialiased bg-gray-100 min-h-[100dvh]`}
 			>
-				<NextTopLoader showSpinner={false} color="#ffffff" />
+				<NextTopLoader
+					showSpinner={true}
+					color="#ffffff"
+					initialPosition={0.5}
+				/>
 				{children}
 				<Toaster />
 			</body>

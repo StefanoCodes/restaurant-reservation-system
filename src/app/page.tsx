@@ -36,7 +36,7 @@ export default async function MarketingPage() {
 			</p>
 			{userInDb && (
 				<Button asChild>
-					<Link className={`mt-2`} href="/book-table" prefetch={false}>
+					<Link className={`mt-2`} href="/book-table">
 						Book a table
 					</Link>
 				</Button>
