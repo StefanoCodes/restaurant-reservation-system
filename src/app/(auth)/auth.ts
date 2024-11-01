@@ -87,12 +87,14 @@ export const getUserDetails = async (userId: string) => {
 
 export const getUserRole = async (userId: string) => {
 	// we will get the role of the user from the permissions table
-	const user = await db
-		.select()
+	const [user] = await db
+		.select({
+			role: permissionsTable.role,
+		})
 		.from(permissionsTable)
 		.where(eq(permissionsTable.memberId, userId));
-	if (!user[0]) {
+	if (!user) {
 		return null;
 	}
-	return user[0].role;
+	return user.role;
 };
