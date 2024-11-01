@@ -8,8 +8,6 @@ import {
 	usersTable,
 } from "@/db/schema";
 import { loginSchema, registerSchema } from "@/validations";
-import { revalidatePath } from "next/cache";
-import { formatZodErrors } from "@/lib/utils";
 
 export async function logout() {
 	const supabase = await createClient();

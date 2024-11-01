@@ -2,7 +2,6 @@ import Loading from "@/app/loading-spinner";
 import { Suspense } from "react";
 import UserBookings from "./_components/user-bookings";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
-
 export default async function Bookings() {
 	await isAuthorizedUser();
 
