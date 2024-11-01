@@ -5,44 +5,44 @@ import Link from "next/link";
 import LogoutButton from "./logout-button";
 
 export const metadata: Metadata = {
-	keywords: ["restaurant", "reservation", "system", "login", "register"],
-	title: "Restaurant Reservation System",
-	openGraph: {
-		description:
-			"This is a restaurant reservation system that allows you to manage your reservations and customers.",
-		images: [""],
-	},
-	twitter: {
-		card: "summary_large_image",
-		title: "Restaurant Reservation System",
-		description:
-			"This is a restaurant reservation system that allows you to manage your reservations and customers.",
-		siteId: "",
-		creator: "@StefanoCodes",
-		creatorId: "",
-		images: [""],
-	},
+  keywords: ["restaurant", "reservation", "system", "login", "register"],
+  title: "Restaurant Reservation System",
+  openGraph: {
+    description:
+      "This is a restaurant reservation system that allows you to manage your reservations and customers.",
+    images: [""],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Restaurant Reservation System",
+    description:
+      "This is a restaurant reservation system that allows you to manage your reservations and customers.",
+    siteId: "",
+    creator: "@StefanoCodes",
+    creatorId: "",
+    images: [""],
+  },
 };
 
 export default async function MarketingPage() {
-	const { userInDb } = await isAuthorizedUser();
-	return (
-		<div className="flex flex-col min-h-screen items-center mt-[2.5rem] p-3 w-full">
-			<h1 className="text-black scroll-m-20 text-5xl font-bold tracking-tight text-center">
-				Restaurant Reservation System
-			</h1>
-			<p className="mx-auto max-w-[600px] text-gray-500 md:text-lg text-center mt-2 dark:text-gray-400">
-				This is a resturant reservation system that allows you to manage your
-				reservations and customers.
-			</p>
-			<div className="flex flex-col gap-4 sm:flex-row items-center mt-4 justify-center gap-2">
-				{userInDb && <LogoutButton />}
-				{userInDb && (
-					<Button asChild>
-						<Link href="/book-table">Book a table</Link>
-					</Button>
-				)}
-			</div>
-		</div>
-	);
+  const { userInDb } = await isAuthorizedUser();
+  return (
+    <div className="mt-[2.5rem] flex min-h-screen w-full flex-col items-center p-3">
+      <h1 className="scroll-m-20 text-center text-5xl font-bold tracking-tight text-black">
+        Restaurant Reservation System
+      </h1>
+      <p className="mx-auto mt-2 max-w-[600px] text-center text-gray-500 dark:text-gray-400 md:text-lg">
+        This is a resturant reservation system that allows you to manage your
+        reservations and customers.
+      </p>
+      <div className="mt-4 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        {userInDb && <LogoutButton />}
+        {userInDb && (
+          <Button asChild>
+            <Link href="/book-table">Book a table</Link>
+          </Button>
+        )}
+      </div>
+    </div>
+  );
 }

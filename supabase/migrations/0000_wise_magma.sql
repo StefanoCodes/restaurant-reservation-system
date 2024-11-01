@@ -16,6 +16,19 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."week_days" AS ENUM('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "business_hours" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"week_day" "week_days" NOT NULL,
+	"open_time" integer NOT NULL,
+	"close_time" integer NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "permissions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"member_id" varchar(255),
@@ -45,6 +58,11 @@ CREATE TABLE IF NOT EXISTS "reservations" (
 	"number_of_people" integer NOT NULL,
 	"created_at" timestamp DEFAULT now(),
 	"notes" text DEFAULT ''
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "settings" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"booking_duration_interval" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "tables" (
@@ -88,3 +106,13 @@ DO $$ BEGIN
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
+--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "member_idx" ON "permissions" USING btree ("member_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "reservation_user_id_idx" ON "reservations" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "date_time_table_idx" ON "reservations" USING btree ("reservation_date","table_id","start_time");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "reservation_status_idx" ON "reservations" USING btree ("status");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "status_capacity_idx" ON "tables" USING btree ("status","capacity");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "table_name_idx" ON "tables" USING btree ("name");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "email_idx" ON "users" USING btree ("email");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "phone_number_idx" ON "users" USING btree ("phone_number");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "user_id_idx" ON "users" USING btree ("user_id");

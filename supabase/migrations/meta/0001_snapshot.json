@@ -1,6 +1,6 @@
 {
-  "id": "a4bedb24-c8b7-4d74-b235-e758bb3015b5",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "63c5750b-ea9d-4299-9e15-18db9c550559",
+  "prevId": "a4bedb24-c8b7-4d74-b235-e758bb3015b5",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -33,6 +33,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "closed": {
+          "name": "closed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         }
       },
       "indexes": {},
