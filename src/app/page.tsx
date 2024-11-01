@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
 import Link from "next/link";
+import LogoutButton from "./logout-button";
 
 export const metadata: Metadata = {
 	keywords: ["restaurant", "reservation", "system", "login", "register"],
@@ -34,13 +35,14 @@ export default async function MarketingPage() {
 				This is a resturant reservation system that allows you to manage your
 				reservations and customers.
 			</p>
-			{userInDb && (
-				<Button asChild>
-					<Link className={`mt-2`} href="/book-table">
-						Book a table
-					</Link>
-				</Button>
-			)}
+			<div className="flex flex-col gap-4 sm:flex-row items-center mt-4 justify-center gap-2">
+				{userInDb && <LogoutButton />}
+				{userInDb && (
+					<Button asChild>
+						<Link href="/book-table">Book a table</Link>
+					</Button>
+				)}
+			</div>
 		</div>
 	);
 }

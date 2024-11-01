@@ -7,7 +7,6 @@ import H1 from "../h1";
 
 export default async function AdminTablesPage() {
 	await isAuthorizedAdmin();
-
 	return (
 		<main className="w-full h-full">
 			<div className="flex flex-col justify-start items-start w-full h-full gap-4">
