@@ -156,6 +156,18 @@ export const businessHourSchema = z.array(
   }),
 );
 
+export const bookingDurationIntervalSchema = z.object({
+  interval: z.coerce
+    .number()
+    .positive()
+    .min(1, {
+      message: `Booking Interval Must Be At Least 1`,
+    })
+    .max(4, {
+      message: `Booking Interval Must Be At Most 4`,
+    }),
+});
+
 export type newReservationInitialValuesType = z.infer<
   typeof newReservationInitialValuesType
 >;

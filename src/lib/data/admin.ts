@@ -6,11 +6,13 @@ import {
   businessHoursTable,
   permissionsTable,
   reservationsTable,
+  settingsTable,
   Table,
   tablesTable,
   usersTable,
 } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
+import { BOOKING_DURATION } from "@/utils/constants";
 
 // Admin GET Requests
 
@@ -76,5 +78,32 @@ export async function getBusinessHours() {
   } catch (error) {
     console.error(error);
     return [];
+  }
+}
+
+export async function getAdminSettings() {
+  await isAuthorizedAdmin();
+  try {
+    const settings = await db.transaction(async (tx) => {
+      const businessHours = await tx.select().from(businessHoursTable);
+      const [{ bookingDurationInterval }] = await tx
+        .select({
+          bookingDurationInterval: settingsTable.bookingDurationInterval,
+        })
+        .from(settingsTable);
+
+      return {
+        businessHours,
+        bookingDurationInterval,
+      };
+    });
+
+    return settings;
+  } catch (error) {
+    console.error(error);
+    return {
+      businessHours: [],
+      bookingDurationInterval: BOOKING_DURATION,
+    };
   }
 }

@@ -1,16 +1,19 @@
 "use server";
 
-import { BusinessHourData } from "@/db/schema";
+import { BusinessHourData, settingsTable } from "@/db/schema";
 import { db } from "@/db/db";
 import {
   businessHoursTable,
   reservationsTable,
-  Table,
   tablesTable,
 } from "@/db/schema";
 import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import { formatZodErrors } from "@/lib/utils";
-import { addNewTableSchema, businessHourSchema } from "@/validations";
+import {
+  addNewTableSchema,
+  bookingDurationIntervalSchema,
+  businessHourSchema,
+} from "@/validations";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -251,4 +254,38 @@ export async function updateBusinessHoursAction(hours: BusinessHourData[]) {
   };
 
   // we can send an email to the users letting them know that the business hours have been updated
+}
+
+export async function updateBookingDurationInterval(formData: FormData) {
+  await isAuthorizedAdmin();
+
+  const interval = formData.get("bookingDurationInterval");
+
+  // validate Zod Schema
+  const isValidInterval = bookingDurationIntervalSchema.safeParse({ interval });
+  if (!isValidInterval.success) {
+    return {
+      success: false,
+      error: formatZodErrors(isValidInterval.error),
+    };
+  }
+  // update the booking duration interval in the database
+
+  try {
+    const updateBookingDurationIntervalInDb = await db
+      .update(settingsTable)
+      .set({ bookingDurationInterval: isValidInterval.data.interval });
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Failed to update booking duration interval",
+    };
+  }
+  revalidatePath("/admin/settings");
+  revalidatePath("/book-table/availability");
+  return {
+    success: true,
+    message: "Booking duration interval updated successfully",
+  };
 }
