@@ -1,9 +1,13 @@
+import NextTopLoader from "nextjs-toploader";
 import Navigation from "../navigation";
+import { Toaster } from "@/components/ui/toaster";
 export default function Layout({ children }: { children: React.ReactNode }) {
-	return (
-		<>
-			<Navigation />
-			{children}
-		</>
-	);
+  return (
+    <>
+      <NextTopLoader showSpinner={true} color="#ffffff" initialPosition={0.5} />
+      <Toaster />
+      <Navigation />
+      {children}
+    </>
+  );
 }
