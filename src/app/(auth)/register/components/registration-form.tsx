@@ -7,7 +7,7 @@ import { useActionState } from "react";
 
 export default function RegistrationForm() {
   const [state, formAction, isPending] = useActionState(registerUser, null);
-
+  console.log(state);
   return (
     <form action={formAction}>
       <div className="grid gap-4">
@@ -52,7 +52,14 @@ export default function RegistrationForm() {
             required
           />
           {state?.error?.password && (
-            <p className="text-red-500">{state.error.password.join(", ")}</p>
+            <div className="text-sm text-red-500">
+              <p>Password must:</p>
+              <ul>
+                {state.error.password.map((error) => (
+                  <li key={error}>- {error}</li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
         <div className="grid gap-2">
