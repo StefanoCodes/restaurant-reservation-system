@@ -3,13 +3,11 @@ import { loginUser } from "@/app/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
+import PasswordInput from "../../_components/password-input";
 
 export default function LoginForm() {
   const [state, formAction, isPending] = useActionState(loginUser, null);
-  const [showPassword, setShowPassword] = useState(false); // Add this line
-
   return (
     <form action={formAction}>
       <div className="grid gap-4">
@@ -27,27 +25,7 @@ export default function LoginForm() {
           )}
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="password">Password</Label>
-          <div className="relative">
-            <Input
-              id="password"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              placeholder="********"
-              required
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2"
-            >
-              {showPassword ? (
-                <EyeOffIcon className="h-4 w-4 text-gray-500" />
-              ) : (
-                <EyeIcon className="h-4 w-4 text-gray-500" />
-              )}
-            </button>
-          </div>
+          <PasswordInput />
           {state?.error?.password && (
             <p className="text-red-500">{state.error.password}</p>
           )}

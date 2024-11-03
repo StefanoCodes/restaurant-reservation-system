@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useActionState } from "react";
+import PasswordInput from "../../_components/password-input";
 
 export default function RegistrationForm() {
   const [state, formAction, isPending] = useActionState(registerUser, null);
-  console.log(state);
   return (
     <form action={formAction}>
       <div className="grid gap-4">
@@ -40,17 +40,7 @@ export default function RegistrationForm() {
           )}
         </div>
         <div className="grid gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-          </div>
-          <Input
-            placeholder="********"
-            id="password"
-            type="password"
-            name="password"
-            minLength={8}
-            required
-          />
+          <PasswordInput />
           {state?.error?.password && (
             <div className="text-sm text-red-500">
               <p>Password must:</p>
