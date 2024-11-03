@@ -44,7 +44,7 @@ function SubmitTableButton() {
     </Button>
   );
 }
-export default function StepOneForm({ userId }: { userId: string }) {
+export default function StepOneForm() {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [errors, setErrors] = useState<StepOneFormDataErrors | undefined>(
     undefined,
@@ -72,7 +72,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
         numberOfPeople,
       };
 
-      const response = await handleStepOneAction(formDataObject, userId);
+      const response = await handleStepOneAction(formDataObject);
       if (!response.success) {
         setErrors(response?.errors);
         return;
