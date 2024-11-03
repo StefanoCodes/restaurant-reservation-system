@@ -83,6 +83,11 @@ export const checkIfReservationAlreadyExists = async (
   time: string,
   tableId: string,
 ) => {
+  // Calculate end time (add 2 hours)
+  const [hours, minutes] = time.split(":").map(Number);
+  const endHours = (hours + BOOKING_DURATION).toString().padStart(2, "0");
+  const requestedEndTime = `${endHours}:${minutes.toString().padStart(2, "0")}`;
+
   const reservation = await db
     .select()
     .from(reservationsTable)
@@ -91,8 +96,21 @@ export const checkIfReservationAlreadyExists = async (
         eq(reservationsTable.reservationDate, date),
         eq(reservationsTable.tableId, tableId),
         or(
-          gte(reservationsTable.startTime, time),
-          lte(reservationsTable.endTime, time),
+          // New reservation starts during an existing reservation
+          and(
+            lte(reservationsTable.startTime, time),
+            gt(reservationsTable.endTime, time),
+          ),
+          // New reservation ends during an existing reservation
+          and(
+            lt(reservationsTable.startTime, requestedEndTime),
+            gte(reservationsTable.endTime, requestedEndTime),
+          ),
+          // Existing reservation falls completely within requested time
+          and(
+            gte(reservationsTable.startTime, time),
+            lte(reservationsTable.endTime, requestedEndTime),
+          ),
         ),
       ),
     );
