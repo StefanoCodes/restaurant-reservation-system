@@ -5,24 +5,11 @@ import { permissionsTable, usersTable } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
 import { getErrorMessage } from "@/lib/utils";
-
 import { logout } from "@/app/auth";
-import { LRUCache } from "lru-cache";
-// Ensures that we have a session and that the user in the session exists in the db
-
-// const userCache = new LRUCache<string, any>({
-//   max: 500, // Maximum number of items
-//   ttl: 1000 * 60 * 5, // 5 minutes
-// });
 
 export async function isAuthenticatedUser() {
   try {
     const client = await createClient();
-    // const cachedSession = userCache.get("current-session");
-    // if (cachedSession) {
-    //   return cachedSession;
-    // }
-
     const {
       data: { user },
       error: sessionError,
@@ -38,11 +25,6 @@ export async function isAuthenticatedUser() {
       await logout();
       redirect("/login"); // Redirect to login instead of throwing error
     }
-
-    // const result = { user };
-    // userCache.set("current-session", result);
-
-    // 2. Second check: Validate user exists in our database
     const { userInDb, errorMessage } = await getUserDetails(user.id);
     if (!userInDb || errorMessage) {
       await logout();
@@ -101,16 +83,6 @@ export const getUserDetails = async (userId: string) => {
 };
 
 export const getUserRole = async (userId: string) => {
-  // we will get the role of the user from the permissions table
-  // const [user] = await db
-  // 	.select({
-  // 		role: permissionsTable.role,
-  // 	})
-  // 	.from(permissionsTable)
-  // 	.where(eq(permissionsTable.memberId, userId));
-
-  // we will get the role of the user from the users table using the index we created
-
   const [user] = await db
     .select({
       role: permissionsTable.role,

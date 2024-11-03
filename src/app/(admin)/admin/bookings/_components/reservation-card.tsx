@@ -134,12 +134,6 @@ export default function AdminReservationCard({
             </div>
           </div>
           <div className="flex w-full flex-col gap-4">
-            <DeleteReservationButton
-              reservation={reservation}
-              isDialogOpen={isDialogOpen}
-              setIsDialogOpen={setIsDialogOpen}
-              handleDeleteReservation={handleDeleteReservation}
-            />
             <form
               action={handleApproveReservation.bind(
                 null,
@@ -151,6 +145,12 @@ export default function AdminReservationCard({
                 reservationStatus={reservation.reservationStatus}
               />
             </form>
+            <DeleteReservationButton
+              reservation={reservation}
+              isDialogOpen={isDialogOpen}
+              setIsDialogOpen={setIsDialogOpen}
+              handleDeleteReservation={handleDeleteReservation}
+            />
           </div>
         </CardFooter>
       </div>
