@@ -29,6 +29,7 @@ export default function BusinessHourCard({
     <>
       <div key={data.id} className={`w-full flex-col gap-4`}>
         <Input
+          type="text"
           className="border-none p-0 md:max-w-24"
           disabled
           value={data.weekDay}
