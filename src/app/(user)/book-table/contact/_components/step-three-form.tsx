@@ -142,7 +142,9 @@ export default function StepThreeForm({
         )}
       </div>
       <div className="flex justify-end gap-4">
-        <Link href="/book-table">
+        <Link
+          href={`/book-table/availability?date=${data.date}&time=${data.time}&numberOfPeople=${data.numberOfPeople}`}
+        >
           <Button variant="outline">Back</Button>
         </Link>
         <SubmitButton>Create Reservation</SubmitButton>

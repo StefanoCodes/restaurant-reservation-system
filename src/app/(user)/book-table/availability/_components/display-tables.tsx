@@ -91,7 +91,11 @@ export default function DisplayTables({
         </div>
         <div className="flex w-full flex-col justify-center gap-4 sm:flex-row">
           <Button asChild variant={"outline"}>
-            <Link href={"/book-table"}>Back</Link>
+            <Link
+              href={`/book-table?date=${date}&time=${time}&numberOfPeople=${numberOfPeople}`}
+            >
+              Back
+            </Link>
           </Button>
           <SubmitTableButton selectedTable={selectedTable} />
         </div>
