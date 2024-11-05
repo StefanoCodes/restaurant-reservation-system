@@ -1,15 +1,11 @@
-import { CreateReservationContextProvider } from "@/contexts/createReservationContext";
-
 export default function BookTableLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return (
-		<CreateReservationContextProvider>
-			<div className="max-w-7xl mx-auto p-4 pt-8 sm:pt-12 flex flex-col">
-				{children}
-			</div>
-		</CreateReservationContextProvider>
-	);
+  return (
+    <main className="mx-auto flex max-w-7xl flex-col p-4 pt-8 sm:pt-12">
+      {children}
+    </main>
+  );
 }

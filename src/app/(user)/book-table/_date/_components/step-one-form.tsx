@@ -22,65 +22,81 @@ import { useState } from "react";
 import { StepOneFormDataErrors } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
-import { useRouter } from "next/navigation";
-import { useCreateReservationContext } from "@/contexts/createReservationContext";
 import { useFormStatus } from "react-dom";
 import ButtonLoader from "@/app/button-loader";
+import { useQueryState } from "nuqs";
 import Link from "next/link";
-function SubmitTableButton() {
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+function SubmitTableButton({
+  reservationDate,
+  reservationTime,
+  numberOfPeople,
+}: {
+  reservationDate: string | null;
+  reservationTime: string | null;
+  numberOfPeople: string | null;
+}) {
   const { pending } = useFormStatus();
-  const { reservationData } = useCreateReservationContext();
   return (
     <Button
-      className="w-full sm:w-[7.5rem]"
-      disabled={!reservationData.date || !reservationData.time || pending}
+      className="w-full sm:min-w-[7.5rem] sm:max-w-[14rem]"
+      disabled={
+        !reservationDate || !reservationTime || !numberOfPeople || pending
+      }
     >
-      {reservationData.date &&
-        reservationData.time !== "select a time" &&
-        !pending &&
-        "Next"}
       {pending && <ButtonLoader />}
-      {!reservationData.date && !reservationData.time && "Select A Date"}
+      {!reservationDate && "Select A Date"}
+      {reservationDate && !reservationTime && "Select A Time"}
+      {reservationDate &&
+        reservationTime &&
+        !numberOfPeople &&
+        "Select number of people"}
+      {reservationDate && reservationTime && numberOfPeople && "Next"}
     </Button>
   );
 }
-export default function StepOneForm() {
+export default function StepOneForm({ userId }: { userId: string }) {
+  // Local State
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [errors, setErrors] = useState<StepOneFormDataErrors | undefined>(
     undefined,
   );
-
   const router = useRouter();
-  const { reservationData, updateReservationDetails } =
-    useCreateReservationContext();
-  const timeSlots = calculateTimeSlots(reservationData.date);
-  const handleStepOne = async (formData: FormData) => {
-    const numberOfPeople = formData.get("numberOfPeople");
+  const { toast } = useToast();
+  const timeSlots = calculateTimeSlots();
+
+  // Search Params
+  const [reservationDate, setReservationDate] = useQueryState("date");
+  const [reservationTime, setReservationTime] = useQueryState("time");
+  const [numberOfPeople, setNumberOfPeople] = useQueryState("numberOfPeople");
+
+  const handleStepOne = async () => {
     try {
-      if (
-        !reservationData.time ||
-        !reservationData.date ||
-        !numberOfPeople ||
-        typeof numberOfPeople !== "string"
-      ) {
-        throw new Error("Invalid form data");
+      if (!reservationDate || !reservationTime || !numberOfPeople) {
+        return toast({
+          title: "Reservation Data Is Incorrect",
+          variant: "destructive",
+        });
       }
-      // check what is the date being selected is it accruate ?
+
       const formDataObject = {
-        date: reservationData.date,
-        time: reservationData.time,
+        date: reservationDate,
+        time: reservationTime,
         numberOfPeople,
       };
-
       const response = await handleStepOneAction(formDataObject);
       if (!response.success) {
         setErrors(response?.errors);
         return;
       }
+      // if all goes good we can redirect the user to the second step
+      toast({
+        title: response.message,
+      });
       router.push(
-        `/book-table/availability?date=${reservationData.date}&time=${reservationData.time}&numberOfPeople=${numberOfPeople}`,
+        `/book-table/availability/?date=${reservationDate}&time=${reservationTime}&numberOfPeople=${numberOfPeople}`,
       );
-      updateReservationDetails(formDataObject);
     } catch (error) {
       console.error(error);
     }
@@ -102,12 +118,12 @@ export default function StepOneForm() {
               variant={"outline"}
               className={cn(
                 "w-full justify-start bg-white text-left font-normal",
-                !reservationData.date && "text-muted-foreground",
+                !reservationDate && "text-muted-foreground",
               )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {reservationData.date ? (
-                formatDateToString(new Date(reservationData.date))
+              {reservationDate ? (
+                formatDateToString(new Date(reservationDate))
               ) : (
                 <span>Pick a date</span>
               )}
@@ -115,21 +131,14 @@ export default function StepOneForm() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             <Calendar
-              value={
-                reservationData.date
-                  ? new Date(reservationData.date)
-                  : new Date()
-              }
+              value={reservationDate ? new Date(reservationDate) : new Date()}
               minDate={new Date()}
               maxDate={
                 new Date(new Date().setFullYear(new Date().getFullYear() + 1))
               }
               className="bg-white"
               onClickDay={(dateValue: Date) => {
-                updateReservationDetails({
-                  ...reservationData,
-                  date: getLocalizedDateTime(dateValue),
-                });
+                setReservationDate(getLocalizedDateTime(dateValue));
                 setIsCalendarOpen(false);
               }}
             />
@@ -141,19 +150,19 @@ export default function StepOneForm() {
       <div className="flex w-full flex-col gap-4">
         <Label htmlFor="time">Time</Label>
         <Select
-          value={reservationData.time}
+          value={reservationTime ?? ""}
           onValueChange={(timeValue) => {
-            updateReservationDetails({ ...reservationData, time: timeValue });
+            setReservationTime(timeValue);
           }}
           required
         >
           <SelectTrigger className="bg-white" id="time" name="time">
             <SelectValue placeholder="Select a time">
-              {reservationData.time ? reservationData.time : "Select a time"}
+              {reservationTime ?? "Select a time"}
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            {reservationData.date ? (
+            {reservationDate ? (
               timeSlots.map((slot) => (
                 <SelectItem key={slot} value={slot}>
                   {slot}
@@ -172,11 +181,12 @@ export default function StepOneForm() {
       <div className="flex w-full flex-col gap-4">
         <Label>Number of People</Label>
         <Input
-          defaultValue={reservationData.numberOfPeople}
+          defaultValue={numberOfPeople ?? ""}
           placeholder="Number of people"
           type="number"
           className="bg-white"
           name="numberOfPeople"
+          onChange={(e) => setNumberOfPeople(e.target.value)}
           required
           onFocus={() => setErrors(undefined)}
         />
@@ -188,7 +198,11 @@ export default function StepOneForm() {
         <Button asChild variant={"outline"}>
           <Link href={"/"}>Cancel</Link>
         </Button>
-        <SubmitTableButton />
+        <SubmitTableButton
+          numberOfPeople={numberOfPeople}
+          reservationDate={reservationDate}
+          reservationTime={reservationTime}
+        />
       </div>
     </form>
   );

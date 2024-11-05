@@ -1,88 +1,101 @@
 "use client";
 import { Table as TableType, TableWithStatus } from "@/db/schema";
 import Table from "./table";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { handleStepTwoAction } from "../action";
 import { useRouter } from "next/navigation";
-import { useCreateReservationContext } from "@/contexts/createReservationContext";
 import { useFormStatus } from "react-dom";
 import ButtonLoader from "@/app/button-loader";
+import { useQueryState } from "nuqs";
+import { useToast } from "@/hooks/use-toast";
 function SubmitTableButton({
-	selectedTable,
+  selectedTable,
 }: {
-	selectedTable: TableType | null;
+  selectedTable: TableType | null;
 }) {
-	const { pending } = useFormStatus();
+  const { pending } = useFormStatus();
 
-	return (
-		<Button
-			className="w-full sm:w-[7.5rem]"
-			disabled={!selectedTable || pending}
-		>
-			{!selectedTable && "Select A Table"}
-			{selectedTable && !pending && "Submit"}
-			{pending && <ButtonLoader />}
-		</Button>
-	);
+  return (
+    <Button
+      className="w-full sm:w-[7.5rem]"
+      disabled={!selectedTable || pending}
+    >
+      {!selectedTable && "Select A Table"}
+      {selectedTable && !pending && "Submit"}
+      {pending && <ButtonLoader />}
+    </Button>
+  );
 }
 export default function DisplayTables({
-	tables,
-	userId,
+  tables,
+  date,
+  time,
+  numberOfPeople,
 }: {
-	tables: TableType[];
-	userId: string;
+  tables: TableType[];
+  date: string;
+  time: string;
+  numberOfPeople: string;
 }) {
-	const isAvailableTables = tables.length === 0;
-	const [selectedTable, setSelectedTable] = useState<TableType | null>(null);
-	const [error, setError] = useState<Record<string, string> | undefined>(
-		undefined
-	);
-	const { updateReservationDetails } = useCreateReservationContext();
-	const router = useRouter();
+  const [selectedTable, setSelectedTable] = useState<TableType | null>(null);
+  const { toast } = useToast();
+  const router = useRouter();
+  const [tableName, setTableName] = useQueryState("table");
+  const handleStepTwo = async () => {
+    try {
+      if (!selectedTable) {
+        return toast({
+          title: "Reservation Data Is Incorrect",
+          variant: "destructive",
+        });
+      }
+      const response = await handleStepTwoAction(selectedTable);
+      if (!response.success)
+        return toast({
+          title: "Something Went Wrong",
+        });
+      // if all goes good we can redirect the user to the second step
+      toast({
+        title: response.message,
+      });
+      router.push(
+        `/book-table/contact?date=${date}&time=${time}&numberOfPeople=${numberOfPeople}&table=${tableName}`,
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const AnyAvailableTables = tables.length === 0;
 
-	const handleStepTwo = async () => {
-		if (!selectedTable) throw new Error("No table selected");
-		const response = await handleStepTwoAction(selectedTable, userId);
-		if (!response.success) {
-			setError(response?.error);
-
-			return;
-		} else {
-			updateReservationDetails({
-				tableName: selectedTable.name,
-			});
-			router.push("/book-table/contact");
-		}
-	};
-	return (
-		<form action={handleStepTwo}>
-			<div className="flex flex-col gap-4 items-center justify-center">
-				<div className="flex flex-wrap gap-4 w-full items-center justify-center">
-					{isAvailableTables ? (
-						<p>No tables available</p>
-					) : (
-						tables.map((table) => {
-							return (
-								<Table
-									key={table.id}
-									table={table}
-									selectedTable={selectedTable}
-									setSelectedTable={setSelectedTable}
-								/>
-							);
-						})
-					)}
-					{error ? <p className="text-red-500">error</p> : null}
-				</div>
-				<div className="flex flex-col sm:flex-row justify-center gap-4">
-					<Button asChild variant={"outline"}>
-						<Link href={"/book-table"}>Back</Link>
-					</Button>
-					<SubmitTableButton selectedTable={selectedTable} />
-				</div>
-			</div>
-		</form>
-	);
+  return (
+    <form action={handleStepTwo}>
+      <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex w-full flex-wrap items-center justify-center gap-4">
+          {AnyAvailableTables ? (
+            <p>No tables available</p>
+          ) : (
+            tables.map((table) => {
+              return (
+                <Table
+                  key={table.id}
+                  table={table}
+                  selectedTable={selectedTable}
+                  setSelectedTable={setSelectedTable}
+                  setTableName={setTableName}
+                />
+              );
+            })
+          )}
+        </div>
+        <div className="flex flex-col justify-center gap-4 sm:flex-row">
+          <Button asChild variant={"outline"}>
+            <Link href={"/book-table"}>Back</Link>
+          </Button>
+          <SubmitTableButton selectedTable={selectedTable} />
+        </div>
+      </div>
+    </form>
+  );
 }

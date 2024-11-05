@@ -3,6 +3,7 @@ import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
 import Link from "next/link";
 import LogoutButton from "./logout-button";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   keywords: ["restaurant", "reservation", "system", "login", "register"],
@@ -25,7 +26,8 @@ export const metadata: Metadata = {
 };
 
 export default async function MarketingPage() {
-  const { userInDb } = await isAuthorizedUser();
+  const { user, userInDb } = await isAuthorizedUser();
+  if (!user || !userInDb) redirect("/login");
   return (
     <div className="mt-[2.5rem] flex min-h-screen w-full flex-col items-center p-3">
       <h1 className="scroll-m-20 text-center text-5xl font-bold tracking-tight text-black">

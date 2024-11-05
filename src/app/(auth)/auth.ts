@@ -8,52 +8,47 @@ import { getErrorMessage } from "@/lib/utils";
 import { logout } from "@/app/auth";
 
 export async function isAuthenticatedUser() {
-  try {
-    const client = await createClient();
-    const {
-      data: { user },
-      error: sessionError,
-    } = await client.auth.getUser();
+  const client = await createClient();
+  const {
+    data: { user },
+    error: sessionError,
+  } = await client.auth.getUser();
 
-    // 1. First check: Validate Supabase session
-    if (sessionError) {
-      await logout();
-      throw new Error("Invalid session");
-    }
-
-    if (!user) {
-      await logout();
-      redirect("/login"); // Redirect to login instead of throwing error
-    }
-    const { userInDb, errorMessage } = await getUserDetails(user.id);
-    if (!userInDb || errorMessage) {
-      await logout();
-      redirect("/login");
-    }
-
-    return { user, userInDb };
-  } catch (error: unknown) {
-    console.error("Authentication check error:", error);
-    throw error;
+  if (!user) {
+    return {
+      user: null,
+      userInDb: null,
+    };
   }
+
+  // 1. First check: Validate Supabase session
+  if (sessionError) {
+    throw new Error("Invalid Session");
+  }
+
+  const { userInDb } = await getUserDetails(user.id);
+  return { user, userInDb };
 }
 
 // ensuring any route that requires an admin is protected
 export async function isAuthorizedAdmin() {
   const { user, userInDb } = await isAuthenticatedUser();
-  const userRole = await getUserRole(user.id);
-
+  if (!user || !userInDb) redirect("/login");
+  const userRole = await getUserRole(userInDb.userId);
   if (userRole !== "admin") {
     redirect("/");
   }
 
   return { user, userInDb };
 }
-
-// ensuring any route that requires a user is protected and admins cannot access them
 export async function isAuthorizedUser() {
   const { user, userInDb } = await isAuthenticatedUser();
-  const userRole = await getUserRole(user.id);
+  if (!userInDb)
+    return {
+      user: null,
+      userInDb: null,
+    };
+  const userRole = await getUserRole(userInDb.userId);
 
   if (userRole !== "user") {
     redirect("/admin");
@@ -71,7 +66,8 @@ export const getUserDetails = async (userId: string) => {
       .where(eq(usersTable.userId, userId));
 
     if (!userDetails[0]) {
-      return { userInDb: null, errorMessage: "User not found" };
+      await logout();
+      throw new Error("User Not Found");
     }
     return {
       errorMessage: null,

@@ -1,42 +1,33 @@
 export const dynamic = "force-dynamic";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
-import {
-	getUserFormCompletionStatus,
-	resetUserFormCompletionStatus,
-} from "../_date/actions";
 import { redirect } from "next/navigation";
 import StepTwo from "./_components/step-two-form";
 import ProgressBar from "../_components/progress-bar";
 
 export default async function Page({
-	searchParams,
+  searchParams,
 }: {
-	searchParams: Promise<{ date: string; time: string; numberOfPeople: string }>;
+  searchParams: Promise<{ date: string; time: string; numberOfPeople: string }>;
 }) {
-	const { userInDb } = await isAuthorizedUser();
-	const { date, time, numberOfPeople } = await searchParams;
-	// if there arent any search params redirect to the book table page
-	if (!date || !time || !numberOfPeople) redirect("/book-table");
+  const { user, userInDb } = await isAuthorizedUser();
+  if (!user || !userInDb) redirect("/login");
 
-	const userFormCompletionStatus = await getUserFormCompletionStatus(
-		userInDb.userId
-	);
-// if the fisrt step is not complete need to be redirected there
-	if (!userFormCompletionStatus?.stepOne) {
-		redirect("/book-table");
-	}
+  const params = await searchParams;
+  const { date, time, numberOfPeople } = params;
 
-	return (
-		<div className="flex flex-col items-center justify-center gap-4">
-			<ProgressBar />
-			<div className="bg-gray-300 rounded-lg px-4 py-6 md:px-12 md:py-8 w-full flex flex-col items-center">
-				<StepTwo
-					userId={userInDb.userId}
-					date={date}
-					time={time}
-					numberOfPeople={numberOfPeople}
-				/>
-			</div>
-		</div>
-	);
+  // Validate search parameters
+  const allowedParams = ["date", "time", "numberOfPeople"];
+  const extraParams = Object.keys(params).filter(
+    (param) => !allowedParams.includes(param),
+  );
+  if (extraParams.length > 0) redirect("/book-table");
+
+  return (
+    <div className="flex flex-col items-center justify-center gap-4">
+      <ProgressBar />
+      <div className="flex w-full flex-col items-center rounded-lg bg-gray-300 px-4 py-6 md:px-12 md:py-8">
+        <StepTwo date={date} time={time} numberOfPeople={numberOfPeople} />
+      </div>
+    </div>
+  );
 }

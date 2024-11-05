@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // calculate the time picking based off the start and end time of the resturaunt
 
-export function calculateTimeSlots(selectedDate: string) {
+export function calculateTimeSlots() {
   const dayOfWeek = Intl.DateTimeFormat(undefined, { weekday: "long" })
     .format(new Date())
     .toUpperCase();

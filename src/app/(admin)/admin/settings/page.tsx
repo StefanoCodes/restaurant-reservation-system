@@ -1,8 +1,10 @@
 import BusinessHours from "./_components/business-hours";
 import { getAdminSettings } from "@/lib/data/admin";
 import BookingDurationHours from "./_components/booking-duration-interval";
+import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 
 export default async function AdminSettingsPage() {
+  await isAuthorizedAdmin();
   const { businessHours, bookingDurationInterval } = await getAdminSettings();
   return (
     <div className="flex flex-col items-center justify-center gap-4">

@@ -2,12 +2,8 @@ export const dynamic = "force-dynamic";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
 import StepOneForm from "./_date/_components/step-one-form";
-import {
-  getUserFormCompletionStatus,
-  resetAllUserFormCompletionStatus,
-  resetUserFormCompletionStatus,
-} from "./_date/actions";
 import ProgressBar from "./_components/progress-bar";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   keywords: ["restaurant", "reservation", "system", "book", "table"],
@@ -30,13 +26,13 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const { userInDb } = await isAuthorizedUser();
-  await resetAllUserFormCompletionStatus(userInDb.userId);
+  const { user, userInDb } = await isAuthorizedUser();
+  if (!user || !userInDb) redirect("/login");
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <ProgressBar />
       <div className="w-full rounded-lg bg-gray-300 p-4">
-        <StepOneForm />
+        <StepOneForm userId={userInDb.userId} />
       </div>
     </div>
   );
