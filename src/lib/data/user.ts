@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 // User Bookings Get Requests
 export const getBookingsForUser = async () => {
   const { userInDb } = await isAuthorizedUser();
-  if (!userInDb) return;
+  if (!userInDb) redirect("/login");
   try {
     const bookings = await db
       .select({
