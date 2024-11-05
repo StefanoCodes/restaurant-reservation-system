@@ -27,7 +27,7 @@ export default async function Page({
   if (extraParams.length > 0) redirect("/book-table");
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      <ProgressBar />
+      {/* <ProgressBar /> */}
       <StepThreeForm user={userInDb} data={params} />
     </div>
   );

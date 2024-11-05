@@ -105,7 +105,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
   return (
     <form
       action={handleStepOne}
-      className="md:px-13 mx-auto mt-4 flex w-full max-w-2xl flex-col gap-4 sm:px-4"
+      className="flex w-full max-w-2xl flex-col gap-4"
     >
       {/* Date */}
       <div className="flex w-full flex-col gap-4">
@@ -148,7 +148,9 @@ export default function StepOneForm({ userId }: { userId: string }) {
       </div>
       {/* TIME */}
       <div className="flex w-full flex-col gap-4">
-        <Label htmlFor="time">Time</Label>
+        <Label htmlFor="time">
+          Select A Time <span className="text-red-500">*</span>
+        </Label>
         <Select
           value={reservationTime ?? ""}
           onValueChange={(timeValue) => {
@@ -178,8 +180,10 @@ export default function StepOneForm({ userId }: { userId: string }) {
         {errors?.time && <p className="text-red-500">{errors.time}</p>}
       </div>
       {/* Number Of People */}
-      <div className="flex w-full flex-col gap-4">
-        <Label>Number of People</Label>
+      <div className="mb-2 flex w-full flex-col gap-4">
+        <Label>
+          Number of People <span className="text-red-500">*</span>
+        </Label>
         <Input
           defaultValue={numberOfPeople ?? ""}
           placeholder="Number of people"

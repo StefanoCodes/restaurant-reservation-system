@@ -24,8 +24,7 @@ export default async function Page({
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      <ProgressBar />
-      <div className="flex w-full flex-col items-center rounded-lg bg-gray-300 px-4 py-6 md:px-12 md:py-8">
+      <div className="w-full rounded-lg">
         <StepTwo date={date} time={time} numberOfPeople={numberOfPeople} />
       </div>
     </div>

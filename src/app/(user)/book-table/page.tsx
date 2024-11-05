@@ -30,8 +30,7 @@ export default async function Page() {
   if (!user || !userInDb) redirect("/login");
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      <ProgressBar />
-      <div className="w-full rounded-lg bg-gray-300 p-4">
+      <div className="flex w-full items-center justify-center rounded-lg">
         <StepOneForm userId={userInDb.userId} />
       </div>
     </div>

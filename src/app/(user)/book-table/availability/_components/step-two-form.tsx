@@ -15,9 +15,6 @@ export default async function StepTwo({
   return (
     <div className="flex max-w-5xl flex-col items-center gap-5">
       <div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row">
-        <h1 className="text-center text-2xl font-bold md:text-left">
-          Select A Table
-        </h1>
         <StatusIndicators />
       </div>
       <DisplayTables

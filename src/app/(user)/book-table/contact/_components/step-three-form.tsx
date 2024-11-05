@@ -87,68 +87,66 @@ export default function StepThreeForm({
   return success ? (
     <ReservationSuccess />
   ) : (
-    <div className="w-full rounded-lg bg-gray-300 px-4 py-6 md:px-12 md:py-8">
-      <form
-        action={handleStepThree}
-        className="md:px-13 mx-auto mt-4 flex max-w-2xl flex-col gap-4 sm:px-4"
-      >
-        <div className="flex flex-col gap-4">
-          <Label>Name:</Label>
-          <Input
-            defaultValue={user.name}
-            placeholder="Name"
-            className="bg-white"
-            name="name"
-            required
-            onFocus={() => setErrors(undefined)}
-          />
-          {errors?.name && <p className="text-red-500">{errors.name}</p>}
-        </div>
+    <form
+      action={handleStepThree}
+      className="flex w-full max-w-2xl flex-col gap-4"
+    >
+      <div className="flex flex-col gap-4">
+        <Label>Name:</Label>
+        <Input
+          defaultValue={user.name}
+          placeholder="Name"
+          className="bg-white"
+          name="name"
+          required
+          onFocus={() => setErrors(undefined)}
+        />
+        {errors?.name && <p className="text-red-500">{errors.name}</p>}
+      </div>
 
-        <div className="flex flex-col gap-4">
-          <Label>Phone:</Label>
-          <Input
-            defaultValue={user.phoneNumber}
-            placeholder="Phone"
-            className="bg-white"
-            name="phone"
-            required
-            onFocus={() => setErrors(undefined)}
-          />
-          {errors?.phone && <p className="text-red-500">{errors.phone}</p>}
-        </div>
+      <div className="flex flex-col gap-4">
+        <Label>Phone:</Label>
+        <Input
+          defaultValue={user.phoneNumber}
+          placeholder="Phone"
+          className="bg-white"
+          name="phone"
+          required
+          onFocus={() => setErrors(undefined)}
+        />
+        {errors?.phone && <p className="text-red-500">{errors.phone}</p>}
+      </div>
 
-        <div className="flex flex-col gap-4">
-          <Label>Email:</Label>
-          <Input
-            defaultValue={user.email}
-            placeholder="Email"
-            className="bg-white"
-            name="email"
-            required
-            onFocus={() => setErrors(undefined)}
-          />
-          {errors?.email && <p className="text-red-500">{errors.email}</p>}
-        </div>
-        <div className="flex flex-col gap-4">
-          <Label>Special Request:</Label>
-          <Textarea
-            placeholder="Special Request"
-            className="bg-white"
-            name="specialRequests"
-            onFocus={() => setErrors(undefined)}
-          />
-          {errors?.specialRequests && (
-            <p className="text-red-500">{errors.specialRequests}</p>
-          )}
-        </div>
-        <div className="flex justify-end gap-4">
-          <Link href="/book-table">
-            <Button variant="outline">Back</Button>
-          </Link>
-          <SubmitButton>Create Reservation</SubmitButton>
-        </div>
-      </form>
-    </div>
+      <div className="flex flex-col gap-4">
+        <Label>Email:</Label>
+        <Input
+          defaultValue={user.email}
+          placeholder="Email"
+          className="bg-white"
+          name="email"
+          required
+          onFocus={() => setErrors(undefined)}
+        />
+        {errors?.email && <p className="text-red-500">{errors.email}</p>}
+      </div>
+      <div className="flex flex-col gap-4">
+        <Label>Special Request:</Label>
+        <Textarea
+          placeholder="Special Request"
+          className="bg-white"
+          name="specialRequests"
+          onFocus={() => setErrors(undefined)}
+        />
+        {errors?.specialRequests && (
+          <p className="text-red-500">{errors.specialRequests}</p>
+        )}
+      </div>
+      <div className="flex justify-end gap-4">
+        <Link href="/book-table">
+          <Button variant="outline">Back</Button>
+        </Link>
+        <SubmitButton>Create Reservation</SubmitButton>
+      </div>
+    </form>
   );
 }

@@ -89,7 +89,7 @@ export default function DisplayTables({
             })
           )}
         </div>
-        <div className="flex flex-col justify-center gap-4 sm:flex-row">
+        <div className="flex w-full flex-col justify-center gap-4 sm:flex-row">
           <Button asChild variant={"outline"}>
             <Link href={"/book-table"}>Back</Link>
           </Button>
