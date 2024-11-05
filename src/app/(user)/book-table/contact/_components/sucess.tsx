@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function ReservationSuccess() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-4">
+    <div className="flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -67,11 +67,11 @@ export default function ReservationSuccess() {
           >
             <div className="flex justify-center">
               <Link
-                href="/"
+                href="/bookings"
                 className="flex items-center rounded-full bg-green-600 px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-green-700"
               >
                 <UtensilsCrossed className="mr-2 h-5 w-5" />
-                View Menu
+                View Bookings
               </Link>
             </div>
           </motion.div>
