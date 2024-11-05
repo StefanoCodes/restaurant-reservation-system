@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/ui/submit-button";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "@/lib/types";
 import { stepThreeAction } from "../actions";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,8 +35,15 @@ export default function StepThreeForm({
     undefined,
   );
   const [success, setSuccess] = useState(false);
+
   const router = useRouter();
   const { toast } = useToast();
+  useEffect(() => {
+    if (success == false) return;
+    setTimeout(() => {
+      router.push("/bookings");
+    }, 8000);
+  }, [success]);
   const handleStepThree = async (formData: FormData) => {
     const formDataObject = {
       date: data.date,
