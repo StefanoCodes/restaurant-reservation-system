@@ -3,9 +3,10 @@ import Image from "next/image";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 export default async function Page() {
   const { user, userInDb } = await isAuthorizedUser();
-  if (!user || userInDb) return;
+  if (!user || !userInDb) redirect("/login");
 
   return (
     <main className="h-full w-full overflow-hidden">
