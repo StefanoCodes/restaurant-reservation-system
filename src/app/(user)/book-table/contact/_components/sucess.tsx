@@ -33,48 +33,6 @@ export default function ReservationSuccess() {
               Reservation Confirmed!
             </span>
           </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <span className="Thank you for choosing our restaurant. We look forward to serving you!">
-              Thank you for choosing our restaurant. We look forward to serving
-              you!
-            </span>
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <div className="mb-8 flex justify-center space-x-4">
-              <div className="flex items-center">
-                <CalendarCheck className="mr-2 h-5 w-5 text-green-600" />
-                <span className="text-gray-700">
-                  Reservation details sent to your email
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <div className="flex justify-center">
-              <Link
-                href="/bookings"
-                className="flex items-center rounded-full bg-green-600 px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-green-700"
-              >
-                <UtensilsCrossed className="mr-2 h-5 w-5" />
-                View Bookings
-              </Link>
-            </div>
-          </motion.div>
         </div>
       </motion.div>
     </div>

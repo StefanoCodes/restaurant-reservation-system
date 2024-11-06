@@ -10,6 +10,7 @@ import { useFormStatus } from "react-dom";
 import ButtonLoader from "@/app/button-loader";
 import { useQueryState } from "nuqs";
 import { useToast } from "@/hooks/use-toast";
+import ButtonPendingLoader from "@/app/button-pending-loader";
 function SubmitTableButton({
   selectedTable,
 }: {
@@ -24,7 +25,7 @@ function SubmitTableButton({
     >
       {!selectedTable && "Select A Table"}
       {selectedTable && !pending && "Submit"}
-      {pending && <ButtonLoader />}
+      {pending && <ButtonPendingLoader />}
     </Button>
   );
 }

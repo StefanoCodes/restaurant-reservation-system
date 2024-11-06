@@ -28,6 +28,7 @@ import { useQueryState } from "nuqs";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import ButtonPendingLoader from "@/app/button-pending-loader";
 function SubmitTableButton({
   reservationDate,
   reservationTime,
@@ -45,14 +46,18 @@ function SubmitTableButton({
         !reservationDate || !reservationTime || !numberOfPeople || pending
       }
     >
-      {pending && <ButtonLoader />}
+      {pending && <ButtonPendingLoader />}
       {!reservationDate && "Select A Date"}
       {reservationDate && !reservationTime && "Select A Time"}
       {reservationDate &&
         reservationTime &&
         !numberOfPeople &&
         "Select number of people"}
-      {reservationDate && reservationTime && numberOfPeople && "Next"}
+      {reservationDate &&
+        reservationTime &&
+        numberOfPeople &&
+        !pending &&
+        "Next"}
     </Button>
   );
 }
