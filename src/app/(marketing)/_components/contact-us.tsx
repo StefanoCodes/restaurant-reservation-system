@@ -5,7 +5,10 @@ import { MapPin, Phone, Mail } from "lucide-react";
 
 export default function ContactUs() {
   return (
-    <section className="w-full bg-gradient-to-b from-orange-50 to-white py-12 dark:from-gray-900 dark:to-gray-800 md:py-24 lg:py-32">
+    <section
+      id="contact"
+      className="w-full bg-gradient-to-b from-orange-50 to-white py-12 dark:from-gray-900 dark:to-gray-800 md:py-24 lg:py-32"
+    >
       <div className="container px-4 md:px-6">
         <div className="grid gap-10 lg:grid-cols-2">
           <div className="space-y-8">

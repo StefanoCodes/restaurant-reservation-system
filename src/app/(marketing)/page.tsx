@@ -33,9 +33,7 @@ export default async function MarketingPage() {
   // check if the user is an admin
   if (user) {
     // check if the user is an admin
-    if (await isAuthorizedUser()) {
-      redirect("/admin");
-    }
+    await isAuthorizedUser();
   }
   return (
     <main className="relative overflow-hidden" id="home">
