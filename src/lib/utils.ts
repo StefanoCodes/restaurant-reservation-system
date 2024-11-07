@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { date, ZodError, ZodIssue } from "zod";
 import { set } from "date-fns";
 import { WEEKDAYS } from "@/utils/constants";
+import { getMaxCapacity } from "./data/user";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -39,7 +40,6 @@ export function isDateInFuture(date: Date | string) {
   const today = new Date(getLocalizedDateTime());
   return new Date(date) >= today;
 }
-
 export function formatDateForReservation(date: Date) {
   const dateFormatedPlusOne = new Date(date);
   dateFormatedPlusOne.setDate(dateFormatedPlusOne.getDate() + 1);

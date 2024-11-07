@@ -41,12 +41,14 @@ export default function StepThreeForm({
 
   const router = useRouter();
   const { toast } = useToast();
+
   useEffect(() => {
     if (success == false) return;
     setTimeout(() => {
       router.push("/bookings");
     }, 8000);
   }, [success]);
+
   const handleStepThree = async (formData: FormData) => {
     // client side validation to check if the time is in between the opening and closing hours
     if (!isTimeInBetweenOpeningAndClosingHours(data.time)) {

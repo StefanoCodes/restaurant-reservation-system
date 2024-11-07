@@ -1,5 +1,4 @@
 "use server";
-import { logout } from "@/app/auth";
 import { db } from "@/db/db";
 import { reservationsTable } from "@/db/schema";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
@@ -9,28 +8,35 @@ import { BOOKING_DURATION } from "@/utils/constants";
 import { stepThreeSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { checkIfReservationAlreadyExists } from "@/lib/data/data";
-
-export async function stepThreeAction(
-  formDataObject: z.infer<typeof stepThreeSchema>,
-) {
+type StepThreeFormData = {
+  date: string;
+  time: string;
+  tableName: string;
+  numberOfPeople: number;
+  name: string;
+  phone: string;
+  email: string;
+  specialRequests: string;
+};
+export async function stepThreeAction(formDataObject: StepThreeFormData) {
   const { user, userInDb } = await isAuthorizedUser();
   if (!user || !userInDb) {
     return redirect("/login");
   }
 
   // pass the data through zod
-  const isDataValid = stepThreeSchema.safeParse(formDataObject);
-  if (!isDataValid.success) {
+  const isDataValid = await stepThreeSchema();
+  const isDataValidSchema = isDataValid.safeParse(formDataObject);
+  if (!isDataValidSchema.success) {
     return {
       success: false,
-      errors: formatZodErrors(isDataValid.error),
+      errors: formatZodErrors(isDataValidSchema.error),
     };
   }
 
   try {
-    const tableId = await getTableIdByName(isDataValid.data.tableName);
+    const tableId = await getTableIdByName(isDataValidSchema.data.tableName);
     if (!tableId) {
       return {
         success: false,
@@ -38,8 +44,8 @@ export async function stepThreeAction(
       };
     }
     const isReservationAlreadyExists = await checkIfReservationAlreadyExists(
-      isDataValid.data.date,
-      isDataValid.data.time,
+      isDataValidSchema.data.date,
+      isDataValidSchema.data.time,
       tableId,
     );
     if (isReservationAlreadyExists) {
@@ -50,16 +56,16 @@ export async function stepThreeAction(
     }
     // if the reservation is not already exists we will insert the reservation
     await db.insert(reservationsTable).values({
-      reservationName: isDataValid.data.name,
-      reservationPhone: isDataValid.data.phone,
-      reservationEmail: isDataValid.data.email,
+      reservationName: isDataValidSchema.data.name,
+      reservationPhone: isDataValidSchema.data.phone,
+      reservationEmail: isDataValidSchema.data.email,
       userId: userInDb.userId,
-      reservationDate: isDataValid.data.date,
+      reservationDate: isDataValidSchema.data.date,
       tableId: tableId,
-      startTime: isDataValid.data.time,
-      endTime: getEndTime(isDataValid.data.time, BOOKING_DURATION),
-      numberOfPeople: isDataValid.data.numberOfPeople,
-      notes: isDataValid.data.specialRequests,
+      startTime: isDataValidSchema.data.time,
+      endTime: getEndTime(isDataValidSchema.data.time, BOOKING_DURATION),
+      numberOfPeople: isDataValidSchema.data.numberOfPeople,
+      notes: isDataValidSchema.data.specialRequests,
     });
     // if the insertion is successful we will return the success message
   } catch (error) {
