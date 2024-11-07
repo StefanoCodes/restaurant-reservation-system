@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { permissionsTable, usersTable } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
-import { getErrorMessage } from "@/lib/utils";
 import { logout } from "@/app/auth";
 
 export async function isAuthenticatedUser() {
@@ -74,7 +73,7 @@ export const getUserDetails = async (userId: string) => {
       userInDb: userDetails[0],
     };
   } catch (error) {
-    throw new Error(getErrorMessage(error));
+    throw new Error("User Not Found");
   }
 };
 

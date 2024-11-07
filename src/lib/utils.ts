@@ -25,6 +25,21 @@ export function calculateTimeSlots() {
   return timeSlots;
 }
 
+export function isTimeInBetweenOpeningAndClosingHours(time: string) {
+  const dayOfWeek = Intl.DateTimeFormat(undefined, { weekday: "long" })
+    .format(new Date())
+    .toUpperCase();
+  const timeToNumber = parseInt(time.split(":")[0]);
+  const openingHours = WEEKDAYS[dayOfWeek as keyof typeof WEEKDAYS].OPEN;
+  const closingHours = WEEKDAYS[dayOfWeek as keyof typeof WEEKDAYS].CLOSE;
+  return timeToNumber >= openingHours && timeToNumber < closingHours;
+}
+
+export function isDateInFuture(date: Date | string) {
+  const today = new Date(getLocalizedDateTime());
+  return new Date(date) >= today;
+}
+
 export function formatDateForReservation(date: Date) {
   const dateFormatedPlusOne = new Date(date);
   dateFormatedPlusOne.setDate(dateFormatedPlusOne.getDate() + 1);
@@ -43,6 +58,7 @@ export function getEndTime(timeString: string, duration: number): string {
   // Format the result back to HH:mm
   return date.toTimeString().slice(0, 5);
 }
+
 export const formatDateToString = (
   date: Date | null | string,
   options?: Intl.DateTimeFormatOptions,
@@ -88,14 +104,3 @@ export function formatTableName(name: string) {
   const tableNumber = name.slice(name.length - 1);
   return `${tableSlug}${tableNumber}`;
 }
-export const getErrorMessage = (
-  error: unknown,
-  defaultMessage: string = "Something went wrong",
-) => {
-  console.error(error);
-  let errorMessage = defaultMessage;
-  if (error instanceof Error && error.message.length < 100) {
-    errorMessage = error.message;
-  }
-  return errorMessage;
-};

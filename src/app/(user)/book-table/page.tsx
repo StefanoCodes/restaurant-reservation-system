@@ -31,7 +31,7 @@ export default async function Page() {
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="flex w-full items-center justify-center rounded-lg">
-        <StepOneForm userId={userInDb.userId} />
+        <StepOneForm />
       </div>
     </div>
   );

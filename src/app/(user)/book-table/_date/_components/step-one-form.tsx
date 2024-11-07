@@ -9,7 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { CalendarIcon } from "lucide-react";
-import { calculateTimeSlots, cn, getLocalizedDateTime } from "@/lib/utils";
+import {
+  calculateTimeSlots,
+  cn,
+  getLocalizedDateTime,
+  isDateInFuture,
+  isTimeInBetweenOpeningAndClosingHours,
+} from "@/lib/utils";
 import { formatDateToString } from "@/lib/utils";
 import {
   Select,
@@ -18,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StepOneFormDataErrors } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
@@ -61,7 +67,7 @@ function SubmitTableButton({
     </Button>
   );
 }
-export default function StepOneForm({ userId }: { userId: string }) {
+export default function StepOneForm() {
   // Local State
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [errors, setErrors] = useState<StepOneFormDataErrors | undefined>(
@@ -72,9 +78,32 @@ export default function StepOneForm({ userId }: { userId: string }) {
   const timeSlots = calculateTimeSlots();
 
   // Search Params
-  const [reservationDate, setReservationDate] = useQueryState("date");
-  const [reservationTime, setReservationTime] = useQueryState("time");
-  const [numberOfPeople, setNumberOfPeople] = useQueryState("numberOfPeople");
+  const [reservationDate, setReservationDate] = useQueryState("date", {
+    defaultValue: "",
+  });
+  const [reservationTime, setReservationTime] = useQueryState("time", {
+    defaultValue: "",
+  });
+  const [numberOfPeople, setNumberOfPeople] = useQueryState("numberOfPeople", {
+    defaultValue: "",
+  });
+
+  // this is just for better user expeircein in the case the script kiddie tried to be sneaky by changing the url to a an invalid time or date when going back to change the date or time the
+  useEffect(() => {
+    if (reservationTime) {
+      const isValidTime =
+        isTimeInBetweenOpeningAndClosingHours(reservationTime);
+      if (!isValidTime) {
+        setReservationTime("");
+      }
+    }
+    if (reservationDate) {
+      const isValidDate = isDateInFuture(reservationDate);
+      if (!isValidDate) {
+        setReservationDate("");
+      }
+    }
+  }, []);
 
   const handleStepOne = async () => {
     try {
@@ -157,7 +186,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
           Select A Time <span className="text-red-500">*</span>
         </Label>
         <Select
-          value={reservationTime ?? ""}
+          value={reservationTime}
           onValueChange={(timeValue) => {
             setReservationTime(timeValue);
           }}
@@ -190,7 +219,7 @@ export default function StepOneForm({ userId }: { userId: string }) {
           Number of People <span className="text-red-500">*</span>
         </Label>
         <Input
-          defaultValue={numberOfPeople ?? ""}
+          defaultValue={numberOfPeople}
           placeholder="Number of people"
           type="number"
           className="bg-white"

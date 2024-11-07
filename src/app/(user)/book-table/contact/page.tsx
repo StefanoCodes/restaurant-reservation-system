@@ -3,6 +3,10 @@ import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { redirect } from "next/navigation";
 import ProgressBar from "../_components/progress-bar";
 import StepThreeForm from "./_components/step-three-form";
+import {
+  isDateInFuture,
+  isTimeInBetweenOpeningAndClosingHours,
+} from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -19,6 +23,8 @@ export default async function Page({
   const params = await searchParams;
   const { date, time, numberOfPeople, table } = params;
   if (!date || !time || !numberOfPeople || !table) redirect("/book-table");
+  if (!isDateInFuture(date) || !isTimeInBetweenOpeningAndClosingHours(time))
+    redirect("/book-table");
   // Validate search parameters
   const allowedParams = ["date", "time", "numberOfPeople", "table"];
   const extraParams = Object.keys(params).filter(
