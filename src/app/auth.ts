@@ -4,7 +4,20 @@ import { redirect } from "next/navigation";
 import { db } from "@/db/db";
 import { permissionsTable, usersTable } from "@/db/schema";
 import { loginSchema, registerSchema } from "@/validations";
+import { eq } from "drizzle-orm";
+export async function getUser() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    return null;
+  }
 
+  const userInDatabase = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.userId, data.user.id));
+  return userInDatabase[0] || null;
+}
 export async function logout() {
   const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
