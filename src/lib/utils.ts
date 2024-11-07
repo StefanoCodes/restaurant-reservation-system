@@ -1,9 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { date, ZodError, ZodIssue } from "zod";
+import { ZodError, ZodIssue } from "zod";
 import { set } from "date-fns";
 import { WEEKDAYS } from "@/utils/constants";
-import { getMaxCapacity } from "./data/user";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

@@ -9,7 +9,6 @@ import {
   date,
   boolean,
   index,
-  jsonb,
 } from "drizzle-orm/pg-core";
 export const rolesEnum = pgEnum("roles", ["user", "admin"]);
 export const reservationStatusEnum = pgEnum("reservation_status", [
@@ -41,7 +40,7 @@ export const usersTable = pgTable(
     email: varchar("email", { length: 255 }).notNull().unique(),
     phoneNumber: varchar("phone_number", { length: 255 }).notNull(),
     userId: varchar("user_id", { length: 255 }).notNull().unique(),
-    createdAt: timestamp("created_at").defaultNow(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
     // we willcreateindexes on the email and phone number
   },
   (table) => ({
@@ -100,7 +99,7 @@ export const reservationsTable = pgTable(
       .default("pending")
       .notNull(),
     numberOfPeople: integer("number_of_people").notNull(),
-    createdAt: timestamp("created_at").defaultNow(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
     notes: text("notes").default(""),
   },
   (table) => ({

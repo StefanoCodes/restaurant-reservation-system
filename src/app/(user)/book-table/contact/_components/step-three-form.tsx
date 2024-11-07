@@ -80,16 +80,17 @@ export default function StepThreeForm({
     try {
       const response = await stepThreeAction(formDataObject);
       if (!response.success) {
-        setErrors(response.errors as StepThreeFormDataErrors);
-        toast({
-          title: "Error",
-          description: response.message,
-          variant: "destructive",
-        });
         if (response.message === "Reservation already exists") {
-          router.push("/book-table");
+          return router.push("/book-table");
+        } else {
+          setErrors(response.errors as StepThreeFormDataErrors);
+          toast({
+            title: "Error",
+            description: response.message,
+            variant: "destructive",
+          });
+          return;
         }
-        return;
       }
       // if the response is success we will show the success toast and redirect the user to the bookings page
       toast({
