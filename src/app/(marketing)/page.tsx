@@ -6,6 +6,8 @@ import Header from "./_components/Header";
 import Features from "./_components/Features";
 import AboutUsSection from "./_components/About-us";
 import { getUser } from "../auth";
+import ContactUs from "./_components/contact-us";
+import Footer from "./_components/footer";
 export const metadata: Metadata = {
   keywords: ["restaurant", "reservation", "system", "login", "register"],
   title: "Restaurant Reservation System",
@@ -28,12 +30,21 @@ export const metadata: Metadata = {
 
 export default async function MarketingPage() {
   const user = await getUser();
+  // check if the user is an admin
+  if (user) {
+    // check if the user is an admin
+    if (await isAuthorizedUser()) {
+      redirect("/admin");
+    }
+  }
   return (
     <main className="relative overflow-hidden" id="home">
       <Navbar user={user} />
       <Header />
       <Features />
       <AboutUsSection />
+      <ContactUs />
+      <Footer />
     </main>
   );
 }
