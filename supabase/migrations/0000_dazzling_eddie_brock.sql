@@ -26,27 +26,20 @@ CREATE TABLE IF NOT EXISTS "business_hours" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"week_day" "week_days" NOT NULL,
 	"open_time" integer NOT NULL,
-	"close_time" integer NOT NULL
+	"close_time" integer NOT NULL,
+	"closed" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "permissions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"member_id" varchar(255),
+	"member_id" uuid,
 	"role" "roles" DEFAULT 'user',
 	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "reservation_form_completion_status" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"user_id" varchar(255),
-	"step_one" boolean DEFAULT false,
-	"step_two" boolean DEFAULT false,
-	"step_three" boolean DEFAULT false
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "reservations" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"user_id" varchar(255),
+	"user_id" uuid,
 	"reservation_date" date NOT NULL,
 	"table_id" uuid,
 	"start_time" varchar(255) NOT NULL,
@@ -56,7 +49,7 @@ CREATE TABLE IF NOT EXISTS "reservations" (
 	"reservation_email" varchar(255) NOT NULL,
 	"status" "reservation_status" DEFAULT 'pending' NOT NULL,
 	"number_of_people" integer NOT NULL,
-	"created_at" timestamp DEFAULT now(),
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"notes" text DEFAULT ''
 );
 --> statement-breakpoint
@@ -77,20 +70,14 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"name" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"phone_number" varchar(255) NOT NULL,
-	"user_id" varchar(255) NOT NULL,
-	"created_at" timestamp DEFAULT now(),
+	"user_id" uuid NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "users_email_unique" UNIQUE("email"),
 	CONSTRAINT "users_user_id_unique" UNIQUE("user_id")
 );
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "permissions" ADD CONSTRAINT "permissions_member_id_users_user_id_fk" FOREIGN KEY ("member_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "reservation_form_completion_status" ADD CONSTRAINT "reservation_form_completion_status_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

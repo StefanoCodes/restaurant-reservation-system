@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1730496891490,
-      "tag": "0000_wise_magma",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1730497865577,
-      "tag": "0001_perfect_skin",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1730498734769,
-      "tag": "0002_productive_jean_grey",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1730815998937,
-      "tag": "0003_talented_wonder_man",
+      "when": 1731101857744,
+      "tag": "0000_dazzling_eddie_brock",
       "breakpoints": true
     }
   ]

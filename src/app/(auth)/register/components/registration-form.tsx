@@ -41,6 +41,7 @@ export default function RegistrationForm() {
             defaultValue={state?.formData?.name}
             required
             disabled={isPending}
+            aria-disabled={isPending}
             aria-describedby={state?.error?.name ? "name-error" : undefined}
           />
           {state?.error?.name && (
@@ -59,6 +60,7 @@ export default function RegistrationForm() {
             defaultValue={state?.formData?.email}
             required
             disabled={isPending}
+            aria-disabled={isPending}
             aria-describedby={state?.error?.email ? "email-error" : undefined}
           />
           {state?.error?.email && (
@@ -69,6 +71,7 @@ export default function RegistrationForm() {
           <PasswordInput
             disabled={isPending}
             defaultValue={state?.formData?.password}
+            aria-disabled={isPending}
             aria-describedby={
               state?.error?.password ? "password-error" : undefined
             }
@@ -93,6 +96,7 @@ export default function RegistrationForm() {
             id="phoneNumber"
             type="tel"
             name="phoneNumber"
+            aria-disabled={isPending}
             defaultValue={state?.formData?.phoneNumber}
             required
             disabled={isPending}

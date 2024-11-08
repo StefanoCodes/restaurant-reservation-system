@@ -1,3 +1,6 @@
+// starting to add row level security policy therefore changed the user_id to a uuid instead of varchar to match the Auth.userId
+// will need to update teh schema npx drizzle-kit generate & npx drizzle-kit migrate
+
 import {
   integer,
   pgTable,
@@ -39,7 +42,7 @@ export const usersTable = pgTable(
     name: varchar("name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull().unique(),
     phoneNumber: varchar("phone_number", { length: 255 }).notNull(),
-    userId: varchar("user_id", { length: 255 }).notNull().unique(),
+    userId: uuid("user_id").notNull().unique(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     // we willcreateindexes on the email and phone number
   },
@@ -75,9 +78,7 @@ export const reservationsTable = pgTable(
   "reservations",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    userId: varchar("user_id", { length: 255 }).references(
-      () => usersTable.userId,
-    ),
+    userId: uuid("user_id").references(() => usersTable.userId),
     reservationDate: date("reservation_date").notNull(),
     tableId: uuid("table_id").references(() => tablesTable.id),
     startTime: varchar("start_time", {
@@ -119,9 +120,7 @@ export const permissionsTable = pgTable(
   "permissions",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    memberId: varchar("member_id", { length: 255 }).references(
-      () => usersTable.userId,
-    ),
+    memberId: uuid("member_id").references(() => usersTable.userId),
     role: rolesEnum("role").default("user"),
     createdAt: timestamp("created_at").defaultNow(),
   },

@@ -1,1 +1,0 @@
-ALTER TABLE "business_hours" ALTER COLUMN "closed" SET NOT NULL;

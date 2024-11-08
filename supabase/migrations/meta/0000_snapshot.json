@@ -1,5 +1,5 @@
 {
-  "id": "a4bedb24-c8b7-4d74-b235-e758bb3015b5",
+  "id": "ad5e837b-62bf-48e4-8c27-b104cee194e9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -33,6 +33,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "closed": {
+          "name": "closed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         }
       },
       "indexes": {},
@@ -53,7 +60,7 @@
         },
         "member_id": {
           "name": "member_id",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -108,64 +115,6 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.reservation_form_completion_status": {
-      "name": "reservation_form_completion_status",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "step_one": {
-          "name": "step_one",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "step_two": {
-          "name": "step_two",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "step_three": {
-          "name": "step_three",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "reservation_form_completion_status_user_id_users_user_id_fk": {
-          "name": "reservation_form_completion_status_user_id_users_user_id_fk",
-          "tableFrom": "reservation_form_completion_status",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "user_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
     "public.reservations": {
       "name": "reservations",
       "schema": "",
@@ -179,7 +128,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -243,7 +192,7 @@
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "notes": {
@@ -472,7 +421,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "varchar(255)",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
@@ -480,7 +429,7 @@
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },
