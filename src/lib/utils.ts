@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ZodError, ZodIssue } from "zod";
 import { set } from "date-fns";
-import { WEEKDAYS } from "@/utils/constants";
+import { WEEKDAYS } from "@/lib/constants";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

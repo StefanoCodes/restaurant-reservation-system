@@ -12,7 +12,7 @@ import {
   usersTable,
 } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
-import { BOOKING_DURATION } from "@/utils/constants";
+import { BOOKING_DURATION } from "@/lib/constants";
 
 // Admin GET Requests
 

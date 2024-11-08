@@ -5,7 +5,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { RoutesLink } from "@/lib/types";
-import { ADMIN_ROUTES } from "@/utils/constants";
+import { ADMIN_ROUTES } from "@/lib/constants";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "@/components/ui/sidebar";

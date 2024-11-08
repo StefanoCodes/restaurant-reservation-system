@@ -3,7 +3,7 @@ import { reservationsTable, Table } from "@/db/schema";
 import { tablesTable } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq, and, or, gte, lt, lte, gt } from "drizzle-orm";
-import { BOOKING_DURATION } from "@/utils/constants";
+import { BOOKING_DURATION } from "@/lib/constants";
 
 export const getAllTables = async (): Promise<Table[]> => {
   try {

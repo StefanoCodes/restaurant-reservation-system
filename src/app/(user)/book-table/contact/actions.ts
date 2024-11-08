@@ -4,7 +4,7 @@ import { reservationsTable } from "@/db/schema";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { getTableIdByName } from "@/lib/data/user";
 import { formatZodErrors, getEndTime } from "@/lib/utils";
-import { BOOKING_DURATION } from "@/utils/constants";
+import { BOOKING_DURATION } from "@/lib/constants";
 import { stepThreeSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
