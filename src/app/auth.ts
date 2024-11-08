@@ -5,6 +5,7 @@ import { db } from "@/db/db";
 import { permissionsTable, usersTable } from "@/db/schema";
 import { loginSchema, registerSchema } from "@/validations";
 import { eq } from "drizzle-orm";
+
 export async function getUser() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
@@ -51,6 +52,7 @@ export async function registerUser(
   // handling the errors / messages taht we would get back from zod if not successfull
   if (!isRegistrationDataValid.success) {
     return {
+      success: false,
       formData: registrationData,
       error: isRegistrationDataValid.error.flatten().fieldErrors,
     };
@@ -65,6 +67,7 @@ export async function registerUser(
 
   if (error) {
     return {
+      success: false,
       message: error.message,
     };
   }
@@ -130,14 +133,17 @@ export async function registerUser(
 
 export async function loginUser(prevState: any, formData: FormData) {
   const loginData = {
-    email: formData.get("email"),
-    password: formData.get("password"),
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
   };
 
   const isLoginDataValid = loginSchema.safeParse(loginData);
 
   if (!isLoginDataValid.success) {
     return {
+      success: false,
+      formData: loginData,
+      message: "Invalid email or password",
       error: isLoginDataValid.error.flatten().fieldErrors,
     };
   }
@@ -151,7 +157,8 @@ export async function loginUser(prevState: any, formData: FormData) {
 
   if (error) {
     return {
-      loginError: error.message,
+      success: false,
+      message: error.message,
     };
   }
 
@@ -159,8 +166,12 @@ export async function loginUser(prevState: any, formData: FormData) {
 
   if (!user)
     return {
+      success: false,
       message: "User not found",
     };
 
-  redirect("/");
+  return {
+    success: true,
+    message: "User logged in successfully",
+  };
 }

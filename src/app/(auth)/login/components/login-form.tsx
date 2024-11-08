@@ -5,9 +5,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useActionState } from "react";
 import PasswordInput from "../../_components/password-input";
-
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 export default function LoginForm() {
-  const [state, formAction, isPending] = useActionState(loginUser, null);
+  const { toast } = useToast();
+  const router = useRouter();
+  const [state, formAction, isPending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const response = await loginUser(prevState, formData);
+      if (response.success) {
+        toast({
+          description: response.message,
+        });
+        router.push("/");
+      } else {
+        toast({
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+
+      return response;
+    },
+    null,
+  );
   return (
     <form action={formAction}>
       <div className="grid gap-4">
@@ -18,6 +39,10 @@ export default function LoginForm() {
             type="text"
             name="email"
             placeholder="example@gmail.com"
+            defaultValue={state?.formData?.email}
+            disabled={isPending}
+            aria-disabled={isPending}
+            aria-describedby="email-error"
             required
           />
           {state?.error?.email && (
@@ -25,13 +50,16 @@ export default function LoginForm() {
           )}
         </div>
         <div className="grid gap-2">
-          <PasswordInput />
+          <PasswordInput
+            disabled={isPending}
+            aria-disabled={isPending}
+            aria-describedby="password-error"
+            defaultValue={state?.formData?.password}
+          />
           {state?.error?.password && (
             <p className="text-red-500">{state.error.password}</p>
           )}
-          {state?.loginError && (
-            <p className="text-red-500">{state.loginError}</p>
-          )}
+          {state?.message && <p className="text-red-500">{state.message}</p>}
         </div>
         <Button
           type="submit"
