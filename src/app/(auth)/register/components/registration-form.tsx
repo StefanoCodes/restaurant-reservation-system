@@ -5,9 +5,29 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useActionState } from "react";
 import PasswordInput from "../../_components/password-input";
-
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 export default function RegistrationForm() {
-  const [state, formAction, isPending] = useActionState(registerUser, null);
+  const { toast } = useToast();
+  const router = useRouter();
+  const [state, formAction, isPending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const response = await registerUser(prevState, formData);
+      if (response.success) {
+        toast({
+          description: response.message,
+        });
+        router.push("/");
+      } else {
+        toast({
+          description: response.message,
+          variant: "destructive",
+        });
+      }
+      return response;
+    },
+    null,
+  );
   return (
     <form action={formAction}>
       <div className="grid gap-4">
@@ -18,7 +38,10 @@ export default function RegistrationForm() {
             type="text"
             name="name"
             placeholder="John Doe"
+            defaultValue={state?.formData?.name}
             required
+            disabled={isPending}
+            aria-describedby={state?.error?.name ? "name-error" : undefined}
           />
           {state?.error?.name && (
             <p className="text-red-500">{state.error.name}</p>
@@ -33,14 +56,23 @@ export default function RegistrationForm() {
             id="email"
             type="email"
             name="email"
+            defaultValue={state?.formData?.email}
             required
+            disabled={isPending}
+            aria-describedby={state?.error?.email ? "email-error" : undefined}
           />
           {state?.error?.email && (
             <p className="text-red-500">{state.error.email}</p>
           )}
         </div>
         <div className="grid gap-2">
-          <PasswordInput />
+          <PasswordInput
+            disabled={isPending}
+            defaultValue={state?.formData?.password}
+            aria-describedby={
+              state?.error?.password ? "password-error" : undefined
+            }
+          />
           {state?.error?.password && (
             <div className="text-sm text-red-500">
               <p>Password must:</p>
@@ -61,7 +93,12 @@ export default function RegistrationForm() {
             id="phoneNumber"
             type="tel"
             name="phoneNumber"
+            defaultValue={state?.formData?.phoneNumber}
             required
+            disabled={isPending}
+            aria-describedby={
+              state?.error?.phoneNumber ? "phoneNumber-error" : undefined
+            }
           />
           {state?.error?.phoneNumber && (
             <p className="text-red-500">{state.error.phoneNumber}</p>

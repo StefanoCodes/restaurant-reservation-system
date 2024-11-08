@@ -1,9 +1,12 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
-
-export default function PasswordInput() {
+import { InputHTMLAttributes, useState } from "react";
+interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {}
+export default function PasswordInput({
+  defaultValue,
+  ...props
+}: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <>
@@ -16,6 +19,8 @@ export default function PasswordInput() {
           placeholder="********"
           minLength={8}
           required
+          defaultValue={defaultValue}
+          {...props}
         />
         <button
           type="button"

@@ -32,13 +32,17 @@ export async function logout() {
 }
 
 // AUTH
-export async function registerUser(prevState: any, formData: FormData) {
+export async function registerUser(
+  prevState: any,
+  formData: FormData,
+  retryCount = 0,
+) {
   // retreiving form data
   const registrationData = {
-    name: formData.get("name"),
-    email: formData.get("email"),
-    password: formData.get("password"),
-    phoneNumber: formData.get("phoneNumber"),
+    name: formData.get("name") as string,
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+    phoneNumber: formData.get("phoneNumber") as string,
   };
 
   // checking the data against our zod schema to ensure its in the essential format
@@ -47,6 +51,7 @@ export async function registerUser(prevState: any, formData: FormData) {
   // handling the errors / messages taht we would get back from zod if not successfull
   if (!isRegistrationDataValid.success) {
     return {
+      formData: registrationData,
       error: isRegistrationDataValid.error.flatten().fieldErrors,
     };
   }
@@ -68,6 +73,7 @@ export async function registerUser(prevState: any, formData: FormData) {
 
   if (!user)
     return {
+      success: false,
       message: "User not found",
     };
   // adding a new user to the user table
@@ -89,15 +95,37 @@ export async function registerUser(prevState: any, formData: FormData) {
         // by default the role is set to user so the only thing we need to do is to insert the memberID
       });
     });
+    return {
+      success: true,
+      message: "User registered successfully",
+    };
   } catch (error) {
     console.error("Error inserting user into database:", error);
 
-    return {
-      message: "Error inserting user into database",
-    };
-  }
+    // Limit retries to prevent infinite loops
+    if (retryCount >= 2) {
+      return {
+        success: false,
+        message:
+          "Registration failed after multiple attempts. Please try again later.",
+      };
+    }
 
-  redirect("/");
+    // Delete user from auth table
+    const { error: deleteError } = await supabase.auth.admin.deleteUser(
+      user.id,
+    );
+    if (deleteError) {
+      console.error("Error deleting user from auth table:", deleteError);
+      return {
+        success: false,
+        message: "An error occurred during registration. Please try again.",
+      };
+    }
+
+    // Retry with incremented counter
+    return registerUser(prevState, formData, retryCount + 1);
+  }
 }
 
 export async function loginUser(prevState: any, formData: FormData) {

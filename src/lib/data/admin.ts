@@ -7,12 +7,11 @@ import {
   permissionsTable,
   reservationsTable,
   settingsTable,
-  Table,
   tablesTable,
   usersTable,
 } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
 import { BOOKING_DURATION } from "@/lib/constants";
+import { eq, inArray } from "drizzle-orm";
 
 // Admin GET Requests
 
@@ -40,7 +39,6 @@ export async function getAllUsers() {
     return [];
   }
 }
-
 export async function getAllBookings() {
   await isAuthorizedAdmin();
   try {
@@ -80,7 +78,6 @@ export async function getBusinessHours() {
     return [];
   }
 }
-
 export async function getAdminSettings() {
   await isAuthorizedAdmin();
   try {

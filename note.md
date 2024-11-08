@@ -30,3 +30,17 @@ email,
 # admins will only be able to see the admin pages not user pages
 
 admins can delete any reservation and see the reservation details
+
+# admins can also add new admins to the system
+
+# admins can also edit the open and close times for the restaurant
+
+# admins can also edit the booking duration for the restaurant
+
+<!-- ROW Level Security -->
+
+# implement row level security so that users can only see their own reservation without being able to see others and unable to update or delete their reservations
+
+# Admins can edit do all the CRUD operations on the Tables users cannot
+
+# Users can update their personal settings which is why i will allow authenticated users to update their name and other things which is my i stored the permissions role in another table to prevent the users from changeing the permissions of other users
