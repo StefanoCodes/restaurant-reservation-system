@@ -9,7 +9,7 @@ export default function ContactUs() {
       id="contact"
       className="w-full bg-gradient-to-b from-orange-50 to-white px-4 py-12 dark:from-gray-900 dark:to-gray-800 sm:px-6 md:px-8 md:py-24 lg:py-32"
     >
-      <div className="grid gap-10 lg:grid-cols-2">
+      <div className="container grid gap-10 lg:grid-cols-2">
         <div className="space-y-8">
           <div>
             <h2 className="text-3xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-5xl">
