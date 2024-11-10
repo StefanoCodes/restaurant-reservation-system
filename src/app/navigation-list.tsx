@@ -24,7 +24,7 @@ const NavLink = ({
     <Link
       className={cn(
         `flex flex-row items-center gap-1 text-black hover:text-gray-500 sm:text-white sm:hover:text-gray-300`,
-        (pathname === path || pathname.includes(path)) &&
+        (pathname === path || pathname.startsWith(path)) &&
           "text-gray-500 sm:text-gray-300",
       )}
       key={name}

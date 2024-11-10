@@ -56,6 +56,11 @@ export const USER_ROUTES = [
     path: "/contact",
     icon: Mail,
   },
+  {
+    name: "Settings",
+    path: "/settings",
+    icon: Settings,
+  },
 ];
 
 // TODO: add new admin routes 1. Manage Admins 2. Configure Settings

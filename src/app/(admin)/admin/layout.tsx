@@ -14,7 +14,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex-grow overflow-y-auto">
-            <Container>{children}</Container>
+            <div className="container mx-auto p-4 md:p-8 lg:p-12 lg:pt-6">
+              {children}
+            </div>
           </div>
         </div>
       </SidebarProvider>

@@ -11,14 +11,14 @@ export default function Header() {
       className="mb-[4rem] mt-[3rem] flex flex-col items-center justify-center overflow-hidden px-4 leading-6 sm:px-6 md:mt-[4rem] md:px-8"
       aria-label="Nextjs Starter Kit Hero"
     >
-      <div className="flex w-full flex-col items-center justify-center gap-8">
+      <div className="container flex flex-col items-center justify-center gap-8">
         {/* CONTENT */}
         <div className="flex flex-col items-center justify-center gap-8">
           <div className="flex flex-col items-center justify-center gap-3">
             {/* TEXT */}
             <div className="flex flex-col items-center justify-center gap-1">
               <h1
-                className={`max-w-[1120px] scroll-m-20 bg-gradient-to-b text-center text-2xl font-semibold tracking-tight dark:text-white sm:text-2xl md:text-3xl lg:text-5xl`}
+                className={`max-w-[1120px] scroll-m-20 bg-gradient-to-b text-center text-2xl font-semibold tracking-tight dark:text-white sm:text-3xl md:text-3xl lg:text-6xl`}
               >
                 Welcome To Our Restaurant
               </h1>

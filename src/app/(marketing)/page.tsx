@@ -1,6 +1,5 @@
 import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 import Navbar from "./_components/Navbar";
 import Header from "./_components/Header";
 import Features from "./_components/Features";

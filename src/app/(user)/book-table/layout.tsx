@@ -19,11 +19,10 @@ export default function BookTableLayout({
           <div className="order-1 md:order-2 md:col-span-2">
             <div className="relative h-48 w-full md:h-full">
               <Image
-                layout="fill"
+                fill
                 src="/bg-restaurant.jpg"
                 alt="Restaurant ambiance"
-                objectFit="cover"
-                className="w-full rounded-t-2xl transition-all duration-300 ease-in-out md:rounded-l-none md:rounded-r-2xl"
+                className="w-full rounded-t-2xl object-cover transition-all duration-300 ease-in-out md:rounded-l-none md:rounded-r-2xl"
                 priority
               />
               <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out hover:bg-opacity-30"></div>

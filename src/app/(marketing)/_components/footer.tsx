@@ -1,4 +1,5 @@
 import { Facebook, Twitter, Instagram } from "lucide-react";
+import BusinessHours from "./business-hours";
 
 export default function Footer() {
   return (
@@ -69,11 +70,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Opening Hours
             </h3>
-            <ul className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-              <li>Monday - Friday: 11am - 10pm</li>
-              <li>Saturday: 10am - 11pm</li>
-              <li>Sunday: 10am - 9pm</li>
-            </ul>
+            <BusinessHours />
           </div>
         </div>
         <div className="mt-8 border-t border-gray-200 pt-8 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
