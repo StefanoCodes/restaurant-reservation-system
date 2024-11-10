@@ -1,3 +1,5 @@
+import { isAuthorizedUser } from "@/app/(auth)/auth";
+import { getUser } from "@/app/auth";
 import { NavUser } from "@/app/nav-user-toggle";
 import { Button } from "@/components/ui/button";
 import { User } from "@/lib/types";
@@ -24,7 +26,13 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar({ user }: { user: User | null }) {
+export default async function Navbar() {
+  const user = await getUser();
+  // check if the user is an admin
+  if (user) {
+    // check if the user is an admin
+    await isAuthorizedUser();
+  }
   return (
     <Disclosure
       as="nav"
