@@ -1,10 +1,10 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import ButtonLoader from "@/components/ui/button-loader";
+import ButtonLoader from "@/components/button-loader";
 import { Button, ButtonProps, buttonVariants } from "./button";
 import { VariantProps } from "class-variance-authority";
-import ButtonPendingLoader from "@/app/button-pending-loader";
+import ButtonPendingLoader from "@/components/button-pending-loader";
 
 export interface SubmitButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,

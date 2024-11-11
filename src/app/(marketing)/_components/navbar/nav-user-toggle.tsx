@@ -15,7 +15,7 @@ import {
 import { User } from "@/lib/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
-import LogoutButton from "../../../../components/logout-button";
+import LogoutButton from "@/components/logout-button";
 import Link from "next/link";
 
 export function NavUser({ user }: { user: User }) {

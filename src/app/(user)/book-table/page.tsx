@@ -2,7 +2,6 @@ export const dynamic = "force-dynamic";
 import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
 import StepOneForm from "./_date/_components/step-one-form";
-import ProgressBar from "./_components/progress-bar";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {

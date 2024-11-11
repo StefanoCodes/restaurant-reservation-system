@@ -33,7 +33,7 @@ import { useQueryState } from "nuqs";
 import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import ButtonPendingLoader from "@/app/button-pending-loader";
+import ButtonPendingLoader from "@/components/button-pending-loader";
 function SubmitTableButton({
   reservationDate,
   reservationTime,

@@ -1,4 +1,4 @@
-import Loading from "@/app/loading-spinner";
+import Loading from "@/components/loading-spinner";
 import { Suspense } from "react";
 import UserBookings from "./_components/user-bookings";
 import { isAuthorizedUser } from "@/app/(auth)/auth";

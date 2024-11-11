@@ -8,7 +8,7 @@ type UserSettingsProps = {
     createdAt: Date;
   };
 };
-
+// we want to cache this page
 export default function UserSettings({ user }: UserSettingsProps) {
   const { name, email, phoneNumber, createdAt } = user;
   const displayName =
