@@ -12,6 +12,7 @@ export default async function UserSettingsPage() {
     email: userInDb.email,
     phoneNumber: userInDb.phoneNumber,
     createdAt: userInDb.createdAt,
+    userId: userInDb.userId,
   };
   return (
     <main>

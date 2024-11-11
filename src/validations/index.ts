@@ -192,7 +192,17 @@ export const bookingDurationIntervalSchema = z.object({
       message: `Booking Interval Must Be At Most 4`,
     }),
 });
-
+export const updateUserInformationSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters",
+  }),
+  email: z.string().email({
+    message: "Invalid email address",
+  }),
+  phoneNumber: z.string().min(10, {
+    message: "Phone number must be at least 10 characters",
+  }),
+});
 export type newReservationInitialValuesType = z.infer<
   typeof newReservationInitialValuesType
 >;

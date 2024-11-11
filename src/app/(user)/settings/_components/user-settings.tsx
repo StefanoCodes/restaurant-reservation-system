@@ -1,4 +1,6 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
+import EditUserInformationForm from "./edit-user-information-form";
 
 type UserSettingsProps = {
   user: {
@@ -6,11 +8,12 @@ type UserSettingsProps = {
     email: string;
     phoneNumber: string;
     createdAt: Date;
+    userId: string;
   };
 };
 // we want to cache this page
 export default function UserSettings({ user }: UserSettingsProps) {
-  const { name, email, phoneNumber, createdAt } = user;
+  const { name, email, phoneNumber, createdAt, userId } = user;
   const displayName =
     name.slice(0, 1).toUpperCase() + name.slice(-1).toUpperCase();
   const formattedCreatedAt = new Intl.DateTimeFormat("en-US", {
@@ -40,9 +43,8 @@ export default function UserSettings({ user }: UserSettingsProps) {
               </div>
             </div>
           </div>
-
           {/* Profile Info */}
-          <div className="pb-4 pt-20 text-center sm:pt-24 md:pt-28">
+          <div className="mb-4 pb-4 pt-20 text-center sm:pt-24 md:pt-28">
             <h1 className="text-2xl font-semibold text-gray-900 sm:text-3xl">
               {user.name}
             </h1>
@@ -51,7 +53,10 @@ export default function UserSettings({ user }: UserSettingsProps) {
               <span>{formattedCreatedAt}</span>
             </div>
           </div>
-          {/* USER INFORMATION / EDIT FORM */}
+        </div>
+        {/* USER INFORMATION / EDIT FORM */}
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <EditUserInformationForm user={user} />
         </div>
       </div>
     </div>
