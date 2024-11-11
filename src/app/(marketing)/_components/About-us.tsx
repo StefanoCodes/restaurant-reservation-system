@@ -1,44 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Clock, Award, Leaf } from "lucide-react";
+import AboutUsStatistic from "./about-us/about-us-statistic";
+import KeyPoints from "./about-us/key-points";
+import SectionHeading from "./section-heading";
+import MeetTeam from "./about-us/meet-the-team";
 
-export default function AboutUsSection() {
-  const keyPoints = [
-    {
-      icon: Clock,
-      title: "Established 1995",
-      description: "Over 25 years of culinary excellence",
-    },
-    {
-      icon: Award,
-      title: "Michelin Starred",
-      description: "Recognized for our outstanding cuisine",
-    },
-    {
-      icon: Leaf,
-      title: "Farm to Table",
-      description: "Committed to using fresh, local ingredients",
-    },
-  ];
-
-  const teamMembers = [
-    {
-      name: "Jason Chen",
-      role: "Head Chef",
-      image: "/blake.webp",
-    },
-    {
-      name: "Michael Roberts",
-      role: "Sommelier",
-      image: "/daniel.webp",
-    },
-    {
-      name: "John Johnson",
-      role: "Pastry Chef",
-      image: "/dan.webp",
-    },
-  ];
-
+export default function AboutUs() {
   return (
     <section
       id="about"
@@ -48,62 +16,21 @@ export default function AboutUsSection() {
       <div className="container relative z-10">
         <div className="flex flex-col items-center gap-12 lg:flex-row">
           <div className="space-y-6 lg:w-1/2">
-            <h2 className="text-4xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-5xl">
-              Our <span className="text-[#f37e11]">Story</span>
-            </h2>
+            <SectionHeading title="Our" highlightedText="Story" />
             <p className="text-xl text-gray-600 dark:text-gray-300">
               Welcome to Gourmet Haven, where culinary artistry meets warm
               hospitality. Our passion for exceptional food and memorable dining
               experiences has been our driving force since 1995.
             </p>
-            <div className="flex flex-wrap gap-4">
-              {keyPoints.map((point, index) => (
-                <Card
-                  key={index}
-                  className="min-w-[200px] flex-1 rounded-xl border-none bg-white/80 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl dark:bg-gray-800/80"
-                >
-                  <CardContent className="flex flex-col items-center justify-center gap-4 p-6">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f37e11]/10 md:text-center">
-                      <point.icon className="h-6 w-6 text-[#f37e11]" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white md:text-center">
-                        {point.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 md:text-center">
-                        {point.description}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <KeyPoints />
           </div>
           <div className="relative lg:w-1/2">
-            <div className="absolute inset-0 rotate-3 rounded-3xl bg-[#f37e11]"></div>
+            <div className="bg-primary-brand-color absolute inset-0 rotate-3 rounded-3xl"></div>
             <Card className="relative rounded-3xl border-none bg-white p-8 shadow-xl dark:bg-gray-800">
               <h3 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
                 Meet Our Team
               </h3>
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
-                {teamMembers.map((member, index) => (
-                  <div key={index} className="text-center">
-                    <Avatar className="mx-auto mb-4 h-24 w-24 border-4 border-[#f37e11]">
-                      <AvatarImage src={member.image} alt={member.name} />
-                      <AvatarFallback>
-                        {member.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      {member.name}
-                    </h4>
-                    <p className="text-[#f37e11]">{member.role}</p>
-                  </div>
-                ))}
-              </div>
+              <MeetTeam />
             </Card>
           </div>
         </div>

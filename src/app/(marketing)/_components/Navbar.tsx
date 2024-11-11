@@ -34,10 +34,7 @@ export default async function Navbar() {
     await isAuthorizedUser();
   }
   return (
-    <Disclosure
-      as="nav"
-      className={cn("bg-[var(--primary-brand-color)] text-white")}
-    >
+    <Disclosure as="nav" className={cn("bg-primary-brand-color text-white")}>
       <div className="container px-3 py-2">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">

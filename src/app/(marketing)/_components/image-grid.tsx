@@ -10,15 +10,16 @@ const images = [
 ];
 export default function ImageGrid() {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {images.map((img, index) => {
         return (
           <Image
-            className="h-full w-full object-cover"
+            className="h-full w-full rounded-lg object-cover"
             src={img}
             alt="marketing"
-            width={250}
-            height={169}
+            width={500}
+            height={500}
+            quality={100}
             key={index}
           />
         );

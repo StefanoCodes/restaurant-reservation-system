@@ -31,7 +31,7 @@ export default function Header() {
             {/* BUTTONS */}
             <div className="flex items-center justify-center gap-3">
               <Link href="/book-table" aria-label="Make a Reservation">
-                <Button className="bg-[var(--primary-brand-color)]">
+                <Button className="bg-primary-brand-color">
                   Make a Reservation
                 </Button>
               </Link>
@@ -54,7 +54,7 @@ export default function Header() {
               <StarFilledIcon
                 className="h-4 w-4"
                 aria-hidden="true"
-                color="#FF9529"
+                color="text-primary-brand-color"
               />
               <StarFilledIcon
                 className="h-4 w-4"
@@ -91,8 +91,6 @@ export default function Header() {
             />
           </div>
         </div>
-
-        {/* IMAGE GRID */}
         <ImageGrid />
       </div>
     </section>

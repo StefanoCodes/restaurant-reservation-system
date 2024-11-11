@@ -1,10 +1,8 @@
-import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
 import Navbar from "./_components/Navbar";
 import Header from "./_components/Header";
 import Features from "./_components/Features";
-import AboutUsSection from "./_components/About-us";
-import { getUser } from "../auth";
+import AboutUs from "./_components/About-us";
 import ContactUs from "./_components/contact-us";
 import Footer from "./_components/footer";
 export const metadata: Metadata = {
@@ -33,7 +31,7 @@ export default async function MarketingPage() {
       <Navbar />
       <Header />
       <Features />
-      <AboutUsSection />
+      <AboutUs />
       <ContactUs />
       <Footer />
     </main>

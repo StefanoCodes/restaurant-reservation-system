@@ -13,7 +13,7 @@ export default function ContactUs() {
         <div className="space-y-8">
           <div>
             <h2 className="text-3xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-5xl">
-              Contact <span className="text-[#f37e11]">Us</span>
+              Contact <span className="text-primary-brand-color">Us</span>
             </h2>
             <p className="mt-4 text-gray-500 dark:text-gray-400">
               We'd love to hear from you. Send us a message and we'll respond as
@@ -22,19 +22,19 @@ export default function ContactUs() {
           </div>
           <div className="space-y-4">
             <div className="flex items-center space-x-4">
-              <MapPin className="text-[#f37e11]" />
+              <MapPin className="text-primary-brand-color" />
               <span className="text-gray-700 dark:text-gray-300">
                 123 Gourmet Street, Foodie City, FC 12345
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <Phone className="text-[#f37e11]" />
+              <Phone className="text-primary-brand-color" />
               <span className="text-gray-700 dark:text-gray-300">
                 (123) 456-7890
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <Mail className="text-[#f37e11]" />
+              <Mail className="text-primary-brand-color" />
               <span className="text-gray-700 dark:text-gray-300">
                 info@gourmethaven.com
               </span>

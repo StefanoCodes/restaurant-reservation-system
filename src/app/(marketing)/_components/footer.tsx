@@ -14,9 +14,9 @@ export default function Footer() {
               Exquisite dining experiences since 1995.
             </p>
             <div className="flex space-x-4">
-              <Facebook className="cursor-pointer text-gray-400 hover:text-[#f37e11]" />
-              <Twitter className="cursor-pointer text-gray-400 hover:text-[#f37e11]" />
-              <Instagram className="cursor-pointer text-gray-400 hover:text-[#f37e11]" />
+              <Facebook className="hover:text-primary-brand-color cursor-pointer text-gray-400" />
+              <Twitter className="hover:text-primary-brand-color cursor-pointer text-gray-400" />
+              <Instagram className="hover:text-primary-brand-color cursor-pointer text-gray-400" />
             </div>
           </div>
           <nav className="space-y-4">
@@ -27,7 +27,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-500 hover:text-[#f37e11] dark:text-gray-400"
+                  className="hover:text-primary-brand-color text-sm text-gray-500 dark:text-gray-400"
                 >
                   Home
                 </a>
@@ -35,7 +35,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-500 hover:text-[#f37e11] dark:text-gray-400"
+                  className="hover:text-primary-brand-color text-sm text-gray-500 dark:text-gray-400"
                 >
                   Menu
                 </a>
@@ -43,7 +43,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-500 hover:text-[#f37e11] dark:text-gray-400"
+                  className="hover:text-primary-brand-color text-sm text-gray-500 dark:text-gray-400"
                 >
                   Reservations
                 </a>
@@ -51,7 +51,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-500 hover:text-[#f37e11] dark:text-gray-400"
+                  className="hover:text-primary-brand-color text-sm text-gray-500 dark:text-gray-400"
                 >
                   About Us
                 </a>
@@ -59,7 +59,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm text-gray-500 hover:text-[#f37e11] dark:text-gray-400"
+                  className="hover:text-primary-brand-color text-sm text-gray-500 dark:text-gray-400"
                 >
                   Contact
                 </a>

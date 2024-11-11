@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Utensils, Clock, Award, Leaf, Users, Wifi } from "lucide-react";
+import SectionHeading from "./section-heading";
 
 export default function Features() {
   const features = [
@@ -48,9 +49,7 @@ export default function Features() {
     >
       <div className="container px-4 md:px-6">
         <div className="mb-12 text-center">
-          <h2 className="text-shadow text-4xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-5xl">
-            Why Choose <span className="text-[#f37e11]">Us</span>
-          </h2>
+          <SectionHeading title="Why Choose" highlightedText="Us" />
           <p className="mx-auto mt-4 max-w-2xl text-xl text-gray-600 dark:text-gray-300">
             Discover the unique features that set our restaurant apart and make
             your dining experience unforgettable.
