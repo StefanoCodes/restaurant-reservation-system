@@ -1,5 +1,3 @@
-<!-- create me a clean readme file with emoji and talk about the project and tech stack used by analizing the code base -->
-
 # 🍽️ Restaurant Reservation System
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/stefano-vidmars-projects/restaurant-reservation-system)
