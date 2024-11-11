@@ -1,27 +1,35 @@
 import { Metadata } from "next";
-import Navbar from "./_components/Navbar";
-import Header from "./_components/Header";
-import Features from "./_components/Features";
-import AboutUs from "./_components/About-us";
-import ContactUs from "./_components/contact-us";
-import Footer from "./_components/footer";
+import Navbar from "./_components/navbar/Navbar";
+import Header from "./_components/header/Header";
+import Features from "./_components/features/Features";
+import AboutUs from "./_components/about-us/About-us";
+import ContactUs from "./_components/contact/contact-us";
+import Footer from "./_components/footer/footer";
+import { marketingConfig } from "./marketing.config";
+const {
+  restaurantName,
+  openGraphImage,
+  twitterImage,
+  keywords,
+  creator,
+  siteUrl,
+  description,
+} = marketingConfig.Meta;
+
 export const metadata: Metadata = {
-  keywords: ["restaurant", "reservation", "system", "login", "register"],
-  title: "Restaurant Reservation System",
+  keywords: keywords,
+  title: restaurantName,
   openGraph: {
-    description:
-      "This is a restaurant reservation system that allows you to manage your reservations and customers.",
-    images: [""],
+    description: description,
+    images: [openGraphImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Restaurant Reservation System",
-    description:
-      "This is a restaurant reservation system that allows you to manage your reservations and customers.",
-    siteId: "",
-    creator: "@StefanoCodes",
-    creatorId: "",
-    images: [""],
+    title: restaurantName,
+    description: description,
+    siteId: siteUrl,
+    creator: creator,
+    images: [twitterImage],
   },
 };
 

@@ -1,14 +1,5 @@
 import Image from "next/image";
-
-const images = [
-  "/marketing_1.jpg",
-  "/marketing_2.jpg",
-  "/marketing_3.jpg",
-  "/marketing_4.jpg",
-  "/marketing_5.jpg",
-  "/marketing_6.jpg",
-];
-export default function ImageGrid() {
+export default function ImageGrid({ images }: { images: string[] }) {
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {images.map((img, index) => {

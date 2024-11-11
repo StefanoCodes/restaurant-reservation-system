@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { handleStepTwoAction } from "../action";
 import { useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
-import ButtonLoader from "@/app/button-loader";
+import ButtonLoader from "@/components/ui/button-loader";
 import { useQueryState } from "nuqs";
 import { useToast } from "@/hooks/use-toast";
 import ButtonPendingLoader from "@/app/button-pending-loader";

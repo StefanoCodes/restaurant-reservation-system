@@ -1,9 +1,8 @@
 import { isAuthorizedUser } from "@/app/(auth)/auth";
-import { getUser } from "@/app/auth";
-import { NavUser } from "@/app/nav-user-toggle";
+import { getUser } from "@/app/(user)/auth";
+import { NavUser } from "./nav-user-toggle";
 import { Button } from "@/components/ui/button";
-import { User } from "@/lib/types";
-
+import { MARKETING_ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   Disclosure,
@@ -13,15 +12,8 @@ import {
 import { Menu as MenuIcon, X as XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
-const navigation = [
-  { name: "Home", href: "#home", current: false },
-  { name: "Features", href: "#features", current: false },
-  { name: "About Us", href: "#about", current: false },
-  { name: "Contact Us", href: "#contact", current: false },
-  { name: "Book A Table", href: "/book-table", current: false },
-];
-
+import { marketingConfig } from "@/app/(marketing)/marketing.config";
+const { logo, links } = marketingConfig.Navbar;
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -53,29 +45,28 @@ export default async function Navbar() {
             </DisclosureButton>
           </div>
           <div className="flex flex-1 items-center justify-center sm:justify-start">
-            <Image
-              src={"/logo.jpg"}
-              alt="logo"
-              width={50}
-              height={50}
-              className="rounded-full object-cover"
-            />
+            <Link href={links[0].href}>
+              <Image
+                src={logo}
+                alt="logo"
+                width={50}
+                height={50}
+                className="rounded-full object-cover"
+              />
+            </Link>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
+                {links.map((item) => (
+                  <Link
+                    key={item.label}
                     href={item.href}
-                    aria-current={item.current ? "page" : undefined}
-                    className={classNames(
-                      item.current
-                        ? "bg-gray-900 text-white"
-                        : "text-white hover:bg-gray-700",
+                    className={cn(
+                      "text-white hover:bg-gray-700",
                       "rounded-md px-3 py-2 text-sm font-medium",
                     )}
                   >
-                    {item.name}
-                  </a>
+                    {item.label}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -95,7 +86,7 @@ export default async function Navbar() {
 
       <DisclosurePanel className="sm:hidden">
         <div className="flex flex-col gap-2">
-          {navigation.map((item) => (
+          {MARKETING_ROUTES.map((item) => (
             <DisclosureButton
               key={item.name}
               as="a"

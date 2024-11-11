@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 export default function Logo() {
@@ -9,7 +7,7 @@ export default function Logo() {
       width={150}
       height={50}
       alt="Restaurant Logo"
-      className="w-full h-auto mx-auto aspect-square"
+      className="mx-auto aspect-square h-auto w-full"
     />
   );
 }

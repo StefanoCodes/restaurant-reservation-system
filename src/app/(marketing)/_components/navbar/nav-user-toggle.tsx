@@ -1,19 +1,8 @@
 "use client";
 
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  Circle,
-  CircleAlert,
-  CreditCard,
-  LogOut,
-  Settings,
-  Sparkles,
-  User as UserIcon,
-} from "lucide-react";
+import { Calendar, Table, User as UserIcon } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +15,7 @@ import {
 import { User } from "@/lib/types";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
-import LogoutButton from "./logout-button";
+import LogoutButton from "../../../../components/logout-button";
 import Link from "next/link";
 
 export function NavUser({ user }: { user: User }) {
@@ -48,23 +37,34 @@ export function NavUser({ user }: { user: User }) {
         align="end"
         sideOffset={6}
       >
-        <DropdownMenuLabel className="p-0 font-normal">
-          <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-            <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarFallback className="rounded-lg">
-                {displayName}
-              </AvatarFallback>
-            </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-semibold">{user.name}</span>
-              <span className="truncate text-xs">{user.email}</span>
+        <DropdownMenuLabel className="p-0 font-normal" asChild>
+          <Link href={"/settings"} className="cursor-pointer">
+            <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarFallback className="rounded-lg">
+                  {displayName}
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{user.name}</span>
+                <span className="truncate text-xs">{user.email}</span>
+              </div>
             </div>
-          </div>
+          </Link>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Settings />
-          <Link href={"/settings"}>Settings</Link>
+        <DropdownMenuItem asChild>
+          <Link href={"/book-table"} className="cursor-pointer">
+            <Table className="size-4" />
+            Book A Table
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href={"/bookings"} className="cursor-pointer">
+            <Calendar className="size-4" />
+            Bookings
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import ButtonLoader from "@/app/button-loader";
+import ButtonLoader from "@/components/ui/button-loader";
 import { Button, ButtonProps, buttonVariants } from "./button";
 import { VariantProps } from "class-variance-authority";
 import ButtonPendingLoader from "@/app/button-pending-loader";

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { permissionsTable, usersTable } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq } from "drizzle-orm";
-import { logout } from "@/app/auth";
+import { logout } from "@/app/(user)/auth";
 
 export async function isAuthenticatedUser() {
   const client = await createClient();

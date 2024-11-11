@@ -3,7 +3,7 @@ import { USER_ROUTES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import LogoutButton from "./logout-button";
+import LogoutButton from "../../../components/logout-button";
 import MobileNavigation from "./mobile-navigation";
 const NavLink = ({
   name,
