@@ -1,7 +1,5 @@
 # 🍽️ Restaurant Reservation System
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/stefano-vidmars-projects/restaurant-reservation-system)
-
 ## 🛠️ Tech Stack
 
 - ⚡ Next.js
