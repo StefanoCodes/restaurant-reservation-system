@@ -79,6 +79,7 @@ export async function registerUser(
       success: false,
       message: "User not found",
     };
+
   // adding a new user to the user table
 
   try {

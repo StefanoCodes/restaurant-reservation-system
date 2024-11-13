@@ -14,8 +14,14 @@ import { useActionState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { updateUserInformation } from "@/app/(user)/settings/_actions/action";
-import ButtonLoader from "@/components/button-loader";
 import ButtonPendingLoader from "@/components/button-pending-loader";
+import { Info } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function EditUserInformationForm({
   user,
@@ -37,6 +43,16 @@ export default function EditUserInformationForm({
         formData,
         user.userId,
       );
+      if (response.success) {
+        toast({
+          title: response.message,
+        });
+      } else {
+        toast({
+          title: response.message,
+          variant: "destructive",
+        });
+      }
       return response;
     },
     null,
@@ -69,15 +85,27 @@ export default function EditUserInformationForm({
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              defaultValue={user.email}
-              required
-              disabled={isPending}
-              aria-disabled={isPending}
-            />
+            <div className="relative">
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                defaultValue={user.email}
+                required
+                disabled={isPending}
+                aria-disabled={isPending}
+              />
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 cursor-pointer text-yellow-600" />
+                  </TooltipTrigger>
+                  <TooltipContent className="mx-2 max-w-xs p-2">
+                    <p>Email Verification is required</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             {state?.errors?.email && (
               <p className="text-red-500">{state.errors.email}</p>
             )}
