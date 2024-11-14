@@ -11,7 +11,7 @@ export default function ShowBusinessHours({
 }) {
   const businessHoursLength = businessHours.length;
   return (
-    <CardContent className="flex flex-col gap-4">
+    <CardContent className="flex h-full flex-col gap-4">
       {businessHours.map((data, idx) => (
         <BusinessHourCard
           key={data.id}

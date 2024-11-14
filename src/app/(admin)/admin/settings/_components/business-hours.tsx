@@ -7,12 +7,13 @@ import { useToast } from "@/hooks/use-toast";
 import { useFormStatus } from "react-dom";
 import { BusinessHourData } from "@/db/schema";
 import ShowBusinessHours from "./show-business-hours";
+import ButtonPendingLoader from "@/components/button-pending-loader";
 
 const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" className="ml-auto" disabled={pending}>
-      {pending ? "Saving..." : "Save Changes"}
+      {pending ? <ButtonPendingLoader /> : "Save Changes"}
     </Button>
   );
 };

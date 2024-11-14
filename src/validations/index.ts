@@ -1,3 +1,4 @@
+import { TemplateNames } from "./../lib/types";
 import { getMaxCapacity } from "@/lib/data/user";
 import { z } from "zod";
 
@@ -203,6 +204,7 @@ export const updateUserInformationSchema = z.object({
     message: "Phone number must be at least 10 characters",
   }),
 });
+
 export type newReservationInitialValuesType = z.infer<
   typeof newReservationInitialValuesType
 >;

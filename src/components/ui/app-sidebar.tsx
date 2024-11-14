@@ -1,4 +1,4 @@
-import AdminSidebarRoutes from "@/app/(admin)/admin/admin-sidebar-routes";
+import AdminSidebarRoutes from "@/app/(admin)/admin/_components/admin-sidebar-routes";
 import LogoutButton from "@/components/logout-button";
 import {
   Sidebar,

@@ -4,7 +4,7 @@ export type User = {
   email: string;
   phoneNumber: string;
   userId: string;
-  createdAt: Date | null;
+  createdAt: Date;
 };
 export type UserReservationDetails = {
   name: string;
@@ -68,3 +68,10 @@ export type BusinessHour = {
   closeTime: number;
   closed: boolean;
 };
+export type MarketingTemplate = {
+  id: string;
+  name: TemplateNames;
+  updatedAt: Date;
+};
+
+export type TemplateNames = "TemplateOne" | "TemplateTwo" | "TemplateThree";

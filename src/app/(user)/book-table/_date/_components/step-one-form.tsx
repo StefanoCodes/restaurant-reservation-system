@@ -74,8 +74,6 @@ export default function StepOneForm() {
   );
   const router = useRouter();
   const { toast } = useToast();
-  const timeSlots = calculateTimeSlots();
-
   // Search Params
   const [reservationDate, setReservationDate] = useQueryState("date", {
     defaultValue: "",
@@ -86,6 +84,8 @@ export default function StepOneForm() {
   const [numberOfPeople, setNumberOfPeople] = useQueryState("numberOfPeople", {
     defaultValue: "",
   });
+
+  const timeSlots = calculateTimeSlots(reservationDate);
 
   // this is just for better user expeircein in the case the script kiddie tried to be sneaky by changing the url to a an invalid time or date when going back to change the date or time the
   useEffect(() => {

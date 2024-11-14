@@ -1,6 +1,6 @@
 import SectionHeading from "../utils/section-heading";
 import FeaturesContent from "./features-content";
-import { marketingConfig } from "@/app/(marketing)/marketing.config";
+import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
 const { title, highlightedText, description } = marketingConfig.Features;
 export default function Features() {
   return (

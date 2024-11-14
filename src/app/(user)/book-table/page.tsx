@@ -3,6 +3,7 @@ import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
 import StepOneForm from "./_date/_components/step-one-form";
 import { redirect } from "next/navigation";
+import { ThemeButtonToggle } from "@/components/theme-button-toggle";
 
 export const metadata: Metadata = {
   keywords: ["restaurant", "reservation", "system", "book", "table"],

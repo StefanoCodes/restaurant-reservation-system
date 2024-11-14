@@ -1,6 +1,10 @@
 "use server";
 
-import { BusinessHourData, settingsTable } from "@/db/schema";
+import {
+  BusinessHourData,
+  marketingTemplatesTable,
+  settingsTable,
+} from "@/db/schema";
 import { db } from "@/db/db";
 import {
   businessHoursTable,
@@ -16,6 +20,7 @@ import {
 } from "@/validations";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 // Deleting a user Reservation + Sending an email to the user letting them know their reservation has been deleted
 
@@ -245,7 +250,6 @@ export async function updateBusinessHoursAction(hours: BusinessHourData[]) {
       message: "Failed to update business hours",
     };
   }
-
   revalidatePath("/admin/settings");
   revalidatePath("/book-table/availability");
   return {
@@ -288,4 +292,42 @@ export async function updateBookingDurationInterval(formData: FormData) {
     success: true,
     message: "Booking duration interval updated successfully",
   };
+}
+
+//
+
+export async function updateMarketingTemplateAction(formData: FormData) {
+  await isAuthorizedAdmin();
+
+  const templateName = formData.get("templateName") as string;
+  console.log(templateName);
+  if (
+    templateName !== "TemplateOne" &&
+    templateName !== "TemplateTwo" &&
+    templateName !== "TemplateThree"
+  ) {
+    return {
+      success: false,
+      message: "Invalid template name",
+    };
+  }
+
+  // update the marketing template in the database
+  try {
+    await db
+      .update(marketingTemplatesTable)
+      .set({ selectedTemplate: templateName });
+    revalidatePath("/");
+    revalidatePath("/admin/settings");
+    return {
+      success: true,
+      message: "Marketing template updated successfully",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Failed to update marketing template",
+    };
+  }
 }

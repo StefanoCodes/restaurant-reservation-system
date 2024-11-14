@@ -1,7 +1,7 @@
 import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import ManageBookings from "./_components/manage-bookings";
 import { Suspense } from "react";
-import H1 from "../h1";
+import H1 from "@/app/(admin)/admin/_components/h1";
 import BookingCardLoadingSkeleton from "./_components/booking-card-loading-skeleton";
 
 export default async function ManageBookingsPage() {

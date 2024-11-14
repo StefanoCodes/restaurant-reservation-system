@@ -1,7 +1,7 @@
 import KeyPoints from "./key-points";
 import SectionHeading from "../utils/section-heading";
 import MeetTeam from "./meet-the-team";
-import { marketingConfig } from "@/app/(marketing)/marketing.config";
+import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
 const { title, highlightedText, description } = marketingConfig.AboutUs;
 export default function AboutUs() {
   return (

@@ -86,6 +86,11 @@ export const ADMIN_ROUTES = [
     icon: UserRoundPlus,
   },
   {
+    name: "Marketing",
+    path: "/admin/marketing",
+    icon: Mail,
+  },
+  {
     name: "Settings",
     path: "/admin/settings",
     icon: Settings,

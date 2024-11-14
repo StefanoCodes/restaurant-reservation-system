@@ -1,6 +1,6 @@
 import AvatarCircles from "@/components/ui/avatar-circles";
 import ImageGrid from "./image-grid";
-import { marketingConfig } from "../../marketing.config";
+import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
 import RatingStars from "./rating-stars";
 import PrimaryCta from "./primary-cta";
 import SecondaryCta from "./secondary-cta";

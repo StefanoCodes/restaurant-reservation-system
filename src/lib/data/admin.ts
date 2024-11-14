@@ -4,6 +4,7 @@ import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import { db } from "@/db/db";
 import {
   businessHoursTable,
+  marketingTemplatesTable,
   permissionsTable,
   reservationsTable,
   settingsTable,
@@ -12,6 +13,9 @@ import {
 } from "@/db/schema";
 import { BOOKING_DURATION } from "@/lib/constants";
 import { eq, inArray } from "drizzle-orm";
+import { TemplateNames } from "../types";
+import { createClient } from "@/supabase/utils/server";
+import { cache } from "react";
 
 // Admin GET Requests
 
@@ -104,3 +108,13 @@ export async function getAdminSettings() {
     };
   }
 }
+
+export const getTemplateName = cache(async (): Promise<TemplateNames> => {
+  const [{ selectedTemplate }] = await db
+    .select({ selectedTemplate: marketingTemplatesTable.selectedTemplate })
+    .from(marketingTemplatesTable);
+  if (!selectedTemplate) {
+    return "TemplateOne";
+  }
+  return selectedTemplate;
+});

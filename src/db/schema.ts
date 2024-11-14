@@ -28,6 +28,11 @@ export const weekDaysEnum = pgEnum("week_days", [
   "saturday",
   "sunday",
 ]);
+export const marketingTemplateEnum = pgEnum("marketing_template", [
+  "TemplateOne",
+  "TemplateTwo",
+  "TemplateThree",
+]);
 // incase the table has mantaince or something
 export const tableStatusEnum = pgEnum("table_status", [
   "available",
@@ -142,6 +147,21 @@ export const businessHoursTable = pgTable("business_hours", {
   openTime: integer("open_time").notNull(),
   closeTime: integer("close_time").notNull(),
   closed: boolean("closed").default(false).notNull(),
+});
+
+// Customizabiity Table
+
+export const customizabilityTable = pgTable("customizability", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  // bg color of the website
+});
+// Marketing Templates Table
+export const marketingTemplatesTable = pgTable("templates", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  // selectedTemplate: enum of the three templates
+  selectedTemplate:
+    marketingTemplateEnum("selected_template").default("TemplateOne"),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export type Table = typeof tablesTable.$inferSelect;

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail } from "lucide-react";
-import { marketingConfig } from "@/app/(marketing)/marketing.config";
+import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
 const { title, highlightedText, description, address, phone, email } =
   marketingConfig.ContactUs;
 export default function ContactUs() {

@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BusinessHour } from "@/lib/types";
+import { Checkbox } from "@/components/ui/checkbox";
 export default function BusinessHourCard({
   length,
   setBusinessHours,
@@ -70,14 +71,11 @@ export default function BusinessHourCard({
         <div className="flex items-center justify-between py-2">
           {/* todo:fix weird bug with checkbox */}
           <Label htmlFor={`closed-${data.id}`}>Closed:</Label>
-          <input
-            type="checkbox"
+          <Checkbox
             className="mt-0 h-4 w-4 pt-0"
             id={`closed-${data.id}`}
             checked={data.closed}
-            onChange={(e) =>
-              handleInputChange(data.id, "closed", e.target.checked)
-            }
+            onCheckedChange={(e) => handleInputChange(data.id, "closed", e)}
           />
         </div>
       </div>

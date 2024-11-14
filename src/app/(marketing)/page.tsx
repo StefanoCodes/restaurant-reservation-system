@@ -1,11 +1,7 @@
 import { Metadata } from "next";
-import Navbar from "./_components/navbar/Navbar";
-import Header from "./_components/header/Header";
-import Features from "./_components/features/Features";
-import AboutUs from "./_components/about-us/About-us";
-import ContactUs from "./_components/contact/contact-us";
-import Footer from "./_components/footer/footer";
 import { marketingConfig } from "./marketing.config";
+import Template from "./_templates/template";
+import { getTemplateName } from "@/lib/data/admin";
 const {
   restaurantName,
   openGraphImage,
@@ -34,14 +30,6 @@ export const metadata: Metadata = {
 };
 
 export default async function MarketingPage() {
-  return (
-    <main className="relative overflow-hidden" id="home">
-      <Navbar />
-      <Header />
-      <Features />
-      <AboutUs />
-      <ContactUs />
-      <Footer />
-    </main>
-  );
+  const template = await getTemplateName();
+  return <Template name={template} />;
 }

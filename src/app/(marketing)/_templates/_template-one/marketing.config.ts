@@ -15,17 +15,6 @@ import {
 } from "lucide-react";
 // Template 1
 export const marketingConfig = {
-  Meta: {
-    restaurantName: "Gourmet Haven",
-    restaurantMission: "Exquisite dining experiences since 1995.",
-    openGraphImage: "/logo.jpg",
-    twitterImage: "/logo.jpg",
-    keywords: ["restaurant", "reservation", "system", "login", "register"],
-    description:
-      "This is a restaurant reservation system that allows you to manage your reservations and customers.",
-    siteUrl: "https://gourmethaven.com",
-    creator: "@StefanoCodes",
-  },
   Navbar: {
     logo: "/logo.jpg",
     links: [

@@ -2,7 +2,7 @@ import Loading from "@/components/loading-spinner";
 import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import { Suspense } from "react";
 import ManageUsers from "./_components/manage-users";
-import H1 from "../h1";
+import H1 from "@/app/(admin)/admin/_components/h1";
 
 export default async function AdminUsersPage() {
   await isAuthorizedAdmin();

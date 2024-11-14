@@ -7,17 +7,10 @@ import { redirect } from "next/navigation";
 export default async function UserSettingsPage() {
   const { user, userInDb } = await isAuthorizedUser();
   if (!user || !userInDb) redirect("/login");
-  const dtoUser = {
-    name: userInDb.name,
-    email: userInDb.email,
-    phoneNumber: userInDb.phoneNumber,
-    createdAt: userInDb.createdAt,
-    userId: userInDb.userId,
-  };
   return (
     <main>
       <Suspense fallback={<Loading />}>
-        <UserSettings user={dtoUser} />
+        <UserSettings user={userInDb} />
       </Suspense>
     </main>
   );

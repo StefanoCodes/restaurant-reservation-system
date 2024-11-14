@@ -1,18 +1,9 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import EditUserInformationForm from "./edit-user-information-form";
-
-type UserSettingsProps = {
-  user: {
-    name: string;
-    email: string;
-    phoneNumber: string;
-    createdAt: Date;
-    userId: string;
-  };
-};
+import { User } from "@/lib/types";
 // we want to cache this page
-export default function UserSettings({ user }: UserSettingsProps) {
+export default function UserSettings({ user }: { user: User }) {
   const { name, email, phoneNumber, createdAt, userId } = user;
   const displayName =
     name.slice(0, 1).toUpperCase() + name.slice(-1).toUpperCase();

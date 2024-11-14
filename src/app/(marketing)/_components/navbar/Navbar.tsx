@@ -1,5 +1,5 @@
 import { isAuthorizedUser } from "@/app/(auth)/auth";
-import { getUser } from "@/app/(user)/auth";
+import { getUser } from "@/app/(user)/auth-utils";
 import { NavUser } from "./nav-user-toggle";
 import { Button } from "@/components/ui/button";
 import { MARKETING_ROUTES } from "@/lib/constants";
@@ -12,7 +12,7 @@ import {
 import { Menu as MenuIcon, X as XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { marketingConfig } from "@/app/(marketing)/marketing.config";
+import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
 const { logo, links } = marketingConfig.Navbar;
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

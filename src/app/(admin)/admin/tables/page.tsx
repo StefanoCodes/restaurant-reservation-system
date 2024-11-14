@@ -3,8 +3,7 @@ import { isAuthorizedAdmin } from "@/app/(auth)/auth";
 import { Suspense } from "react";
 import AddNewTable from "./_components/add-new-table";
 import TablesList from "./_components/manage-tables";
-import H1 from "../h1";
-
+import H1 from "@/app/(admin)/admin/_components/h1";
 export default async function AdminTablesPage() {
   await isAuthorizedAdmin();
   return (

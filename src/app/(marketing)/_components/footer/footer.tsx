@@ -1,7 +1,7 @@
 import BusinessHours from "./business-hours";
 import FooterNavLinks from "./footer-nav-links";
 import SocialLinks from "./social-links";
-import { marketingConfig } from "@/app/(marketing)/marketing.config";
+import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
 const { copyright } = marketingConfig.Footer;
 
 export default function Footer() {
