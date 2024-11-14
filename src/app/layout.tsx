@@ -9,6 +9,7 @@ const dmSans = DM_Sans({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
   preload: true,
+  fallback: ["sans-serif"],
 });
 import { marketingConfig } from "@/app/(marketing)/marketing.config";
 const { restaurantName, description } = marketingConfig.Meta;

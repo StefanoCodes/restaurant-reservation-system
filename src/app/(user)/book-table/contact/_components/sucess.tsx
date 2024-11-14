@@ -1,11 +1,17 @@
 // "use client";
+import Confetti, { ConfettiRef } from "@/components/ui/confetti";
 import { motion } from "framer-motion";
-import { Check, CalendarCheck, UtensilsCrossed } from "lucide-react";
-import Link from "next/link";
+import { Check } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export default function ReservationSuccess() {
+  const confettiRef = useRef<ConfettiRef>(null);
+  useEffect(() => {
+    // Start confetti when component mounts
+    confettiRef.current?.fire();
+  }, []);
   return (
-    <div className="flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-4">
+    <div className="relative flex items-center justify-center bg-gradient-to-br from-green-50 to-green-100 p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -33,6 +39,12 @@ export default function ReservationSuccess() {
               Reservation Confirmed!
             </span>
           </motion.h1>
+
+          <Confetti
+            ref={confettiRef}
+            className="absolute left-0 top-0 z-10 h-full w-full"
+            manualstart
+          />
         </div>
       </motion.div>
     </div>
