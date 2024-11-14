@@ -75,6 +75,7 @@ const config = {
             height: "var(--radix-accordion-content-height)",
           },
         },
+
         "accordion-up": {
           from: {
             height: "var(--radix-accordion-content-height)",
@@ -83,11 +84,17 @@ const config = {
             height: "0",
           },
         },
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "spin-slow": "spin 3s linear infinite",
+
+        "infinite-scroll": "infinite-scroll 25s linear infinite",
       },
     },
   },

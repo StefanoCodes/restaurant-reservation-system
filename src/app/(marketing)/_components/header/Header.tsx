@@ -4,6 +4,7 @@ import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/mark
 import RatingStars from "./rating-stars";
 import PrimaryCta from "./primary-cta";
 import SecondaryCta from "./secondary-cta";
+import CompaniesLogos from "../utils/companies";
 const { title, description, primaryCta, secondaryCta, socialProof } =
   marketingConfig.Header;
 export default function Header() {
@@ -44,6 +45,7 @@ export default function Header() {
           </div>
         </div>
         <ImageGrid images={marketingConfig.Header.images} />
+        <CompaniesLogos />
       </div>
     </section>
   );
