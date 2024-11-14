@@ -27,11 +27,7 @@ function SubmitButton() {
   );
 }
 
-export default function MarketingTemplate({
-  templateName,
-}: {
-  templateName: TemplateNames;
-}) {
+export default function MarketingTemplate() {
   const { toast } = useToast();
   const [errors, setErrors] = useState<Errors | undefined>(undefined);
   //   useActionState hook
