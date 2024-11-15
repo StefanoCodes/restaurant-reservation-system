@@ -8,9 +8,9 @@ export default function ImageGrid({ images }: { images: string[] }) {
             className="h-full w-full rounded-lg object-cover"
             src={img}
             alt="marketing"
-            width={500}
-            height={500}
-            quality={100}
+            width={400}
+            height={400}
+            quality={95}
             key={index}
           />
         );
