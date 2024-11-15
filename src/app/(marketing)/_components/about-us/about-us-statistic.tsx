@@ -18,15 +18,15 @@ export default function AboutUsStatistic({
       key={point.title}
       className="min-w-[200px] flex-1 rounded-xl border-none bg-white/80 shadow-lg backdrop-blur-sm transition-all duration-300 hover:shadow-xl dark:bg-gray-800/80"
     >
-      <CardContent className="flex flex-col items-center justify-center gap-4 p-6">
-        <div className="bg-[text-primary-brand-color]/10 flex h-12 w-12 items-center justify-center rounded-full md:text-center">
-          <point.icon className="text-primary-brand-color h-8 w-8" />
+      <CardContent className="flex flex-col items-center justify-center gap-4 px-2 py-6 text-center sm:flex-row sm:items-start sm:text-left md:px-6">
+        <div className="bg-[text-template-one]/10 flex items-center rounded-full md:text-left">
+          <point.icon className="text-template-one h-8 w-8" />
         </div>
         <div>
-          <h3 className="font-semibold text-gray-900 dark:text-white md:text-center">
+          <h3 className="font-semibold text-gray-900 dark:text-white md:text-left">
             {point.title}
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300 md:text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-300 md:text-left">
             {point.description}
           </p>
         </div>

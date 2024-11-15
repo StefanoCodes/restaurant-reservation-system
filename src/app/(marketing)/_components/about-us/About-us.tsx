@@ -13,8 +13,12 @@ export default function AboutUs() {
       <div className="container relative z-10">
         <div className="flex flex-col items-center gap-12 lg:flex-row">
           <div className="space-y-6 lg:w-1/2">
-            <SectionHeading title={title} highlightedText={highlightedText} />
-            <p className="text-xl text-gray-600 dark:text-gray-300">
+            <SectionHeading
+              title={title}
+              highlightedText={highlightedText}
+              className="text-center md:text-left"
+            />
+            <p className="max-w-lg text-center text-xl text-gray-600 dark:text-gray-300 md:text-left">
               {description}
             </p>
             <KeyPoints />

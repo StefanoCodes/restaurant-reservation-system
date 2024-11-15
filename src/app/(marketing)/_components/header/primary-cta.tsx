@@ -15,7 +15,7 @@ export interface PrimaryCtaProps
 export default function PrimaryCta({ href, label, ...props }: PrimaryCtaProps) {
   return (
     <Link href={href} aria-label={label}>
-      <Button className="bg-primary-brand-color" {...props}>
+      <Button className="bg-template-one" {...props}>
         {label}
       </Button>
     </Link>

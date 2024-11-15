@@ -11,7 +11,7 @@ export default function TeamMemberCard({
 }) {
   return (
     <div className="text-center">
-      <Avatar className="border-primary-brand-color mx-auto mb-4 h-24 w-24 border-4">
+      <Avatar className="border-template-one mx-auto mb-4 h-24 w-24 border-4">
         <AvatarImage src={member.image} alt={member.name} />
         <AvatarFallback>
           {member.name

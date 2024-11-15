@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
+import SectionHeading from "../utils/section-heading";
 const { title, highlightedText, description, address, phone, email } =
   marketingConfig.ContactUs;
 export default function ContactUs() {
@@ -15,29 +16,28 @@ export default function ContactUs() {
       <div className="container grid gap-10 lg:grid-cols-2">
         <div className="space-y-8">
           <div>
-            <h2 className="text-3xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-5xl">
-              {title}{" "}
-              <span className="text-primary-brand-color">
-                {highlightedText}
-              </span>
-            </h2>
-            <p className="mt-4 text-gray-500 dark:text-gray-400">
+            <SectionHeading
+              title={title}
+              highlightedText={highlightedText}
+              className="text-center sm:text-left"
+            />
+            <p className="mt-4 max-w-xl text-center text-gray-500 dark:text-gray-400 sm:text-left">
               {description}
             </p>
           </div>
           <div className="space-y-4">
             <div className="flex items-center space-x-4">
-              <MapPin className="text-primary-brand-color" />
+              <MapPin className="text-template-one" />
               <span className="text-gray-700 dark:text-gray-300">
                 {address}
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <Phone className="text-primary-brand-color" />
+              <Phone className="text-template-one" />
               <span className="text-gray-700 dark:text-gray-300">{phone}</span>
             </div>
             <div className="flex items-center space-x-4">
-              <Mail className="text-primary-brand-color" />
+              <Mail className="text-template-one" />
               <span className="text-gray-700 dark:text-gray-300">{email}</span>
             </div>
           </div>
@@ -76,7 +76,7 @@ export default function ContactUs() {
               placeholder="Enter your message"
             />
           </div>
-          <Button className="w-full bg-[#f37e11] text-white hover:bg-[#e06c00]">
+          <Button className="bg-template-one hover:bg-template-one/80 w-full text-white">
             Send Message
           </Button>
         </div>

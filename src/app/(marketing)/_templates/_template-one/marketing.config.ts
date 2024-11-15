@@ -6,6 +6,7 @@ import {
   Award,
   Clock,
   Facebook,
+  Flame,
   Instagram,
   Leaf,
   Twitter,
@@ -122,6 +123,11 @@ export const marketingConfig = {
         icon: Leaf,
         title: "Farm to Table",
         description: "Committed to using fresh, local ingredients",
+      },
+      {
+        icon: Flame,
+        title: "Award Winning",
+        description: "Recognized for our outstanding cuisine",
       },
     ],
     teamMembers: [

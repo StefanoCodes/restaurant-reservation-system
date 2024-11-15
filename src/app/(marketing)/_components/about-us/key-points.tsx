@@ -1,5 +1,5 @@
 import AboutUsStatistic from "./about-us-statistic";
-import { marketingConfig } from "@/app/(marketing)/marketing.config";
+import { marketingConfig } from "@/app/(marketing)/_templates/_template-one/marketing.config";
 
 export default function KeyPoints() {
   const { keyPoints } = marketingConfig.AboutUs;

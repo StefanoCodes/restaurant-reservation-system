@@ -2,12 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+/* TEMPLATES COLOR SCHEMES */
+
+/* THEME 1 */
+/* Primary Brand Color: #f37e11 */
+/* Accent Color: #272e3f */
+
+/* THEME 2  */
+
+/* Primary Brand Color: #10b981 */
+/* Accent Color: #e2f0e9 */
+
+/* THEME 3 */
+/* Primary Brand Color: #2563eb */
+/* Accent Color: #e0f2fe */
+
 html {
   scroll-behavior: smooth;
 }
 @layer base {
   :root {
-    --primary-brand-color: #f37e11;
+    --template-one-primary: #f37e11;
+    --template-one-accent: #272e3f;
+    --template-two-primary: #10b981;
+    --template-two-accent: #e2f0e9;
+    --template-three-primary: #2563eb;
+    --template-three-accent: #e0f2fe;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;

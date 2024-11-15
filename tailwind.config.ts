@@ -14,12 +14,22 @@ const config = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1280px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
       },
     },
     extend: {
       colors: {
-        "primary-brand-color": "var(--primary-brand-color)",
+        template: {
+          one: "var(--template-one-primary)",
+          oneAccent: "var(--template-one-accent)",
+          two: "var(--template-two-primary)",
+          twoAccent: "var(--template-two-accent)",
+          three: "var(--template-three-primary)",
+          threeAccent: "var(--template-three-accent)",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

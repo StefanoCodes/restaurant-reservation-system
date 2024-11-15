@@ -26,12 +26,12 @@ export default async function Navbar() {
     await isAuthorizedUser();
   }
   return (
-    <Disclosure as="nav" className={cn("bg-primary-brand-color text-white")}>
+    <Disclosure as="nav" className={cn("bg-template-one text-white")}>
       <div className="container px-3 py-2">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             {/* Mobile menu button*/}
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-white hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+            <DisclosureButton className="hover:bg-template-oneAccent group relative inline-flex items-center justify-center rounded-md p-2 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
               <MenuIcon
@@ -61,7 +61,7 @@ export default async function Navbar() {
                     key={item.label}
                     href={item.href}
                     className={cn(
-                      "text-white hover:bg-gray-700",
+                      "hover:bg-template-oneAccent text-white",
                       "rounded-md px-3 py-2 text-sm font-medium",
                     )}
                   >
@@ -85,7 +85,7 @@ export default async function Navbar() {
       </div>
 
       <DisclosurePanel className="sm:hidden">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pb-4">
           {MARKETING_ROUTES.map((item) => (
             <DisclosureButton
               key={item.name}
@@ -94,9 +94,9 @@ export default async function Navbar() {
               aria-current={item.current ? "page" : undefined}
               className={classNames(
                 item.current
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                "block rounded-md px-4 py-2 text-base font-medium",
+                  ? "bg-template-oneAccent text-white"
+                  : "hover:bg-template-oneAccent text-gray-300 hover:text-white",
+                "block px-4 py-2 text-base font-medium",
               )}
             >
               {item.name}
