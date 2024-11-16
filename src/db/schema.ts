@@ -155,14 +155,23 @@ export const customizabilityTable = pgTable("customizability", {
   id: uuid("id").primaryKey().defaultRandom(),
   // bg color of the website
 });
+
 // Marketing Templates Table
-export const marketingTemplatesTable = pgTable("templates", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  // selectedTemplate: enum of the three templates
-  selectedTemplate:
-    marketingTemplateEnum("selected_template").default("TemplateOne"),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+export const marketingTemplatesTable = pgTable(
+  "marketing_templates",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    templateName: marketingTemplateEnum("template_name").notNull(),
+    templateDescription: text("template_description").notNull(),
+    // templateColors: how can i have an array of colors in the db?
+    templateColors: text("template_colors").array().notNull(),
+    selected: boolean("selected").default(false).notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    selectedIdx: index("selected_idx").on(table.selected),
+  }),
+);
 
 export type Table = typeof tablesTable.$inferSelect;
 export type TableWithStatus = Table & {
@@ -173,3 +182,4 @@ export type TableData = typeof tablesTable.$inferSelect;
 export type User = typeof usersTable.$inferSelect;
 export type Permission = typeof permissionsTable.$inferSelect;
 export type BusinessHourData = typeof businessHoursTable.$inferSelect;
+export type MarketingTemplate = typeof marketingTemplatesTable.$inferSelect;

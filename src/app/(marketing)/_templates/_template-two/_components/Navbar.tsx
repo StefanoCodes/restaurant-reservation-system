@@ -30,8 +30,8 @@ export default function Navbar({ user }: { user: Promise<User | null> }) {
             <div className="relative inline-flex bg-inherit">
               <Link href="#" className="flex items-center gap-2">
                 <span className="flex">
-                  <span className="flex h-6 w-3 rounded-l-full bg-emerald-500" />
-                  <span className="mt-2 flex h-6 w-3 rounded-r-full bg-[#f88fc2]" />
+                  <span className="flex h-6 w-3 rounded-l-full bg-template-two" />
+                  <span className="bg-template-two-accent mt-2 flex h-6 w-3 rounded-r-full" />
                 </span>
                 <span className="text-lg text-gray-700 dark:text-white">
                   Gourmet
@@ -46,7 +46,7 @@ export default function Navbar({ user }: { user: Promise<User | null> }) {
                   <li key={navItem.href}>
                     <Link
                       href={navItem.href}
-                      className="text-lg transition ease-linear hover:text-emerald-500"
+                      className="text-lg transition ease-linear hover:text-template-two"
                     >
                       {navItem.label}
                     </Link>
@@ -60,9 +60,9 @@ export default function Navbar({ user }: { user: Promise<User | null> }) {
                 ) : (
                   <Link
                     href="/login"
-                    className="relative flex h-12 w-full items-center justify-center px-7 text-emerald-500 before:absolute before:inset-0 before:rounded-full before:bg-emerald-500/5 before:transition-transform before:ease-linear hover:before:scale-105 active:before:scale-95 dark:before:bg-emerald-500/10 sm:w-max"
+                    className="before:bg-template-two/5 dark:before:bg-template-two/10 relative flex h-12 w-full items-center justify-center px-7 text-template-two before:absolute before:inset-0 before:rounded-full before:transition-transform before:ease-linear hover:before:scale-105 active:before:scale-95 sm:w-max"
                   >
-                    <span className="relative text-emerald-500">Login</span>
+                    <span className="relative text-template-two">Login</span>
                   </Link>
                 )}
               </div>

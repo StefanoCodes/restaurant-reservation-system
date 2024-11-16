@@ -1,0 +1,1 @@
+ALTER TABLE "marketing_templates" ADD COLUMN "display_name" varchar(255) NOT NULL;

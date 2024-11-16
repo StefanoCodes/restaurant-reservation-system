@@ -1,4 +1,10 @@
 DO $$ BEGIN
+ CREATE TYPE "public"."marketing_template" AS ENUM('TemplateOne', 'TemplateTwo', 'TemplateThree');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."reservation_status" AS ENUM('pending', 'confirmed', 'cancelled');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -28,6 +34,19 @@ CREATE TABLE IF NOT EXISTS "business_hours" (
 	"open_time" integer NOT NULL,
 	"close_time" integer NOT NULL,
 	"closed" boolean DEFAULT false NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "customizability" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "marketing_templates" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"template_name" "marketing_template" NOT NULL,
+	"template_description" text NOT NULL,
+	"template_colors" text[] NOT NULL,
+	"selected" boolean DEFAULT false NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "permissions" (
@@ -94,6 +113,7 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "selected_idx" ON "marketing_templates" USING btree ("selected");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "member_idx" ON "permissions" USING btree ("member_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "reservation_user_id_idx" ON "reservations" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "date_time_table_idx" ON "reservations" USING btree ("reservation_date","table_id","start_time");--> statement-breakpoint

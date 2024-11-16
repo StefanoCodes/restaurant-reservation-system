@@ -1,6 +1,6 @@
 {
-  "id": "3194aafa-60ae-413a-b47e-18c4204d796e",
-  "prevId": "ad5e837b-62bf-48e4-8c27-b104cee194e9",
+  "id": "f0e703a2-a3f7-4777-b796-685912a95208",
+  "prevId": "5595bd5a-0647-424a-9da2-60ebfda3ecfb",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -64,8 +64,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.templates": {
-      "name": "templates",
+    "public.marketing_templates": {
+      "name": "marketing_templates",
       "schema": "",
       "columns": {
         "id": {
@@ -75,11 +75,37 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "name": {
-          "name": "name",
+        "template_name": {
+          "name": "template_name",
+          "type": "marketing_template",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "template_description": {
+          "name": "template_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "template_colors": {
+          "name": "template_colors",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_name": {
+          "name": "display_name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "selected": {
+          "name": "selected",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -89,7 +115,23 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "selected_idx": {
+          "name": "selected_idx",
+          "columns": [
+            {
+              "expression": "selected",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
@@ -548,6 +590,15 @@
     }
   },
   "enums": {
+    "public.marketing_template": {
+      "name": "marketing_template",
+      "schema": "public",
+      "values": [
+        "TemplateOne",
+        "TemplateTwo",
+        "TemplateThree"
+      ]
+    },
     "public.reservation_status": {
       "name": "reservation_status",
       "schema": "public",

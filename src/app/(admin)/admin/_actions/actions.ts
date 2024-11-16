@@ -18,7 +18,7 @@ import {
   bookingDurationIntervalSchema,
   businessHourSchema,
 } from "@/validations";
-import { eq } from "drizzle-orm";
+import { eq, gt } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -296,29 +296,23 @@ export async function updateBookingDurationInterval(formData: FormData) {
 
 //
 
-export async function updateMarketingTemplateAction(formData: FormData) {
+export async function updateMarketingTemplateAction(templateId: string) {
   await isAuthorizedAdmin();
 
-  const templateName = formData.get("templateName") as string;
-  console.log(templateName);
-  if (
-    templateName !== "TemplateOne" &&
-    templateName !== "TemplateTwo" &&
-    templateName !== "TemplateThree"
-  ) {
-    return {
-      success: false,
-      message: "Invalid template name",
-    };
-  }
-
-  // update the marketing template in the database
   try {
-    await db
-      .update(marketingTemplatesTable)
-      .set({ selectedTemplate: templateName });
+    await db.transaction(async (tx) => {
+      // Reset all templates to unselected
+      await tx.update(marketingTemplatesTable).set({ selected: false });
+
+      // Set the chosen template as selected
+      await tx
+        .update(marketingTemplatesTable)
+        .set({ selected: true })
+        .where(eq(marketingTemplatesTable.id, templateId));
+    });
+
     revalidatePath("/");
-    revalidatePath("/admin/settings");
+    revalidatePath("/admin/marketing");
     return {
       success: true,
       message: "Marketing template updated successfully",

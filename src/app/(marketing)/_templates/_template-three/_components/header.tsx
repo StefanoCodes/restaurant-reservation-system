@@ -6,7 +6,7 @@ export default function Header() {
         <div>
           <h1 className="block text-3xl font-bold text-gray-800 dark:text-white sm:text-4xl lg:text-6xl lg:leading-tight">
             Start your journey with{" "}
-            <span className="text-blue-600">Preline</span>
+            <span className="text-template-three">Preline</span>
           </h1>
           <p className="mt-3 text-lg text-gray-800 dark:text-neutral-400">
             Hand-picked professionals and expertly crafted components, designed
@@ -15,7 +15,7 @@ export default function Header() {
 
           <div className="mt-7 grid w-full gap-3 sm:inline-flex">
             <a
-              className="inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-blue-600 px-4 py-3 text-sm font-medium text-white hover:bg-blue-700 focus:bg-blue-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+              className="hover:bg-template-three/700 focus:bg-template-three/700 inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-template-three px-4 py-3 text-sm font-medium text-white hover:opacity-85 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
               href="#"
             >
               Get started

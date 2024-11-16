@@ -10,7 +10,7 @@ export default function Header() {
       <section className="relative w-full">
         {/* CIRCLE */}
         <div className="absolute inset-x-0 top-0 flex h-64 items-start">
-          <div className="h-24 w-2/3 bg-gradient-to-br from-emerald-500 opacity-20 blur-2xl dark:invisible dark:from-[#570cac] dark:opacity-40"></div>
+          <div className="h-24 w-2/3 bg-gradient-to-br from-template-two opacity-20 blur-2xl dark:invisible dark:from-[#570cac] dark:opacity-40"></div>
           <div className="h-20 w-3/5 bg-gradient-to-r from-[#8cd66a] opacity-40 blur-2xl dark:from-[#670ccf] dark:opacity-40"></div>
         </div>
         {/* CONTENT */}
@@ -28,7 +28,7 @@ export default function Header() {
                   #1 Italian Restaurant in Rome &nbsp;
                   <Link
                     href={secondaryCta.href}
-                    className="font-semibold text-emerald-700 underline dark:text-white"
+                    className="font-semibold text-template-two underline transition-colors hover:text-template-twoAccent dark:text-white"
                   >
                     {secondaryCta.title}
                   </Link>
@@ -43,7 +43,7 @@ export default function Header() {
               <div className="mt-8 flex flex-col items-center gap-4 sm:mx-auto sm:w-max sm:flex-row lg:mx-0">
                 <Link
                   href={primaryCta.href}
-                  className="relative flex h-12 w-full items-center justify-center px-7 text-white before:absolute before:inset-0 before:rounded-full before:bg-emerald-500 before:transition-transform before:ease-linear hover:before:scale-105 active:before:scale-95 sm:w-max"
+                  className="relative flex h-12 w-full items-center justify-center px-7 text-white before:absolute before:inset-0 before:rounded-full before:bg-template-two before:transition-transform before:ease-linear hover:before:scale-105 active:before:scale-95 sm:w-max"
                 >
                   <span className="relative text-white">
                     {primaryCta.title}
@@ -51,9 +51,9 @@ export default function Header() {
                 </Link>
                 <Link
                   href={secondaryCta.href}
-                  className="relative flex h-12 w-full items-center justify-center px-7 text-emerald-500 before:absolute before:inset-0 before:rounded-full before:bg-emerald-500/5 before:transition-transform before:ease-linear hover:before:scale-105 active:before:scale-95 dark:before:bg-emerald-500/10 sm:w-max"
+                  className="relative flex h-12 w-full items-center justify-center rounded-lg px-7 text-template-two transition-colors hover:bg-gray-300 hover:bg-template-twoAccent sm:w-max"
                 >
-                  <span className="relative flex items-center gap-x-3 text-emerald-500">
+                  <span className="relative flex items-center gap-x-1 text-template-two">
                     {secondaryCta.title}
                     <ArrowRightIcon className="h-4 w-4" />
                   </span>
@@ -275,7 +275,7 @@ export default function Header() {
             </div>
             <div className="hidden md:flex lg:h-full">
               <div className="relative flex h-96 min-h-[24rem] w-full items-center lg:h-full lg:min-h-[none] lg:w-full">
-                <div className="absolute right-0 top-1/2 z-0 h-[calc(80%+20px)] w-5/6 -translate-y-1/2 bg-gradient-to-tr from-emerald-500 to-pink-300 opacity-25 blur-2xl dark:from-[#570cac] dark:to-emerald-500"></div>
+                <div className="absolute right-0 top-1/2 z-0 h-[calc(80%+20px)] w-5/6 -translate-y-1/2 bg-gradient-to-tr from-template-two to-pink-300 opacity-25 blur-2xl dark:from-[#570cac] dark:to-template-two"></div>
                 <div className="bg-whitee absolute right-3 top-1/2 z-10 h-full w-3/5 -translate-y-1/2 rounded-3xl border border-gray-200 p-1 shadow-lg shadow-gray-100 dark:border-gray-800 dark:bg-gray-950 dark:shadow-transparent">
                   <Image
                     src="/marketing_1.jpg"
