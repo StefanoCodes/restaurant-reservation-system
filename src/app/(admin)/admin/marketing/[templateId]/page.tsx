@@ -1,8 +1,8 @@
 export default async function Page({
   params,
 }: {
-  params: { templateId: string };
+  params: { templateId: Promise<string> };
 }) {
-  const { templateId } = await params;
-  return <div>Page {templateId}</div>;
+  const templateId = await params.templateId;
+  return <div>Inner Page {templateId}</div>;
 }
