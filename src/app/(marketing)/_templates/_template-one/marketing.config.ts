@@ -19,10 +19,10 @@ export const marketingConfig = {
   Navbar: {
     logo: "/logo.jpg",
     links: [
-      { label: "Home", href: "/" },
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Book Table", href: "/book-table" },
+      { label: "Home", href: "#home" },
+      { label: "About", href: "#about" },
+      { label: "Contact", href: "#contact" },
+      { label: "Book Table", href: "#book-table" },
     ],
   },
   Header: {
