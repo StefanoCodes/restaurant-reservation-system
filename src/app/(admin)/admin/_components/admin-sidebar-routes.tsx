@@ -33,7 +33,7 @@ export default function AdminSidebarRoutes() {
                 }
               }}
               className={`${
-                pathname === item.path
+                pathname.startsWith(item.path)
                   ? "bg-orange-500/80 text-gray-50 hover:bg-orange-500/40 hover:text-gray-50"
                   : "text-black hover:bg-gray-500/10"
               } transition-all duration-300`}

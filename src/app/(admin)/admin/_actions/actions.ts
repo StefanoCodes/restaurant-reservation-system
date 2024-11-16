@@ -3,7 +3,9 @@
 import {
   BusinessHourData,
   marketingTemplatesTable,
+  permissionsTable,
   settingsTable,
+  usersTable,
 } from "@/db/schema";
 import { db } from "@/db/db";
 import {
@@ -17,10 +19,14 @@ import {
   addNewTableSchema,
   bookingDurationIntervalSchema,
   businessHourSchema,
+  registerSchema,
 } from "@/validations";
 import { eq, gt } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { createClient } from "@/supabase/utils/client";
 
 // Deleting a user Reservation + Sending an email to the user letting them know their reservation has been deleted
 
@@ -322,6 +328,78 @@ export async function updateMarketingTemplateAction(templateId: string) {
     return {
       success: false,
       message: "Failed to update marketing template",
+    };
+  }
+}
+
+export async function addNewAdminAction(formData: FormData) {
+  // 1. Create a new user account in supabase
+  // 2. Add the user to the users table
+  // 3. Update the user's role to admin
+  await isAuthorizedAdmin();
+  const { auth } = createClient();
+  const formDataObject = Object.fromEntries(formData.entries());
+  console.log(formDataObject);
+  // validate the form data
+
+  const isValidFormData = registerSchema.safeParse(formDataObject);
+  if (!isValidFormData.success) {
+    console.log(formatZodErrors(isValidFormData.error));
+    return {
+      success: false,
+      error: formatZodErrors(isValidFormData.error),
+    };
+  }
+
+  const { data, error } = await auth.admin.createUser({
+    email: isValidFormData.data.email,
+    password: isValidFormData.data.password,
+    email_confirm: true,
+  });
+
+  if (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  const { user } = data;
+
+  if (!user)
+    return {
+      success: false,
+      message: "User not found",
+    };
+
+  try {
+    await db.transaction(async (tx) => {
+      const [insertedUser] = await tx
+        .insert(usersTable)
+        .values({
+          name: isValidFormData.data.name,
+          email: isValidFormData.data.email,
+          phoneNumber: isValidFormData.data.phoneNumber,
+          userId: user.id,
+        })
+        .returning({ userId: usersTable.userId });
+
+      await tx.insert(permissionsTable).values({
+        memberId: insertedUser.userId,
+        role: "admin",
+      });
+    });
+    revalidatePath("/admin/admins");
+    return {
+      success: true,
+      message: "Admin added successfully",
+    };
+  } catch (error) {
+    console.error("Error inserting user into database:", error);
+    return {
+      success: false,
+      message: "An error occurred during registration. Please try again.",
     };
   }
 }

@@ -74,4 +74,10 @@ export type MarketingTemplate = {
   updatedAt: Date;
 };
 
+export type AdminType = User & {
+  id: string;
+  role: "admin";
+  createdAt: Date;
+  memberId: string;
+};
 export type TemplateNames = "TemplateOne" | "TemplateTwo" | "TemplateThree";

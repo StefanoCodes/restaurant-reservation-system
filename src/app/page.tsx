@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { marketingConfig } from "./marketing.config";
-import Template from "./_templates/template";
+import { marketingConfig } from "./(marketing)/marketing.config";
+import Template from "./(marketing)/_templates/template";
 import { getTemplateName } from "@/lib/data/admin";
 const {
   restaurantName,

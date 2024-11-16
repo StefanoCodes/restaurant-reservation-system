@@ -12,6 +12,7 @@ import {
   date,
   boolean,
   index,
+  json,
 } from "drizzle-orm/pg-core";
 export const rolesEnum = pgEnum("roles", ["user", "admin"]);
 export const reservationStatusEnum = pgEnum("reservation_status", [
@@ -124,10 +125,12 @@ export const reservationsTable = pgTable(
 export const permissionsTable = pgTable(
   "permissions",
   {
-    id: uuid("id").primaryKey().defaultRandom(),
-    memberId: uuid("member_id").references(() => usersTable.userId),
-    role: rolesEnum("role").default("user"),
-    createdAt: timestamp("created_at").defaultNow(),
+    id: uuid("id").primaryKey().defaultRandom().notNull(),
+    memberId: uuid("member_id")
+      .references(() => usersTable.userId)
+      .notNull(),
+    role: rolesEnum("role").default("user").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (permissions) => ({
     memberIdx: index("member_idx").on(permissions.memberId), // Add this index
@@ -172,6 +175,82 @@ export const marketingTemplatesTable = pgTable(
     selectedIdx: index("selected_idx").on(table.selected),
   }),
 );
+
+// // Navbar content
+// export const navbarContentTable = pgTable("navbar_content", {
+//   id: uuid("id").primaryKey().defaultRandom(),
+//   templateId: uuid("template_id").references(() => marketingTemplatesTable.id),
+//   logoUrl: varchar("logo_url", { length: 512 }),
+//   menuItems: json("menu_items").array().notNull(), // Array of {label: string, href: string}
+//   ctaButtonText: varchar("cta_button_text", { length: 100 }),
+//   ctaButtonUrl: varchar("cta_button_url", { length: 512 }),
+// });
+
+// // Header/Hero content
+// export const headerContentTable = pgTable("header_content", {
+//   id: uuid("id").primaryKey().defaultRandom(),
+//   templateId: uuid("template_id").references(() => marketingTemplatesTable.id),
+//   headline: varchar("headline", { length: 255 }).notNull(),
+//   subheadline: text("subheadline"),
+//   primaryButtonText: varchar("primary_button_text", { length: 100 }),
+//   primaryButtonUrl: varchar("primary_button_url", { length: 512 }),
+//   secondaryButtonText: varchar("secondary_button_text", { length: 100 }),
+//   secondaryButtonUrl: varchar("secondary_button_url", { length: 512 }),
+//   heroImages: json("hero_images").array().notNull(),
+// });
+
+// // Features content
+// export const featuresContentTable = pgTable("features_content", {
+//   id: uuid("id").primaryKey().defaultRandom(),
+//   templateId: uuid("template_id").references(() => marketingTemplatesTable.id),
+//   sectionTitle: varchar("section_title", { length: 255 }),
+//   sectionSubtitle: text("section_subtitle"),
+// });
+
+// // Individual features
+// export const featureItemsTable = pgTable("feature_items", {
+//   id: uuid("id").primaryKey().defaultRandom(),
+//   featuresContentId: uuid("features_content_id").references(
+//     () => featuresContentTable.id,
+//   ),
+//   title: varchar("title", { length: 255 }).notNull(),
+//   description: text("description"),
+//   iconUrl: varchar("icon_url", { length: 512 }),
+//   sortOrder: integer("sort_order").notNull(),
+// });
+
+// // About Us content
+// export const aboutUsContentTable = pgTable("about_us_content", {
+//   id: uuid("id").primaryKey().defaultRandom(),
+//   templateId: uuid("template_id").references(() => marketingTemplatesTable.id),
+//   title: varchar("title", { length: 255 }),
+//   description: text("description"),
+//   imageUrl: varchar("image_url", { length: 512 }),
+//   stats: json("stats"), // Array of {label: string, value: string}
+// });
+
+// // Contact Us content
+// export const contactUsContentTable = pgTable("contact_us_content", {
+//   id: uuid("id").primaryKey().defaultRandom(),
+//   templateId: uuid("template_id").references(() => marketingTemplatesTable.id),
+//   title: varchar("title", { length: 255 }),
+//   subtitle: text("subtitle"),
+//   email: varchar("email", { length: 255 }),
+//   phone: varchar("phone", { length: 50 }),
+//   address: text("address"),
+//   formFields: json("form_fields").array().notNull(), // Array of {label: string, type: string, required: boolean}
+// });
+
+// // Footer content
+// export const footerContentTable = pgTable("footer_content", {
+//   id: uuid("id").primaryKey().defaultRandom(),
+//   templateId: uuid("template_id").references(() => marketingTemplatesTable.id),
+//   logoUrl: varchar("logo_url", { length: 512 }),
+//   description: text("description"),
+//   socialLinks: json("social_links").array().notNull(), // Array of {platform: string, url: string}
+//   menuColumns: json("menu_columns").array().notNull(), // Array of {title: string, links: Array<{label: string, url: string}>}
+//   copyrightText: varchar("copyright_text", { length: 255 }),
+// });
 
 export type Table = typeof tablesTable.$inferSelect;
 export type TableWithStatus = Table & {

@@ -37,7 +37,7 @@ export const marketingConfig = {
     },
     secondaryCta: {
       label: "View Menu",
-      href: "/menu",
+      href: "/menu.pdf",
     },
     socialProof: {
       title: "Loved by 1000+ customers",

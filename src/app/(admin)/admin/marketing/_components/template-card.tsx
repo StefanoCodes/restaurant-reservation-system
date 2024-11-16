@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { useActionState } from "react";
 import { updateMarketingTemplateAction } from "../../_actions/actions";
 import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
 export default function TemplateCard({
   template,
   index,
@@ -81,7 +82,7 @@ export default function TemplateCard({
             ))}
           </div>
         </CardContent>
-        <CardFooter className="bg-gray-50 px-4 py-4">
+        <CardFooter className="flex flex-row justify-between bg-gray-50 px-4 py-4">
           <form action={(formData) => formAction(template.id)}>
             <Button
               type="submit"
@@ -97,6 +98,13 @@ export default function TemplateCard({
                 : isSelected
                   ? "Selected"
                   : "Select Template"}
+            </Button>
+          </form>
+          <form action={() => {}}>
+            <Button variant="outline">
+              <Link href={`/admin/marketing/${template.id}`}>
+                Manage Content
+              </Link>
             </Button>
           </form>
         </CardFooter>

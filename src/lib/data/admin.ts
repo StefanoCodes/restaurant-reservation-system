@@ -27,17 +27,44 @@ export async function getAllUsers() {
       .select({ userId: permissionsTable.memberId })
       .from(permissionsTable)
       .where(eq(permissionsTable.role, "user"));
-    // userId is a string and we need to filter out the null values from the array
-    const userIds = allUsersInDb
-      .map((user) => user.userId)
-      .filter((id): id is string => id !== null);
     // now we need to get all the users from the usersTable which have the userId in the userIds array
     const allUsers = await db
       .select()
       .from(usersTable)
-      .where(inArray(usersTable.userId, userIds));
+      .where(
+        inArray(
+          usersTable.userId,
+          allUsersInDb.map((user) => user.userId),
+        ),
+      );
 
     return allUsers ? allUsers : [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+export async function getAllAdmins() {
+  await isAuthorizedAdmin();
+
+  try {
+    const allAdminsInDb = await db
+      .select({ userId: permissionsTable.memberId })
+      .from(permissionsTable)
+      .where(eq(permissionsTable.role, "admin"));
+
+    // get AdminDetails with the userIds
+    const allAdmins = await db
+      .select()
+      .from(usersTable)
+      .where(
+        inArray(
+          usersTable.userId,
+          allAdminsInDb.map((admin) => admin.userId),
+        ),
+      );
+
+    return allAdmins ? allAdmins : [];
   } catch (error) {
     console.error(error);
     return [];

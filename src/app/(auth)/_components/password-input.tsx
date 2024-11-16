@@ -9,7 +9,7 @@ export default function PasswordInput({
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <Label htmlFor="password">Password</Label>
       <div className="relative">
         <Input
@@ -34,6 +34,6 @@ export default function PasswordInput({
           )}
         </button>
       </div>
-    </>
+    </div>
   );
 }

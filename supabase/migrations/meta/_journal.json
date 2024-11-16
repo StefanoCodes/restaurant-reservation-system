@@ -15,6 +15,13 @@
       "when": 1731767874185,
       "tag": "0001_clever_oracle",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1731773257626,
+      "tag": "0002_hesitant_thor",
+      "breakpoints": true
     }
   ]
 }

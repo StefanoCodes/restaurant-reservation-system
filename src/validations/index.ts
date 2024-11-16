@@ -17,11 +17,10 @@ export const registerSchema = z.object({
     .trim(),
   password: z
     .string()
-    .min(8, { message: "Be at least 8 characters long" })
-    .regex(/[a-zA-Z]/, { message: "Contain at least one letter." })
-    .regex(/[0-9]/, { message: "Contain at least one number." })
-    .regex(/[^a-zA-Z0-9]/, {
-      message: "Contain at least one special character.",
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, {
+      message:
+        "Password must contain at least one letter, one number, and one special character",
     })
     .trim(),
   phoneNumber: z.string().min(10, {

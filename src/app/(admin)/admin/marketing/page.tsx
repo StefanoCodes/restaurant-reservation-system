@@ -9,7 +9,13 @@ export default async function Page() {
   return (
     <div className="flex h-full w-full flex-col items-start justify-start gap-4">
       <H1>Marketing Configurations</H1>
-      <Suspense fallback={<ButtonPendingLoader />}>
+      <Suspense
+        fallback={
+          <div className="flex min-h-[500px] w-full items-center justify-center">
+            <ButtonPendingLoader />
+          </div>
+        }
+      >
         <div className="w-full">
           <TemplateList />
         </div>

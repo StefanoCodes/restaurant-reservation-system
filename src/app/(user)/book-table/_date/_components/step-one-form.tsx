@@ -127,9 +127,12 @@ export default function StepOneForm() {
       toast({
         title: response.message,
       });
-      router.push(
-        `/book-table/availability/?date=${reservationDate}&time=${reservationTime}&numberOfPeople=${numberOfPeople}`,
-      );
+      const queryParams = new URLSearchParams({
+        date: reservationDate,
+        time: reservationTime,
+        numberOfPeople,
+      });
+      router.push(`/book-table/availability/?${queryParams}`);
     } catch (error) {
       console.error(error);
     }
