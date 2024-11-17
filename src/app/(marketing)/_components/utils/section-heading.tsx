@@ -6,13 +6,13 @@ export default function SectionHeading({
   className,
 }: {
   title: string;
-  highlightedText: string;
+  highlightedText?: string;
   className?: string;
 }) {
   return (
     <h2
       className={cn(
-        "text-shadow text-5xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-6xl",
+        "text-shadow text-4xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-5xl",
         className,
       )}
     >

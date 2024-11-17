@@ -96,3 +96,7 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+.text-gradient {
+  @apply bg-gradient-to-r from-black to-gray-500 bg-clip-text text-transparent;
+}
