@@ -39,10 +39,7 @@ export default function Header() {
           </div>
           {/* RATINGS */}
           <div className="flex flex-col items-center justify-center gap-1">
-            <RatingStars
-              rating={socialProof.rating}
-              color="text-template-one"
-            />
+            <RatingStars rating={socialProof.rating} color="orange" />
             <span className="text-sm text-gray-500">{socialProof.title}</span>
             <AvatarCircles avatarUrls={socialProof.avatarUrls} />
           </div>

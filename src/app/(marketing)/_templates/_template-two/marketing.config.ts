@@ -54,4 +54,35 @@ export const templateTwoConfig = {
       },
     ],
   },
+  FAQ: {
+    heading: "Frequently Asked Questions",
+    description:
+      "If you have any questions, please feel free to contact us. We are always here to help you.",
+    faq: [
+      {
+        question: "What is the best way to contact you?",
+        answer: "The best way to contact us is by email.",
+      },
+      {
+        question: "What is the best way to contact you?",
+        answer: "The best way to contact us is by email.",
+      },
+      {
+        question: "What is the best way to contact you?",
+        answer: "The best way to contact us is by email.",
+      },
+      {
+        question: "What is the best way to contact you?",
+        answer: "The best way to contact us is by email.",
+      },
+    ],
+  },
+  FinalCTA: {
+    heading: "Ready to Elevate Your Dining Experience?",
+    description:
+      "Book your table now and experience the ultimate dining experience with our exquisite menu and impeccable service.",
+  },
+  Footer: {
+    ...marketingConfig.Footer,
+  },
 };

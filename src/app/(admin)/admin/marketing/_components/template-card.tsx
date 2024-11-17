@@ -107,6 +107,9 @@ export default function TemplateCard({
               </Link>
             </Button>
           </form>
+          <Button variant="outline">
+            <Link href={`/marketing/${template.id}`}>Preview</Link>
+          </Button>
         </CardFooter>
       </Card>
     </motion.div>

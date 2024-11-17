@@ -14,6 +14,8 @@ export default function TemplateTwo() {
       <CompaniesLogos />
       <Features />
       <AboutUs />
+      {/* FAQ SECTION */}
+      {/* FINAL CTA */}
     </>
   );
 }
