@@ -100,22 +100,18 @@ export default function TemplateCard({
                   : "Select Template"}
             </Button>
           </form>
-          <form action={() => {}}>
+          {/* <form action={() => {}}>
             <Button variant="outline">
               <Link href={`/admin/marketing/${template.id}`}>
                 Manage Content
               </Link>
             </Button>
-          </form>
+          </form> */}
           <Button variant="outline">
-            <Link href={`/marketing/${template.id}`}>Preview</Link>
+            <Link href={`/admin/marketing/${template.id}`}>Preview</Link>
           </Button>
         </CardFooter>
       </Card>
     </motion.div>
   );
-}
-
-{
-  /*  */
 }

@@ -162,3 +162,18 @@ export const getMarketingTemplates = cache(
     }
   },
 );
+
+export const getMarketingTemplateById = cache(
+  async (templateId: string): Promise<MarketingTemplate | null> => {
+    try {
+      const template = await db
+        .select()
+        .from(marketingTemplatesTable)
+        .where(eq(marketingTemplatesTable.id, templateId));
+      return template[0];
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  },
+);

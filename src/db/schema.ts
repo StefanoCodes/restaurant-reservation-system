@@ -173,6 +173,7 @@ export const marketingTemplatesTable = pgTable(
   },
   (table) => ({
     selectedIdx: index("selected_idx").on(table.selected),
+    idIdx: index("id_idx").on(table.id),
   }),
 );
 

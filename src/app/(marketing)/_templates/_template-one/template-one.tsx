@@ -5,15 +5,19 @@ import AboutUs from "@/app/(marketing)/_components/about-us/About-us";
 import ContactUs from "@/app/(marketing)/_components/contact/contact-us";
 import Footer from "@/app/(marketing)/_components/footer/footer";
 
-export default function TemplateOne() {
+export default function TemplateOne({
+  preview = false,
+}: {
+  preview?: boolean;
+}) {
   return (
-    <main className="relative overflow-hidden" id="home">
-      <Navbar />
+    <>
+      {!preview && <Navbar />}
       <Header />
       <Features />
       <AboutUs />
       <ContactUs />
       <Footer />
-    </main>
+    </>
   );
 }

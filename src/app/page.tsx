@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import { marketingConfig } from "./(marketing)/marketing.config";
 import Template from "./(marketing)/_templates/template";
 import { getTemplateName } from "@/lib/data/admin";
+import TemplateOne from "./(marketing)/_templates/_template-one/template-one";
+import TemplateTwo from "./(marketing)/_templates/_template-two/template-two";
+import TemplateThree from "./(marketing)/_templates/_template-three/template-three";
 const {
   restaurantName,
   openGraphImage,
@@ -30,6 +33,12 @@ export const metadata: Metadata = {
 };
 
 export default async function MarketingPage() {
-  const template = await getTemplateName();
-  return <Template name={template} />;
+  const templateName = await getTemplateName();
+  const template = {
+    TemplateOne: <TemplateOne />,
+    TemplateTwo: <TemplateTwo />,
+    TemplateThree: <TemplateThree />,
+  };
+  const selectedTemplate = template[templateName];
+  return <Template>{selectedTemplate}</Template>;
 }

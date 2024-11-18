@@ -60,29 +60,76 @@ export const templateTwoConfig = {
       "If you have any questions, please feel free to contact us. We are always here to help you.",
     faq: [
       {
-        question: "What is the best way to contact you?",
-        answer: "The best way to contact us is by email.",
+        question: "Do I need to make a reservation?",
+        answer:
+          "While walk-ins are welcome, we highly recommend making a reservation, especially for weekend dining and special occasions. You can book through our website or call us directly.",
+        id: "1",
       },
       {
-        question: "What is the best way to contact you?",
-        answer: "The best way to contact us is by email.",
+        question: "What are your opening hours?",
+        answer:
+          "We are open Tuesday through Sunday from 10am to 10pm. We are closed on Mondays.",
+        id: "2",
       },
       {
-        question: "What is the best way to contact you?",
-        answer: "The best way to contact us is by email.",
+        question: "Do you accommodate dietary restrictions?",
+        answer:
+          "Yes, we offer various options for vegetarian, vegan, and gluten-free diets. Please inform your server about any allergies or dietary restrictions when ordering.",
+        id: "3",
       },
       {
-        question: "What is the best way to contact you?",
-        answer: "The best way to contact us is by email.",
+        question: "Is there parking available?",
+        answer:
+          "Yes, we offer complimentary valet parking for our guests. There is also street parking and a public parking garage within walking distance.",
+        id: "4",
       },
     ],
   },
   FinalCTA: {
     heading: "Ready to Elevate Your Dining Experience?",
     description:
-      "Book your table now and experience the ultimate dining experience with our exquisite menu and impeccable service.",
+      "Indulge in exquisite flavors and unforgettable moments at our restaurant. From farm-fresh ingredients to innovative recipes, every dish tells a story.",
+    primaryCta: {
+      title: "Reserve a Table",
+      href: "/book-table",
+    },
+    image: "/marketing_4.jpg",
   },
   Footer: {
-    ...marketingConfig.Footer,
+    heading: "Contact Us",
+    description:
+      "If you have any questions, please feel free to contact us. We are always here to help you.",
+    links: [
+      {
+        title: "Overview",
+        href: "#overview",
+      },
+      {
+        title: "Features",
+        href: "#features",
+      },
+      {
+        title: "About Us",
+        href: "#about-us",
+      },
+      {
+        title: "Contact Us",
+        href: "#contact-us",
+      },
+    ],
+    socialLinks: [
+      {
+        title: "Facebook",
+        href: "https://www.facebook.com",
+      },
+      {
+        title: "Instagram",
+        href: "https://www.instagram.com",
+      },
+      {
+        title: "Twitter",
+        href: "https://www.twitter.com",
+      },
+    ],
   },
 };

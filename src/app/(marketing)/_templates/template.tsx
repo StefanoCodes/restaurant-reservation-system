@@ -1,16 +1,23 @@
-import { TemplateNames } from "@/lib/types";
-import TemplateOne from "./_template-one/template-one";
-import TemplateTwo from "./_template-two/template-two";
-import TemplateThree from "./_template-three/template-three";
-const templates: Record<TemplateNames, React.ReactNode> = {
-  TemplateOne: <TemplateOne />,
-  TemplateTwo: <TemplateTwo />,
-  TemplateThree: <TemplateThree />,
-};
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 export default function Template({
-  name = "TemplateOne",
+  children,
+  preview = false,
 }: {
-  name: TemplateNames;
+  children: React.ReactNode;
+  preview?: boolean;
 }) {
-  return templates[name];
+  return (
+    <div className="relative w-full">
+      {preview && (
+        <div className="absolute left-0 right-0 top-0 z-50 p-2">
+          <Button variant="link" asChild>
+            <Link href="/admin/marketing">Go Back</Link>
+          </Button>
+        </div>
+      )}
+      <main className="relative overflow-hidden">{children}</main>
+    </div>
+  );
 }
