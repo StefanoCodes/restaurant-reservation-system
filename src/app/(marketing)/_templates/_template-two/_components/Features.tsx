@@ -2,8 +2,6 @@ import SectionHeading from "@/app/(marketing)/_components/utils/section-heading"
 import { templateTwoConfig } from "../marketing.config";
 import Stat from "./stat";
 import Image from "next/image";
-import { SpinnerText } from "@/components/motion/spinner-text";
-import { BorderTrail } from "@/components/motion/border-trail";
 const { heading, description, stats, image } = templateTwoConfig.Features;
 export default function Features() {
   return (
@@ -21,16 +19,6 @@ export default function Features() {
               <Stat key={stat.title} {...stat} />
             ))}
           </div>
-          {/* <SpinnerText
-            radius={7}
-            fontSize={1}
-            transition={{
-              repeat: Infinity,
-            }}
-            className="absolute right-32 top-24 hidden font-mono text-4xl font-bold text-black lg:block"
-          >
-            {`Best Restaurant • Best Restaurant • `}
-          </SpinnerText> */}
         </div>
 
         <Image
