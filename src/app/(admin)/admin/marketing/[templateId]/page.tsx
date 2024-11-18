@@ -7,7 +7,7 @@ import { getMarketingTemplateById } from "@/lib/data/admin";
 export default async function Page({
   params,
 }: {
-  params: { templateId: string };
+  params: Promise<{ templateId: string }>;
 }) {
   const { templateId } = await params;
   const templateName = (await getMarketingTemplateById(templateId))
