@@ -23,10 +23,7 @@ import {
 } from "@/validations";
 import { eq, gt } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { createClient } from "@/supabase/utils/client";
+import { createClient } from "@/supabase/utils/server";
 
 // Deleting a user Reservation + Sending an email to the user letting them know their reservation has been deleted
 
@@ -337,7 +334,7 @@ export async function addNewAdminAction(formData: FormData) {
   // 2. Add the user to the users table
   // 3. Update the user's role to admin
   await isAuthorizedAdmin();
-  const { auth } = createClient();
+  const supabase = await createClient();
   const formDataObject = Object.fromEntries(formData.entries());
   console.log(formDataObject);
   // validate the form data
@@ -351,7 +348,7 @@ export async function addNewAdminAction(formData: FormData) {
     };
   }
 
-  const { data, error } = await auth.admin.createUser({
+  const { data, error } = await supabase.auth.admin.createUser({
     email: isValidFormData.data.email,
     password: isValidFormData.data.password,
     email_confirm: true,

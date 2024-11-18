@@ -32,7 +32,6 @@ export async function logout() {
   redirect("/");
 }
 
-// AUTH
 export async function registerUser(
   prevState: any,
   formData: FormData,

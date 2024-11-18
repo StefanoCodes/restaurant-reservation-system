@@ -38,6 +38,8 @@ export async function isAuthorizedAdmin() {
     redirect("/");
   }
 
+  console.log(user, userInDb);
+
   return { user, userInDb };
 }
 export async function isAuthorizedUser() {
