@@ -1,9 +1,8 @@
 import { isAuthorizedAdmin } from "@/app/(auth)/auth";
-import ManageUsers from "../users/_components/manage-users";
-import ManageAdmins from "./_components/manage-admins";
-import AddNewAdmin from "./_components/add-new-admin";
-import { Suspense } from "react";
 import ButtonPendingLoader from "@/components/button-pending-loader";
+import { Suspense } from "react";
+import AddNewAdmin from "./_components/add-new-admin";
+import ManageAdmins from "./_components/manage-admins";
 
 export default async function Page() {
   await isAuthorizedAdmin();

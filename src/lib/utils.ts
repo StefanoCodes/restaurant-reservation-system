@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { ZodError, ZodIssue } from "zod";
 import { set } from "date-fns";
 import { WEEKDAYS } from "@/lib/constants";
+import { TemplateNames } from "./types";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
