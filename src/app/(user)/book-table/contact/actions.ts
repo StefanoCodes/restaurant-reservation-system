@@ -8,7 +8,10 @@ import { BOOKING_DURATION } from "@/lib/constants";
 import { stepThreeSchema } from "@/validations";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { checkIfReservationAlreadyExists } from "@/lib/data/data";
+import {
+  checkIfReservationAlreadyExists,
+  isResturauntClosedOnSelectedDate,
+} from "@/lib/data/data";
 type StepThreeFormData = {
   date: string;
   time: string;
@@ -20,9 +23,9 @@ type StepThreeFormData = {
   specialRequests: string;
 };
 export async function stepThreeAction(formDataObject: StepThreeFormData) {
-  const { user, userInDb } = await isAuthorizedUser();
-  if (!user || !userInDb) {
-    return redirect("/login");
+  const { userInDb } = await isAuthorizedUser();
+  if (!userInDb) {
+    redirect("/login");
   }
 
   // pass the data through zod
@@ -36,6 +39,13 @@ export async function stepThreeAction(formDataObject: StepThreeFormData) {
   }
 
   try {
+    // check if we are closed on that day
+    if (await isResturauntClosedOnSelectedDate(isDataValidSchema.data.date)) {
+      return {
+        success: false,
+        message: "Sorry, we are closed on the date selected",
+      };
+    }
     const tableId = await getTableIdByName(isDataValidSchema.data.tableName);
     if (!tableId) {
       return {
@@ -48,6 +58,7 @@ export async function stepThreeAction(formDataObject: StepThreeFormData) {
       isDataValidSchema.data.time,
       tableId,
     );
+
     if (isReservationAlreadyExists) {
       return {
         success: false,

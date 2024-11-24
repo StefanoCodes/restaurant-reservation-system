@@ -166,7 +166,6 @@ export const marketingTemplatesTable = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     templateName: marketingTemplateEnum("template_name").notNull(),
     templateDescription: text("template_description").notNull(),
-    // templateColors: how can i have an array of colors in the db?
     templateColors: text("template_colors").array().notNull(),
     selected: boolean("selected").default(false).notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -174,6 +173,19 @@ export const marketingTemplatesTable = pgTable(
   (table) => ({
     selectedIdx: index("selected_idx").on(table.selected),
     idIdx: index("id_idx").on(table.id),
+  }),
+);
+
+export const closedDatesTable = pgTable(
+  "closed_dates",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    closedDate: date("closed_date").notNull(),
+    reason: text("reason"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    closedDateIdx: index("closed_date_idx").on(table.closedDate), // Add index for faster date lookups
   }),
 );
 
@@ -263,3 +275,4 @@ export type User = typeof usersTable.$inferSelect;
 export type Permission = typeof permissionsTable.$inferSelect;
 export type BusinessHourData = typeof businessHoursTable.$inferSelect;
 export type MarketingTemplate = typeof marketingTemplatesTable.$inferSelect;
+export type ClosedDate = typeof closedDatesTable.$inferSelect;

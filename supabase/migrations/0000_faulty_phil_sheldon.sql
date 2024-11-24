@@ -36,6 +36,13 @@ CREATE TABLE IF NOT EXISTS "business_hours" (
 	"closed" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "closed_dates" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"closed_date" date NOT NULL,
+	"reason" text,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "customizability" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL
 );
@@ -51,9 +58,9 @@ CREATE TABLE IF NOT EXISTS "marketing_templates" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "permissions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"member_id" uuid,
-	"role" "roles" DEFAULT 'user',
-	"created_at" timestamp DEFAULT now()
+	"member_id" uuid NOT NULL,
+	"role" "roles" DEFAULT 'user' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "reservations" (
@@ -113,7 +120,9 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "closed_date_idx" ON "closed_dates" USING btree ("closed_date");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "selected_idx" ON "marketing_templates" USING btree ("selected");--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "id_idx" ON "marketing_templates" USING btree ("id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "member_idx" ON "permissions" USING btree ("member_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "reservation_user_id_idx" ON "reservations" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "date_time_table_idx" ON "reservations" USING btree ("reservation_date","table_id","start_time");--> statement-breakpoint

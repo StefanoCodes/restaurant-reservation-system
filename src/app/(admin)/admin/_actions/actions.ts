@@ -2,6 +2,7 @@
 
 import {
   BusinessHourData,
+  closedDatesTable,
   marketingTemplatesTable,
   permissionsTable,
   settingsTable,
@@ -14,12 +15,13 @@ import {
   tablesTable,
 } from "@/db/schema";
 import { isAuthorizedAdmin } from "@/app/(auth)/auth";
-import { formatZodErrors } from "@/lib/utils";
+import { formatDateToString, formatZodErrors } from "@/lib/utils";
 import {
   addNewTableSchema,
   bookingDurationIntervalSchema,
   businessHourSchema,
   registerSchema,
+  scheduleClosedDateSchema,
 } from "@/validations";
 import { eq, gt } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -297,7 +299,55 @@ export async function updateBookingDurationInterval(formData: FormData) {
   };
 }
 
-//
+// schedule a closed date
+
+export async function scheduleClosedDateAction(
+  prevState: any,
+  formData: FormData,
+  closedDate: string,
+) {
+  await isAuthorizedAdmin();
+
+  console.log("closing date", closedDate);
+
+  // 1. Zod Validation
+  // 2. insert into the closed table
+  // 3. revalidate the paths
+  const formDataObject = {
+    reason: formData.get("reason") as string,
+    closedDate,
+  };
+  const isValidFormData = scheduleClosedDateSchema.safeParse(formDataObject);
+
+  if (!isValidFormData.success) {
+    return {
+      success: false,
+      error: isValidFormData.error.flatten().fieldErrors,
+      formData: formDataObject,
+      message: "Invalid form data",
+    };
+  }
+
+  // insert into the closed table
+  try {
+    await db.insert(closedDatesTable).values({
+      closedDate: isValidFormData.data.closedDate,
+      reason: isValidFormData.data.reason,
+    });
+    revalidatePath("/admin/settings");
+    revalidatePath("/book-table");
+    return {
+      success: true,
+      message: "Scheduled successfully",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Failed to schedule",
+    };
+  }
+}
 
 export async function updateMarketingTemplateAction(templateId: string) {
   await isAuthorizedAdmin();
@@ -336,12 +386,11 @@ export async function addNewAdminAction(formData: FormData) {
   await isAuthorizedAdmin();
   const supabase = await createClient();
   const formDataObject = Object.fromEntries(formData.entries());
-  console.log(formDataObject);
+
   // validate the form data
 
   const isValidFormData = registerSchema.safeParse(formDataObject);
   if (!isValidFormData.success) {
-    console.log(formatZodErrors(isValidFormData.error));
     return {
       success: false,
       error: formatZodErrors(isValidFormData.error),

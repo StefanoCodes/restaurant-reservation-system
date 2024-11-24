@@ -1,9 +1,15 @@
 import "server-only";
 import { db } from "@/db/db";
-import { reservationsTable, tablesTable, usersTable } from "@/db/schema";
+import {
+  closedDatesTable,
+  reservationsTable,
+  tablesTable,
+  usersTable,
+} from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
-import { isAuthorizedUser } from "@/app/(auth)/auth";
+import { isAuthenticatedUser, isAuthorizedUser } from "@/app/(auth)/auth";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 
 export const getBookingsForUser = async () => {
   const { userInDb } = await isAuthorizedUser();
@@ -91,3 +97,43 @@ export async function getMaxCapacity() {
     return null;
   }
 }
+export const getClosedDates = cache(async () => {
+  await isAuthenticatedUser();
+  try {
+    const closedDates = await db
+      .select({
+        closedDate: closedDatesTable.closedDate,
+      })
+      .from(closedDatesTable);
+
+    return closedDates;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+});
+
+// export async function  getClosedDates() => {
+
+//   // 1. return all the dates that are scheduled to be closed and pass them in the calendar
+
+//   await isAuthenticatedUser();
+//   try {
+//     const closedDates = await db
+//       .select({
+//         closedDate: closedDatesTable.closedDate,
+//       })
+//       .from(closedDatesTable);
+//     console.log(closedDates);
+//     return {
+//       sucess: true,
+//       message: "sucessfully retrieved the closed dates",
+//     };
+//   } catch (error) {
+//     console.error(error);
+//     return {
+//       sucess: false,
+//       error,
+//     };
+//   }
+// }

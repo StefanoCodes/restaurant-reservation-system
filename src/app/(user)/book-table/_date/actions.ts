@@ -10,9 +10,8 @@ export const handleStepOneAction = async (formData: {
   time: string;
   numberOfPeople: string;
 }) => {
+  await isAuthorizedUser();
   // zod validation
-  const { user, userInDb } = await isAuthorizedUser();
-  if (!user || !userInDb) redirect("/login");
   const isDataValidSchema = await createBookTableSchema();
   const isDataValid = isDataValidSchema.safeParse(formData);
   if (!isDataValid.success) {
@@ -21,6 +20,8 @@ export const handleStepOneAction = async (formData: {
       errors: formatZodErrors(isDataValid.error),
     };
   }
+
+  // check if the date does not land on a closed day so we need to check if the date selected is a closed day
   return {
     success: true,
     message: "Completed successfully",

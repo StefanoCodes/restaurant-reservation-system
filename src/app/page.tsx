@@ -45,7 +45,7 @@ function selectedTemplate(templateName: TemplateNames) {
 
 export default async function MarketingPage() {
   const templateName = await getTemplateName();
-  const template = await selectedTemplate(templateName);
+  const template = selectedTemplate(templateName);
 
   return <Template>{template}</Template>;
 }

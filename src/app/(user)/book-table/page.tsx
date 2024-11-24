@@ -3,7 +3,7 @@ import { isAuthorizedUser } from "@/app/(auth)/auth";
 import { Metadata } from "next";
 import StepOneForm from "./_date/_components/step-one-form";
 import { redirect } from "next/navigation";
-import { ThemeButtonToggle } from "@/components/theme-button-toggle";
+import { getClosedDates } from "@/lib/data/user";
 
 export const metadata: Metadata = {
   keywords: ["restaurant", "reservation", "system", "book", "table"],
@@ -26,12 +26,13 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const { user, userInDb } = await isAuthorizedUser();
-  if (!user || !userInDb) redirect("/login");
+  await isAuthorizedUser();
+  const closedDates = getClosedDates();
+
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <div className="flex w-full items-center justify-center rounded-lg">
-        <StepOneForm />
+        <StepOneForm closedDatesPromise={closedDates} />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { useFormStatus } from "react-dom";
 import { BusinessHourData } from "@/db/schema";
 import ShowBusinessHours from "./show-business-hours";
 import ButtonPendingLoader from "@/components/button-pending-loader";
-
+import { use } from "react";
 const SubmitButton = () => {
   const { pending } = useFormStatus();
   return (
@@ -19,12 +19,12 @@ const SubmitButton = () => {
 };
 
 export default function BusinessHoursSettings({
-  initialHours,
+  initialHoursPromise,
 }: {
-  initialHours: BusinessHourData[];
+  initialHoursPromise: Promise<BusinessHourData[]>;
 }) {
   const { toast } = useToast();
-
+  const initialHours = use(initialHoursPromise);
   const [businessHours, setBusinessHours] =
     useState<BusinessHourData[]>(initialHours);
 

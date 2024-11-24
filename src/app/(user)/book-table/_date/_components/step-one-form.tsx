@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { StepOneFormDataErrors } from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { handleStepOneAction } from "../actions";
@@ -66,12 +66,24 @@ function SubmitTableButton({
     </Button>
   );
 }
-export default function StepOneForm() {
+export default function StepOneForm({
+  closedDatesPromise,
+}: {
+  closedDatesPromise: Promise<
+    | {
+        closedDate: string;
+      }[]
+    | []
+  >;
+}) {
   // Local State
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [errors, setErrors] = useState<StepOneFormDataErrors | undefined>(
     undefined,
   );
+
+  // closed Dates
+  const closedDates = use(closedDatesPromise);
   const router = useRouter();
   const { toast } = useToast();
   // Search Params
@@ -172,10 +184,25 @@ export default function StepOneForm() {
               maxDate={
                 new Date(new Date().setFullYear(new Date().getFullYear() + 1))
               }
-              className="bg-white"
               onClickDay={(dateValue: Date) => {
                 setReservationDate(getLocalizedDateTime(dateValue));
                 setIsCalendarOpen(false);
+              }}
+              tileDisabled={({ activeStartDate, date, view }) => {
+                const isClosedDate = closedDates.some(
+                  (closed) =>
+                    new Date(closed.closedDate).toDateString() ===
+                    date.toDateString(),
+                );
+                return isClosedDate;
+              }}
+              tileClassName={({ date, view }) => {
+                const isClosedDate = closedDates?.some(
+                  (closed) =>
+                    new Date(closed.closedDate).toDateString() ===
+                    date.toDateString(),
+                );
+                return isClosedDate ? ["bg-red"] : ""; // Red background for closed dates
               }}
             />
           </PopoverContent>

@@ -3,7 +3,6 @@ import { twMerge } from "tailwind-merge";
 import { ZodError, ZodIssue } from "zod";
 import { set } from "date-fns";
 import { WEEKDAYS } from "@/lib/constants";
-import { TemplateNames } from "./types";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -38,8 +37,16 @@ export function isTimeInBetweenOpeningAndClosingHours(time: string) {
 
 export function isDateInFuture(date: Date | string) {
   const today = new Date(getLocalizedDateTime());
-  return new Date(date) >= today;
+  return new Date(date) >= today && isDateWithinOneYear(date);
 }
+
+export function isDateWithinOneYear(date: Date | string) {
+  return (
+    new Date(date) <=
+    new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+  );
+}
+
 export function formatDateForReservation(date: Date) {
   const dateFormatedPlusOne = new Date(date);
   dateFormatedPlusOne.setDate(dateFormatedPlusOne.getDate() + 1);
@@ -95,8 +102,22 @@ export function getLocalizedDateTime(date: Date = new Date()) {
   const timeZone = getUserLocale();
   const options: Intl.DateTimeFormatOptions = {
     timeZone: timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
   };
-  return Intl.DateTimeFormat(undefined, options).format(date);
+  const formattedDate = Intl.DateTimeFormat(undefined, options).format(date);
+
+  // Convert to YYYY/MM/DD format
+  const [month, day, year] = formattedDate.split("/");
+  return `${year}/${month}/${day}`;
+}
+
+export function convertDateFormat(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 export function formatTableName(name: string) {

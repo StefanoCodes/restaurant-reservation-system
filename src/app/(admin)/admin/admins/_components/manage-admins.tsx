@@ -16,7 +16,7 @@ export default async function ManageAdmins() {
   if (isAdminsEmpty) return <div>No admins found</div>;
   return (
     <Table>
-      <TableCaption>A list of your recent Customers</TableCaption>
+      <TableCaption>A list of your recent Admins</TableCaption>
       <TableHeader>
         <TableRow className="[&>th]:py-2">
           <TableHead className="w-[100px]">Name</TableHead>

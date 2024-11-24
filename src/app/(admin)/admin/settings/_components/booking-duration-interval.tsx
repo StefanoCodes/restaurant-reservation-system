@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useFormStatus } from "react-dom";
 import { updateBookingDurationInterval } from "../../_actions/actions";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { use, useState } from "react";
 type Errors = {
   interval: string;
 };
@@ -26,10 +26,11 @@ function SubmitButton() {
 }
 
 export default function BookingDurationHours({
-  bookingDurationInterval,
+  bookingDurationIntervalPromise,
 }: {
-  bookingDurationInterval: number;
+  bookingDurationIntervalPromise: Promise<number>;
 }) {
+  const bookingDurationInterval = use(bookingDurationIntervalPromise);
   const { toast } = useToast();
   const [errors, setErrors] = useState<Errors | undefined>(undefined);
   const handleUpdateBookingDurationInterval = async (formData: FormData) => {
@@ -50,10 +51,7 @@ export default function BookingDurationHours({
     }
   };
   return (
-    <form
-      action={handleUpdateBookingDurationInterval}
-      className="w-full flex-[0.5]"
-    >
+    <form action={handleUpdateBookingDurationInterval} className="w-full">
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle>Booking Duration Interval</CardTitle>

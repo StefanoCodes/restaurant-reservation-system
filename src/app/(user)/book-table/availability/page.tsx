@@ -7,27 +7,40 @@ import {
   isTimeInBetweenOpeningAndClosingHours,
 } from "@/lib/utils";
 
+function isSearchParamsValid(params: {
+  date: string;
+  time: string;
+  numberOfPeople: string;
+}) {
+  const { date, time, numberOfPeople } = params;
+  if (!date || !time || !numberOfPeople) redirect("/book-table");
+
+  // then validate the date and time to be valid
+  if (!isDateInFuture(date) || !isTimeInBetweenOpeningAndClosingHours(time)) {
+    return redirect("/book-table");
+  }
+
+  // Validate search parameters
+  const allowedParams = ["date", "time", "numberOfPeople"];
+  if (Object.keys(params).some((param) => !allowedParams.includes(param))) {
+    return redirect("/book-table");
+  }
+
+  return {
+    date,
+    time,
+    numberOfPeople,
+  };
+}
+
 export default async function Page({
   searchParams,
 }: {
   searchParams: Promise<{ date: string; time: string; numberOfPeople: string }>;
 }) {
-  const { user, userInDb } = await isAuthorizedUser();
-  if (!user || !userInDb) redirect("/login");
-
+  await isAuthorizedUser();
   const params = await searchParams;
-  const { date, time, numberOfPeople } = params;
-  // if there is no date, time or number of people redirect to the date page
-  if (!date || !time || !numberOfPeople) redirect("/book-table");
-  // then validate the date and time to be valid
-  if (!isDateInFuture(date) || !isTimeInBetweenOpeningAndClosingHours(time))
-    redirect("/book-table");
-  // Validate search parameters
-  const allowedParams = ["date", "time", "numberOfPeople"];
-  const extraParams = Object.keys(params).filter(
-    (param) => !allowedParams.includes(param),
-  );
-  if (extraParams.length > 0) redirect("/book-table");
+  const { date, time, numberOfPeople } = isSearchParamsValid(params);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">

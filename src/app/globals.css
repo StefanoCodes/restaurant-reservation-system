@@ -2,21 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TEMPLATES COLOR SCHEMES */
-
-/* THEME 1 */
-/* Primary Brand Color: #f37e11 */
-/* Accent Color: #272e3f */
-
-/* THEME 2  */
-
-/* Primary Brand Color: #10b981 */
-/* Accent Color: #e2f0e9 */
-
-/* THEME 3 */
-/* Primary Brand Color: #2563eb */
-/* Accent Color: #e0f2fe */
-
 html {
   scroll-behavior: smooth;
 }

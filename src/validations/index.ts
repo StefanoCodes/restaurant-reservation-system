@@ -204,6 +204,13 @@ export const updateUserInformationSchema = z.object({
   }),
 });
 
+export const scheduleClosedDateSchema = z.object({
+  closedDate: z.string({
+    message: "Invalid Date",
+  }),
+  reason: z.string().optional(),
+});
+
 export type newReservationInitialValuesType = z.infer<
   typeof newReservationInitialValuesType
 >;

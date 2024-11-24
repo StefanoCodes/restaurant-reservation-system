@@ -4,6 +4,7 @@ import { tablesTable } from "@/db/schema";
 import { db } from "@/db/db";
 import { eq, and, or, gte, lt, lte, gt } from "drizzle-orm";
 import { BOOKING_DURATION } from "@/lib/constants";
+import { getClosedDates } from "./user";
 
 export const getAllTables = async (): Promise<Table[]> => {
   try {
@@ -115,4 +116,14 @@ export const checkIfReservationAlreadyExists = async (
       ),
     );
   return reservation.length > 0;
+};
+export const isResturauntClosedOnSelectedDate = async (date: string) => {
+  console.log(date);
+  const closedDates = await getClosedDates();
+  const isDateClosed = closedDates.filter((closed) => {
+    console.log(closed.closedDate);
+    return closed.closedDate === date;
+  });
+  console.log(isDateClosed);
+  return isDateClosed.length > 0;
 };
